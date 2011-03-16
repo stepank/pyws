@@ -27,6 +27,7 @@ def test_form(request):
 
     if request.method == 'POST':
 
+        tail = request.POST['tail']
         protocol = request.POST['protocol']
         query_string = request.POST['query_string']
         request_text = request.POST['request']
@@ -35,9 +36,10 @@ def test_form(request):
         fake_request.GET = urlparse.parse_qs(query_string)
         fake_request.raw_post_data = request_text
 
-        response = serve(fake_request, protocol, server)
+        response = serve(fake_request, protocol + '/' + tail, server)
 
         data.update({
+            'tail': tail,
             'protocol': protocol,
             'query_string': query_string,
             'request': request_text,
