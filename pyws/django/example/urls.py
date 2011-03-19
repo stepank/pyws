@@ -12,9 +12,8 @@ import api_settings
 server = Server(api_settings)
 
 PROTOCOLS = (
-  ('json', 'JSON'),
   ('rest', 'REST'),
-  ('rson', 'REST + JSON'),
+  ('json', 'JSON'),
   ('soap', 'SOAP'),
 )
 
