@@ -17,27 +17,27 @@ class Server(object):
 
         request.tail = tail
 
-        info = self.settings.PROTOCOLS.get(name)
+        protocol = self.settings.PROTOCOLS.get(name)
 
-        if not info:
+        if not protocol:
             raise ProtocolNotFound(name)
 
-        if isinstance(info, Protocol):
-            return info
+        if isinstance(protocol, Protocol):
+            return protocol
 
-        if isinstance(info, type) and issubclass(info, Protocol):
-            return info()
+        if isinstance(protocol, type) and issubclass(protocol, Protocol):
+            return protocol()
 
-        if isinstance(info, dict):
+        if isinstance(protocol, dict):
             try:
-                cls = info['class']
-                args = info['args']
-                kwargs = info['kwargs']
+                cls = protocol['class']
+                args = protocol['args']
+                kwargs = protocol['kwargs']
             except KeyError:
-                raise BadProtocol(info)
+                raise BadProtocol(protocol)
             return cls(*args, **kwargs)
 
-        raise BadProtocol(info)
+        raise BadProtocol(protocol)
 
     def get_function(self, name):
         for manager in self.settings.FUNCTION_MANAGERS:
