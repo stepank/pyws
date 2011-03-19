@@ -26,8 +26,6 @@ class Protocol(object):
                 'type': error_type_name,
                 'name': error_type.__name__,
                 'prefix': error_type.__module__,
-                'full_name': '%s.%s' % (
-                    error_type.__module__, error_type.__name__),
                 'message': unicode(error),
                 'params': error.args,
             }
@@ -50,7 +48,9 @@ class SoapProtocol(Protocol):
 class RestProtocol(Protocol):
 
     def get_function(self, request):
-        return request.tail, request.GET
+        return (request.tail,
+            dict((k, len(v) > 1 and v or v[0])
+                for k, v in request.GET.iteritems()))
 
     def get_response(self, result):
         return Response(json.dumps({'result': result}))
