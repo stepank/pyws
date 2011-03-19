@@ -1,4 +1,4 @@
-from errors import Error, BadProtocol, ProtocolError, ProtocolNotFound
+from errors import Error, BadProtocol, ProtocolError, ProtocolNotFound, ET_SERVER
 from functions.managers import FunctionNotFound
 from protocols import Protocol
 from response import Response
@@ -68,5 +68,7 @@ class Server(object):
             return protocol.get_response(result)
 
         except Error, e:
-
+            return protocol.get_error_response(e)
+        except Exception, e:
+            e.error_type = ET_SERVER
             return protocol.get_error_response(e)
