@@ -1,6 +1,6 @@
 import json
 
-from pyws.errors import ET_CLIENT
+from pyws.errors import ET_CLIENT, BadRequest
 from pyws.response import Response
 
 
@@ -57,3 +57,13 @@ class RestProtocol(Protocol):
 
     def get_error_response(self, error):
         return Response(json.dumps(self.get_error(error)))
+
+
+class JsonProtocol(RestProtocol):
+
+    def get_function(self, request):
+        try:
+            args = json.loads(request.text)
+        except ValueError:
+            raise BadRequest()
+        return (request.tail, args)

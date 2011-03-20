@@ -18,6 +18,10 @@ class BadProtocol(ProtocolError):
     def __str__(self):
         return 'Bad protocol: %s' % self.args[0]
 
+class BadRequest(ClientErrorTypeMixin, ProtocolError):
+    def __str__(self):
+        return 'Bad request'
+
 class FunctionError(Error):
     pass
 
@@ -38,4 +42,4 @@ class MissingFieldValue(FieldError):
 
 class WrongFieldValueType(FieldError):
     def __str__(self):
-        return 'The value of \'%s\' field is of wrong type' % self.args[0]
+        return 'The value of \'%s\' field is of wrong type.' % self.args[0]

@@ -1,7 +1,8 @@
-from pyws.protocols import RestProtocol, SoapProtocol
+from pyws.protocols import RestProtocol, JsonProtocol, SoapProtocol
 
 PROTOCOLS = {
     'rest': RestProtocol,
+    'json': JsonProtocol,
     'soap': SoapProtocol,
 }
 
