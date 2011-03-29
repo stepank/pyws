@@ -20,7 +20,9 @@ class BadProtocol(ProtocolError):
 
 class BadRequest(ClientErrorTypeMixin, ProtocolError):
     def __str__(self):
-        return 'Bad request'
+        if not self.args:
+            return 'Bad request'
+        return 'Bad request: %s' % self.args[0]
 
 class FunctionError(Error):
     pass
