@@ -28,13 +28,15 @@ class SimpleType(object):
 
     @classmethod
     def validate(cls, value):
-        raise NotImplemented('SimpleType.validate')
+        raise NotImplementedError('SimpleType.validate')
 
 
 class String(SimpleType):
 
     @classmethod
     def validate(cls, value):
+        if not isinstance(value, basestring):
+            raise ValueError(value)
         return str(value)
 
 
