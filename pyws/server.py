@@ -70,5 +70,7 @@ class Server(object):
         except Error, e:
             return protocol.get_error_response(e)
         except Exception, e:
+            if self.settings.DEBUG:
+                raise
             e.error_type = ET_SERVER
             return protocol.get_error_response(e)
