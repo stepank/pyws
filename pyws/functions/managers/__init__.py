@@ -12,10 +12,10 @@ class FunctionManager(object):
         raise BadFunction(function)
 
     def get_one(self, name):
-        raise NotImplemented('FunctionManager.get_one')
+        raise NotImplementedError('FunctionManager.get_one')
 
     def get_all(self):
-        raise NotImplemented('FunctionManager.get_all')
+        raise NotImplementedError('FunctionManager.get_all')
 
 
 class FixedFunctionManager(FunctionManager):

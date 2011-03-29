@@ -20,7 +20,7 @@ class Function(object):
         return self.args.validate(args)
 
     def call(self, **args):
-        raise NotImplemented('Function.call')
+        raise NotImplementedError('Function.call')
 
 
 class SimpleFunctionAdapter(Function):
