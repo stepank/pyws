@@ -19,12 +19,12 @@ class RestProtocol(Protocol):
         return Response(json.dumps({'result': result}))
 
     def get_error_response(self, error):
-        return Response(json.dumps(self.get_error(error)))
+        return Response(json.dumps({'error': self.get_error(error)}))
 
 
 class JsonProtocol(RestProtocol):
 
-    def get_function(self, name, request):
+    def get_function(self, request):
         try:
             args = json.loads(request.text)
         except ValueError:

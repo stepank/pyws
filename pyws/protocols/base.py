@@ -21,11 +21,9 @@ class Protocol(object):
         else:
             error_type_name = 'Server'
         return {
-            'error': {
-                'type': error_type_name,
-                'name': error_type.__name__,
-                'prefix': error_type.__module__,
-                'message': unicode(error),
-                'params': error.args,
-            }
+            'type': error_type_name,
+            'name': error_type.__name__,
+            'prefix': error_type.__module__,
+            'message': unicode(error),
+            'params': error.args,
         }

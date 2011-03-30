@@ -3,7 +3,6 @@ import re
 from StringIO import StringIO
 
 from lxml import etree as et
-from lxml.builder import E
 
 from pyws.errors import BadRequest
 from pyws.response import Response
@@ -92,6 +91,25 @@ class SoapProtocol(Protocol):
 
         body = et.Element('{%s}Body' % SOAP_ENV_NS, nsmap=self.namespaces)
         body.append(result)
+
+        xml = et.Element('{%s}Envelope' % SOAP_ENV_NS, nsmap=self.namespaces)
+        xml.append(body)
+
+        return Response(et.tostring(xml, encoding=self.encoding, pretty_print=True, xml_declaration=True))
+
+    def get_error_response(self, error):
+
+        error = self.get_error(error)
+
+        fault = et.Element('{%s}Fault' % SOAP_ENV_NS, nsmap=self.namespaces)
+        faultcode = et.SubElement(fault, 'faultcode')
+        faultcode.text = 'se:%s' % error['type']
+        faultstring = et.SubElement(fault, 'faultstring')
+        faultstring.text = error['message']
+        fault.append(obj2xml('detail', error))
+
+        body = et.Element('{%s}Body' % SOAP_ENV_NS, nsmap=self.namespaces)
+        body.append(fault)
 
         xml = et.Element('{%s}Envelope' % SOAP_ENV_NS, nsmap=self.namespaces)
         xml.append(body)
