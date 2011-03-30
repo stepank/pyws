@@ -65,7 +65,7 @@ class Server(object):
             function = self.get_function(name)
             result = function(**args)
 
-            return protocol.get_response(result)
+            return protocol.get_response(name, result)
 
         except Error, e:
             return protocol.get_error_response(e)
