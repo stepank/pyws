@@ -36,16 +36,20 @@ def xml2obj(xml):
     return result
 
 def obj2xml(name, obj, namespace=None):
+    if isinstance(obj, (list, tuple)):
+        return [obj2xml(name, v) for v in obj]
     kwargs = namespace and {'namespace': namespace} or {}
     el = et.Element(name, **kwargs)
-    if isinstance(obj, dict):
-        for k, v in obj.iteritems():
-            el.append(obj2xml(k, v))
-    elif isinstance(obj, (list, tuple)):
-        for v in obj:
-            el.append(obj2xml(name, v))
-    else:
+    if not isinstance(obj, dict):
         el.text = str(obj)
+    else:
+        for k, v in obj.iteritems():
+            children = obj2xml(k, v)
+            if not isinstance(children, (tuple, list)):
+                el.append(children)
+            else:
+                for child in children:
+                    el.append(child)
     return el
 
 
