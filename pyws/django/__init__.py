@@ -9,4 +9,4 @@ def serve(request, tail, server):
 
     response = server.process_request(request)
 
-    return HttpResponse(response.text)
+    return HttpResponse(response.text, content_type=response.content_type)
