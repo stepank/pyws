@@ -40,7 +40,7 @@ class FieldError(ClientErrorTypeMixin, Error):
 
 class MissingFieldValue(FieldError):
     def __str__(self):
-        return 'The value of \'%s\' field value is missing.' % self.args[0]
+        return 'The value of \'%s\' field is missing.' % self.args[0]
 
 class WrongFieldValueType(FieldError):
     def __str__(self):
