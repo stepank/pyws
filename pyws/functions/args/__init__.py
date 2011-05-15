@@ -1,7 +1,13 @@
 from pyws.errors import MissingFieldValue, WrongFieldValueType
 
 
+class NotImplemented(NotImplementedError):
+    pass
+
+
 class Field(object):
+
+    empty_values = (None, )
 
     def __init__(self, name, type, required=True, default=None):
         self.name = name
@@ -18,52 +24,59 @@ class Field(object):
         return self.default
 
     def validate(self, value):
+        if value in self.empty_values:
+            if self.required:
+                raise MissingFieldValue(self.name)
+            return value
         try:
             return self.type.validate(value)
         except ValueError:
             raise WrongFieldValueType(self.name)
 
 
-class SimpleType(object):
+class Type(object):
 
     @classmethod
     def validate(cls, value):
-        raise NotImplementedError('SimpleType.validate')
+        raise NotImplemented('SimpleType.validate')
 
 
-class String(SimpleType):
+class String(Type):
 
     @classmethod
     def validate(cls, value):
         if not isinstance(value, basestring):
             raise ValueError(value)
-        return str(value)
+        return unicode(value)
 
 
-class Integer(SimpleType):
+class Integer(Type):
 
     @classmethod
     def validate(cls, value):
         return int(value)
 
 
-class Float(SimpleType):
+class Float(Type):
 
     @classmethod
     def validate(cls, value):
         return float(value)
 
 
-class DictBase(SimpleType):
+class Dict(Type):
 
     @classmethod
     def validate(cls, value):
-        return dict((field.name,
-            field.validate(field.get_value(value)))
-                for field in cls.fields)
+        fields = cls.fields
+        if callable(cls.fields):
+            fields = fields()
+        return dict(
+            (field.name, field.validate(field.get_value(value)))
+                for field in fields)
 
 
-class ListBase(SimpleType):
+class List(Type):
 
     @classmethod
     def validate(cls, value):
@@ -72,20 +85,9 @@ class ListBase(SimpleType):
         return [cls.element_type.validate(val) for val in value]
 
 
-class ComplexType(type):
+def DictOf(name, *fields):
+    return type(name, (Dict, ), {'fields': fields})
 
-    def __new__(cls, fields=None):
-        return type('ComplexType', (cls.base, ), fields or {})
-
-
-class Dict(type):
-
-    def __new__(cls, name, *fields):
-        return type(name + 'Dict', (DictBase, ), {'fields': fields})
-
-
-class List(type):
-
-    def __new__(cls, element_type):
-        return type(element_type.__name__ + 'List',
-            (ListBase, ), {'element_type': element_type})
+def ListOf(element_type):
+    return type(element_type.__name__ + 'List',
+        (List, ), {'element_type': element_type})

@@ -1,5 +1,5 @@
 from pyws.errors import BadFunction, FunctionNotFound
-from pyws.functions import Function, SimpleFunctionAdapter
+from pyws.functions import Function, NativeFunctionAdapter
 
 
 class FunctionManager(object):
@@ -8,7 +8,7 @@ class FunctionManager(object):
         if isinstance(function, Function):
             return function
         elif callable(function):
-            return SimpleFunctionAdapter(function)
+            return NativeFunctionAdapter(function)
         raise BadFunction(function)
 
     def get_one(self, name):
@@ -31,3 +31,6 @@ class FixedFunctionManager(FunctionManager):
             return self.functions[name]
         except KeyError:
             raise FunctionNotFound(name)
+
+    def get_all(self):
+        return self.functions.values()

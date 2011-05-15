@@ -7,22 +7,25 @@ from lxml import etree as et
 from pyws.errors import BadRequest
 from pyws.response import Response
 
-from base import Protocol
+from pyws.protocols.base import Protocol
 
-SOAP_ENV_NS = 'http://schemas.xmlsoap.org/soap/envelope/'
+from utils import *
+from wsdl import WsdlGenerator
+
 TAG_NAME_RE = re.compile('{(.*?)}(.*)')
+ENCODING = 'utf-8'
 
 def get_element_name(el):
     name = el.tag
     mo = TAG_NAME_RE.search(name)
     if mo:
-      return mo.group(1), mo.group(2)
+        return mo.group(1), mo.group(2)
     return None, name
 
 def xml2obj(xml):
     children = xml.getchildren()
     if not children:
-        return xml.text
+        return unicode(xml.text)
     result = {}
     for child in children:
         name = get_element_name(child)[1]
@@ -41,7 +44,7 @@ def obj2xml(name, obj, namespace=None):
     kwargs = namespace and {'namespace': namespace} or {}
     el = et.Element(name, **kwargs)
     if not isinstance(obj, dict):
-        el.text = str(obj)
+        el.text = unicode(obj)
     else:
         for k, v in obj.iteritems():
             children = obj2xml(k, v)
@@ -56,14 +59,18 @@ def obj2xml(name, obj, namespace=None):
 class SoapProtocol(Protocol):
 
     namespaces = {'se': SOAP_ENV_NS}
-    encoding = 'utf-8'
+
+    def __init__(self, service_name, tns_prefix, *args, **kwargs):
+        super(SoapProtocol, self).__init__(*args, **kwargs)
+        self.service_name = service_name
+        self.tns_prefix   = tns_prefix
 
     def get_function(self, request):
 
         if request.tail == 'wsdl':
             return self.get_wsdl
 
-        xml = et.parse(StringIO(request.text.encode(self.encoding)))
+        xml = et.parse(StringIO(request.text.encode(ENCODING)))
         env = xml.xpath('/se:Envelope', namespaces=self.namespaces)
 
         if len(env) != 1:
@@ -78,7 +85,8 @@ class SoapProtocol(Protocol):
 
         func = body.getchildren()
         if len(env) != 1:
-            raise BadRequest('{%s}Envelope element has more than one child element.' % SOAP_ENV_NS)
+            raise BadRequest('{%s}Envelope element '
+                'has more than one child element.' % SOAP_ENV_NS)
         func = func[0]
 
         func_name = get_element_name(func)[1]
@@ -91,34 +99,38 @@ class SoapProtocol(Protocol):
 
     def get_response(self, name, result):
 
-        result = obj2xml(name + '_response', {'result': result}, namespace='hello')
+        result = obj2xml(
+            name + '_response', {'result': result}, namespace=self.tns_prefix)
 
-        body = et.Element('{%s}Body' % SOAP_ENV_NS, nsmap=self.namespaces)
+        body = et.Element(soap_env_name('Body'), nsmap=self.namespaces)
         body.append(result)
 
-        xml = et.Element('{%s}Envelope' % SOAP_ENV_NS, nsmap=self.namespaces)
+        xml = et.Element(soap_env_name('Envelope'), nsmap=self.namespaces)
         xml.append(body)
 
-        return Response(et.tostring(xml, encoding=self.encoding, pretty_print=True, xml_declaration=True))
+        return Response(et.tostring(xml,
+            encoding=ENCODING, pretty_print=True, xml_declaration=True))
 
     def get_error_response(self, error):
 
         error = self.get_error(error)
 
-        fault = et.Element('{%s}Fault' % SOAP_ENV_NS, nsmap=self.namespaces)
+        fault = et.Element(soap_env_name('Fault'), nsmap=self.namespaces)
         faultcode = et.SubElement(fault, 'faultcode')
         faultcode.text = 'se:%s' % error['type']
         faultstring = et.SubElement(fault, 'faultstring')
         faultstring.text = error['message']
         fault.append(obj2xml('detail', error))
 
-        body = et.Element('{%s}Body' % SOAP_ENV_NS, nsmap=self.namespaces)
+        body = et.Element(soap_env_name('Body'), nsmap=self.namespaces)
         body.append(fault)
 
-        xml = et.Element('{%s}Envelope' % SOAP_ENV_NS, nsmap=self.namespaces)
+        xml = et.Element(soap_env_name('Envelope'), nsmap=self.namespaces)
         xml.append(body)
 
-        return Response(et.tostring(xml, encoding=self.encoding, pretty_print=True, xml_declaration=True))
+        return Response(et.tostring(xml,
+            encoding=ENCODING, pretty_print=True, xml_declaration=True))
 
-    def get_wsdl(self, request):
-        return Response('wsdl')
+    def get_wsdl(self, server, request):
+        return Response(WsdlGenerator(server,
+            self.service_name, self.tns_prefix, ENCODING).get_wsdl())

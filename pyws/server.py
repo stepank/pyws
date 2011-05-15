@@ -9,6 +9,10 @@ class Server(object):
     def __init__(self, settings):
         self.settings = settings
 
+    @property
+    def location(self):
+        return self.settings.LOCATION
+
     def get_protocol(self, request):
 
         parts = request.tail.split('/', 1)
@@ -47,6 +51,10 @@ class Server(object):
                 pass
         raise FunctionNotFound(name)
 
+    def get_functions(self):
+        return reduce(lambda x, y: x + y,
+            (manager.get_all() for manager in self.settings.FUNCTION_MANAGERS))
+
     def process_request(self, request):
 
         try:
@@ -59,7 +67,7 @@ class Server(object):
             function = protocol.get_function(request)
 
             if callable(function):
-                return function(request)
+                return function(self, request)
 
             name, args = function
             function = self.get_function(name)
