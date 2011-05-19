@@ -12,7 +12,7 @@ PROTOCOLS = {
 
 from pyws.functions.managers import FixedFunctionManager
 from pyws.example import simple, simple_integer_adapter, simple_float_adapter,\
-    add_integer_adapter, add_float_adapter
+    add_integer_adapter, add_float_adapter, add_dict_adapter, add_list_adapter
 
 FUNCTION_MANAGERS = (
     FixedFunctionManager(
@@ -20,6 +20,8 @@ FUNCTION_MANAGERS = (
         simple_integer_adapter,
         simple_float_adapter,
         add_integer_adapter,
-        add_float_adapter
+        add_float_adapter,
+        add_dict_adapter,
+        add_list_adapter,
     ),
 )
