@@ -17,9 +17,10 @@ class WsdlGenerator(object):
         self.build_wsdl()
 
     def _add_part(self, element, function, arg_name, arg_type):
-        element_type = xsd.TypeFactory(arg_type)
+        part_type = xsd.TypeFactory(arg_type, self.types_ns, self.namespaces)
+        part_type.get_types(self.types)
         et.SubElement(element, wsdl_name('part'),
-            name=arg_name, type=qname(*(element_type.name + (self.namespaces, ))))
+            name=arg_name, type=qname(*(part_type.name + (self.namespaces, ))))
 
     def _add_functions(self):
 
@@ -61,25 +62,23 @@ class WsdlGenerator(object):
         self.wsdl = None
 
         tns = self.tns_prefix
-        funcs_ns = tns + 'funcs/'
-        types_ns = tns + 'types/'
+        self.types_ns = tns + 'types/'
 
         self.namespaces = {
             'tns': tns,
             'xsd': XSD_NS,
             'soap': SOAP_NS,
-            'funcs': funcs_ns,
-            'types': types_ns,
+            'types': self.types_ns,
         }
+
+        self.types = {}
 
         self.definitions = et.Element(wsdl_name('definitions'),
             name=self.service_name, targetNamespace=tns, nsmap=self.namespaces)
 
         types = et.SubElement(self.definitions, wsdl_name('types'))
-        self.schema_funcs = et.SubElement(types,
-            xsd_name('schema'), targetNamespace=funcs_ns)
         self.schema_types = et.SubElement(types,
-            xsd_name('schema'), targetNamespace=types_ns)
+            xsd_name('schema'), targetNamespace=self.types_ns)
 
         port_type_name = '%sPortType' % self.service_name
         self.port_type = et.Element(wsdl_name('portType'), name=port_type_name)
@@ -98,6 +97,9 @@ class WsdlGenerator(object):
             soap_name('address'), location=self.server.location)
 
         self._add_functions()
+
+        for type in self.types.itervalues():
+            self.schema_types.append(type)
 
         self.definitions.append(self.port_type)
         self.definitions.append(self.binding)

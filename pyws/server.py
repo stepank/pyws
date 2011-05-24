@@ -1,5 +1,8 @@
-from errors import Error, BadProtocol, ProtocolError, ProtocolNotFound, ET_SERVER
-from functions.managers import FunctionNotFound
+import logging
+
+
+from errors import Error, BadProtocol, FunctionNotFound, ProtocolError, \
+    ProtocolNotFound, ET_SERVER
 from protocols import Protocol
 from response import Response
 
@@ -57,6 +60,8 @@ class Server(object):
 
     def process_request(self, request):
 
+        logging.debug(request)
+
         try:
             protocol = self.get_protocol(request)
         except ProtocolError, e:
@@ -69,16 +74,27 @@ class Server(object):
             if callable(function):
                 return function(self, request)
 
-            name, args = function
-            function = self.get_function(name)
+            if isinstance(function, tuple):
+                name, args = function
+                function = self.get_function(name)
+            else:
+                name = function
+                function = self.get_function(name)
+                args = protocol.get_arguments(request, function.args)
+
             result = function(**args)
 
-            return protocol.get_response(name, result)
+            response = protocol.get_response(name, result)
 
         except Error, e:
-            return protocol.get_error_response(e)
+            response = protocol.get_error_response(e)
         except Exception, e:
             if self.settings.DEBUG:
                 raise
             e.error_type = ET_SERVER
-            return protocol.get_error_response(e)
+            response = protocol.get_error_response(e)
+
+        logging.debug(response)
+
+        return response
+

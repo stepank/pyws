@@ -1,4 +1,8 @@
+from lxml import etree as et
+
 from pyws.functions import args
+
+from utils import * #@UnusedWildImport
 
 
 class NotImplemented(NotImplementedError):
@@ -16,8 +20,10 @@ class UnknownType(Exception):
 
 class Type(object):
 
-    def __init__(self, type):
+    def __init__(self, type, ns=None, nsmap=None):
         self.type = type
+        self.ns = ns
+        self.nsmap = nsmap
 
     @classmethod
     def represents(cls, type):
@@ -30,18 +36,14 @@ class Type(object):
     def get_name(self):
         raise NotImplemented('Type.get_name')
 
-    @property
-    def schema(self):
-        return self.get_name()
-
-    def get_schema(self):
-        raise NotImplemented('Type.get_schema')
+    def get_types(self, types):
+        raise NotImplemented('Type.get_types')
 
 
 class SimpleType(Type):
 
-    def get_schema(self):
-        return None
+    def get_types(self, types):
+        return {}
 
 
 class String(SimpleType):
@@ -68,26 +70,54 @@ class Float(SimpleType):
         return 'float', 'http://www.w3.org/2001/XMLSchema'
 
 
-class Dict(Type):
+class ComplexType(Type):
+
+    def get_types(self, types):
+        if self.name in types:
+            return
+        complexType = et.Element(xsd_name('complexType'), name=self.name[0])
+        sequence = et.SubElement(complexType, xsd_name('sequence'))
+        types[self.name] = complexType
+        self.get_children(sequence, types)
+
+
+class Dict(ComplexType):
 
     _represents = args.Dict
 
     def get_name(self):
-        raise NotImplemented('Dict.get_name')
+        return self.type.__name__, self.ns
+
+    def get_children(self, sequence, types):
+        for field in self.type.fields:
+            type = TypeFactory(field.type, self.ns, self.nsmap)
+            element = et.SubElement(sequence,
+                xsd_name('element'), name=field.name,
+                type=qname(*(type.name + (self.nsmap, ))))
+            element.set('nillable', 'true')
+            type.get_types(types)
 
 
-class List(Type):
+class List(ComplexType):
 
-    _represents = args.Dict
+    _represents = args.List
 
     def get_name(self):
-        raise NotImplemented('List.get_name')
+        return self.type.__name__, self.ns
+
+    def get_children(self, sequence, types):
+        type = TypeFactory(self.type.element_type, self.ns, self.nsmap)
+        et.SubElement(sequence,
+            xsd_name('element'), name='item',
+            type=qname(*(type.name + (self.nsmap, ))),
+            minOccurs='0', maxOccurs='unbounded', nillable='true')
+        type.get_types(types)
 
 
 types = (String, Integer, Float, Dict, List)
 
-def TypeFactory(type):
+def TypeFactory(type, ns=None, nsmap=None):
     for x in types:
         if x.represents(type):
-            return x(type)
+            return x(type, ns, nsmap)
     raise UnknownType(type)
