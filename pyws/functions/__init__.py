@@ -7,6 +7,7 @@ class Function(object):
         self.name = name
         self.return_type = return_type or String
         self.args = DictOf(name.capitalize() + 'Function', *args)
+        self.needs_auth = False
 
     def __call__(self, **args):
         args = self.validate(args)

@@ -5,8 +5,11 @@ __all__ = ('Protocol', )
 
 class Protocol(object):
 
-    def __init__(self, *args, **kwargs):
-        pass
+    def __init__(self, auth_data_getter=None, *args, **kwargs):
+        self.auth_data_getter = auth_data_getter
+
+    def get_auth_data(self, request):
+        return self.auth_data_getter(request)
 
     def get_function(self, request):
         raise NotImplementedError('Protocol.get_function')

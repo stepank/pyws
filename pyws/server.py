@@ -46,17 +46,26 @@ class Server(object):
 
         raise BadProtocol(protocol)
 
-    def get_function(self, name):
+    def get_function(self, name, quiet=False):
         for manager in self.settings.FUNCTION_MANAGERS:
             try:
                 return manager.get_one(name)
             except FunctionNotFound:
                 pass
+        if quiet:
+            return None
         raise FunctionNotFound(name)
 
     def get_functions(self):
         return reduce(lambda x, y: x + y,
             (manager.get_all() for manager in self.settings.FUNCTION_MANAGERS))
+
+    def can_authenticate(self):
+        return hasattr(self.settings, 'AUTHENTICATOR')
+
+    def authenticate(self, request):
+        data = self.protocol.get_auth_data(request)
+        self.settings.AUTHENTICATOR(data)
 
     def process_request(self, request):
 
@@ -76,10 +85,17 @@ class Server(object):
 
             if isinstance(function, tuple):
                 name, args = function
-                function = self.get_function(name)
             else:
-                name = function
-                function = self.get_function(name)
+                name, args = function, None
+
+            can_authenticate = self.can_authenticate()
+            function = self.get_function(name, quiet=can_authenticate)
+            if can_authenticate and (not function or function.needs_auth):
+                self.authenticate(request)
+                if not function:
+                    function = self.get_function(name)
+
+            if args is None:
                 args = protocol.get_arguments(request, function.args)
 
             result = function(**args)
