@@ -67,6 +67,9 @@ def obj2xml(root, contents, namespace=None):
         root.set(NIL, 'true')
     return root
 
+class ParsedData(object):
+    pass
+
 
 class SoapProtocol(Protocol):
 
@@ -77,14 +80,16 @@ class SoapProtocol(Protocol):
         self.service_name = service_name
         self.tns_prefix   = tns_prefix
 
-    def get_function(self, request):
+    def parse_request(self, request):
 
-        if request.tail == 'wsdl':
-            return self.get_wsdl
+        if hasattr(request, 'parsed_data'):
+            return request.parsed_data
 
-        request.xml = et.parse(StringIO(request.text.encode(ENCODING)))
+        request.parsed_data = ParsedData()
 
-        env = request.xml.xpath('/se:Envelope', namespaces=self.namespaces)
+        xml = et.fromstring(request.text.encode(ENCODING))
+
+        env = xml.xpath('/se:Envelope', namespaces=self.namespaces)
 
         if len(env) == 0:
             raise BadRequest('No {%s}Envelope element.' % SOAP_ENV_NS)
@@ -108,16 +113,25 @@ class SoapProtocol(Protocol):
                 'has more than one child element.' % SOAP_ENV_NS)
         func = func[0]
 
-        request.func_xml = func
-
         func_name = get_element_name(func)[1]
         if func_name.endswith('_request'):
             func_name = func_name[:-8]
 
-        return func_name
+        request.parsed_data.xml = xml
+        request.parsed_data.func_xml = func
+        request.parsed_data.func_name = func_name
+
+        return request.parsed_data
+
+    def get_function(self, request):
+
+        if request.tail == 'wsdl':
+            return self.get_wsdl
+
+        return self.parse_request(request).func_name
 
     def get_arguments(self, request, arguments):
-        return xml2obj(request.func_xml, arguments)
+        return xml2obj(self.parse_request(request).func_xml, arguments)
 
     def get_response(self, name, result):
 
