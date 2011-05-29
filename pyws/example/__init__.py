@@ -42,6 +42,9 @@ def get_tree(p):
         'right': {'value': 5, 'left': None, 'right': None},
     }
 
+needs_auth_adapter = NativeFunctionAdapter(
+    add_simple, name='needs_auth', needs_auth=True)
+
 add_integers_adapter = NativeFunctionAdapter(
     add_simple,
     name='add_integers',
