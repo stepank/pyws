@@ -24,6 +24,16 @@ class BadRequest(ClientErrorTypeMixin, ProtocolError):
             return 'Bad request'
         return 'Bad request: %s' % self.args[0]
 
+class BadAuthData(ClientErrorTypeMixin, ProtocolError):
+    def __str__(self):
+        return 'Authentication data are missing or cannot be parsed'
+
+class AccessDenied(ClientErrorTypeMixin, ProtocolError):
+    def __str__(self):
+        if not self.args or not self.args[0]:
+            return 'Access denied'
+        return 'Access denied for user %s' % self.args[0]
+
 class FunctionError(Error):
     pass
 
