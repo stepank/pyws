@@ -105,10 +105,10 @@ class SoapProtocol(Protocol):
         body = body[0]
 
         func = body.getchildren()
-        if len(env) == 0:
+        if len(func) == 0:
             raise BadRequest(
                 '{%s}Body element has no child elements.' % SOAP_ENV_NS)
-        if len(env) > 1:
+        if len(func) > 1:
             raise BadRequest('{%s}Body element '
                 'has more than one child element.' % SOAP_ENV_NS)
         func = func[0]
