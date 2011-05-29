@@ -63,8 +63,8 @@ class Server(object):
     def can_authenticate(self):
         return hasattr(self.settings, 'AUTHENTICATOR')
 
-    def authenticate(self, request):
-        data = self.protocol.get_auth_data(request)
+    def authenticate(self, protocol, request):
+        data = protocol.get_auth_data(request)
         self.settings.AUTHENTICATOR(data)
 
     def process_request(self, request):
@@ -91,7 +91,7 @@ class Server(object):
             can_authenticate = self.can_authenticate()
             function = self.get_function(name, quiet=can_authenticate)
             if can_authenticate and (not function or function.needs_auth):
-                self.authenticate(request)
+                self.authenticate(protocol, request)
                 if not function:
                     function = self.get_function(name)
 
