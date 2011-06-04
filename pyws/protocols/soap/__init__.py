@@ -4,7 +4,7 @@ from StringIO import StringIO
 
 from lxml import etree as et
 
-from pyws.errors import BadRequest
+from pyws.errors import BadRequest, BadAuthData
 from pyws.functions.args import List, Dict, String
 from pyws.response import Response
 from pyws.protocols.base import Protocol
@@ -66,6 +66,25 @@ def obj2xml(root, contents, namespace=None):
     elif contents is None:
         root.set(NIL, 'true')
     return root
+
+
+class HeadersAuthDataGetter(object):
+
+    def __init__(self, headers_schema):
+        self.headers_schema = headers_schema
+
+    def __call__(self, request):
+
+        env = request.parsed_data.xml. \
+            xpath('/se:Envelope', namespaces=SoapProtocol.namespaces)[0]
+
+        header = env.xpath('./se:Header', namespaces=SoapProtocol.namespaces)
+        if len(header) != 1:
+            raise BadAuthData()
+        header = header[0]
+
+        return xml2obj(header, self.headers_schema)
+
 
 class ParsedData(object):
     pass
@@ -168,5 +187,6 @@ class SoapProtocol(Protocol):
             encoding=ENCODING, pretty_print=True, xml_declaration=True))
 
     def get_wsdl(self, server, request):
-        return Response(WsdlGenerator(server,
-            self.service_name, self.tns_prefix, ENCODING).get_wsdl())
+        headers_schema = getattr(self.auth_data_getter, 'headers_schema', None)
+        return Response(WsdlGenerator(server, self.service_name,
+            self.tns_prefix, headers_schema, ENCODING).get_wsdl())

@@ -1,6 +1,7 @@
-from pyws.protocols import RestProtocol, JsonProtocol, SoapProtocol
+from pyws.protocols import RestProtocol, JsonProtocol, SoapProtocol, \
+    HeadersAuthDataGetter
 
-from authenticate import authenticate, soap_auth_data_getter
+from authenticate import authenticate, soap_headers_schema
 
 DEBUG = True
 
@@ -9,7 +10,8 @@ LOCATION = 'http://localhost:8000/api/soap'
 PROTOCOLS = {
     'rest': RestProtocol(),
     'json': JsonProtocol(),
-    'soap': SoapProtocol('Test', 'http://example.com/', soap_auth_data_getter),
+    'soap': SoapProtocol('Test',
+        'http://example.com/', HeadersAuthDataGetter(soap_headers_schema)),
 }
 
 from pyws.functions.managers import FixedFunctionManager
