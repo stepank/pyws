@@ -9,10 +9,11 @@ $BASE_DIR/clean.sh
 
 $TEST_DIR/get_wsdl.sh
 
-java -cp $JAVA_CP org.apache.axis.wsdl.WSDL2Java -o $BASE_DIR test.wsdl
+java -cp $JAVA_CP org.apache.axis.wsdl.WSDL2Java -a -o $BASE_DIR test.wsdl
 
 javac -cp $JAVA_CP -d $BASE_DIR \
     $BASE_DIR/testcases/TestServiceTestCase.java \
+    $BASE_DIR/testcases/NeedsAuthTestCase.java \
     $BASE_DIR/testcases/AddSimpleTestCase.java \
     $BASE_DIR/testcases/AddIntegersTestCase.java \
     $BASE_DIR/testcases/AddFloatsTestCase.java \

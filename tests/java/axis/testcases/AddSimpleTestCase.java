@@ -32,5 +32,4 @@ public class AddSimpleTestCase extends TestServiceTestCase {
             System.out.println("Exception: " + e.toString());
         }
     }
-
 }
