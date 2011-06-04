@@ -36,13 +36,13 @@ class Type(object):
     def get_name(self):
         raise NotImplemented('Type.get_name')
 
-    def get_types(self, types):
+    def get_types(self, types, use_element=False):
         raise NotImplemented('Type.get_types')
 
 
 class SimpleType(Type):
 
-    def get_types(self, types):
+    def get_types(self, types, use_element=False):
         return {}
 
 
@@ -72,12 +72,17 @@ class Float(SimpleType):
 
 class ComplexType(Type):
 
-    def get_types(self, types):
+    def get_types(self, types, use_element=False):
         if self.name in types:
             return
-        complexType = et.Element(xsd_name('complexType'), name=self.name[0])
+        if not use_element:
+            complexType = et.Element(xsd_name('complexType'), name=self.name[0])
+            types[self.name] = complexType
+        else:
+            element = et.Element(xsd_name('element'), name=self.name[0])
+            complexType = et.SubElement(element, xsd_name('complexType'))
+            types[self.name] = element
         sequence = et.SubElement(complexType, xsd_name('sequence'))
-        types[self.name] = complexType
         self.get_children(sequence, types)
 
 

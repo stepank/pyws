@@ -78,7 +78,8 @@ class HeadersAuthDataGetter(object):
         env = request.parsed_data.xml. \
             xpath('/se:Envelope', namespaces=SoapProtocol.namespaces)[0]
 
-        header = env.xpath('./se:Header', namespaces=SoapProtocol.namespaces)
+        header = env.xpath(
+            './se:Header/*', namespaces=SoapProtocol.namespaces)
         if len(header) != 1:
             raise BadAuthData()
         header = header[0]

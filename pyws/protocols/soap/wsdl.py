@@ -18,18 +18,20 @@ class WsdlGenerator(object):
 
         self.build_wsdl()
 
-    def _add_part(self, element, arg_name, arg_type):
+    def _add_part(self, element, arg_name, arg_type, use_element=False):
         part_type = xsd.TypeFactory(arg_type, self.types_ns, self.namespaces)
-        part_type.get_types(self.types)
-        et.SubElement(element, wsdl_name('part'),
-            name=arg_name, type=qname(*(part_type.name + (self.namespaces, ))))
+        part_type.get_types(self.types, use_element=use_element)
+        kw = use_element and 'element' or 'type'
+        kwargs = {kw: qname(*(part_type.name + (self.namespaces, )))}
+        et.SubElement(element, wsdl_name('part'), name=arg_name, **kwargs)
 
     def _add_functions(self):
 
         if self.headers_schema:
             input = et.SubElement(self.definitions,
                 wsdl_name('message'), name='headers')
-            self._add_part(input, 'headers', self.headers_schema)
+            self._add_part(
+                input, 'headers', self.headers_schema, use_element=True)
 
         for function in self.server.get_functions():
 
@@ -60,8 +62,7 @@ class WsdlGenerator(object):
             input = et.SubElement(operation, wsdl_name('input'))
             if function.needs_auth:
                 et.SubElement(input, soap_name('header'),
-                    message='tns:headers', part='headers',
-                    use='literal', namespace=self.tns_prefix)
+                    message='tns:headers', part='headers', use='literal')
             et.SubElement(input, soap_name('body'),
                 use='literal', namespace=self.tns_prefix)
             output = et.SubElement(operation, wsdl_name('output'))
