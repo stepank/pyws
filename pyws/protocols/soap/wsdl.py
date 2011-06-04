@@ -7,22 +7,29 @@ from utils import * #@UnusedWildImport
 
 class WsdlGenerator(object):
 
-    def __init__(self, server, service_name, tns_prefix, encoding):
+    def __init__(self,
+            server, service_name, tns_prefix, headers_schema, encoding):
 
         self.server = server
         self.service_name = service_name
         self.tns_prefix = tns_prefix
+        self.headers_schema = headers_schema
         self.encoding = encoding
 
         self.build_wsdl()
 
-    def _add_part(self, element, function, arg_name, arg_type):
+    def _add_part(self, element, arg_name, arg_type):
         part_type = xsd.TypeFactory(arg_type, self.types_ns, self.namespaces)
         part_type.get_types(self.types)
         et.SubElement(element, wsdl_name('part'),
             name=arg_name, type=qname(*(part_type.name + (self.namespaces, ))))
 
     def _add_functions(self):
+
+        if self.headers_schema:
+            input = et.SubElement(self.definitions,
+                wsdl_name('message'), name='headers')
+            self._add_part(input, 'headers', self.headers_schema)
 
         for function in self.server.get_functions():
 
@@ -31,13 +38,13 @@ class WsdlGenerator(object):
                 wsdl_name('message'), name=input_name)
 
             for arg in function.args.fields:
-                self._add_part(input, function, arg.name, arg.type)
+                self._add_part(input, arg.name, arg.type)
 
             output_name = function.name + '_response'
             output = et.SubElement(self.definitions,
                 wsdl_name('message'), name=output_name)
 
-            self._add_part(output, function, 'result', function.return_type)
+            self._add_part(output, 'result', function.return_type)
 
             operation = et.SubElement(self.port_type,
                 wsdl_name('operation'), name=function.name)
@@ -51,6 +58,10 @@ class WsdlGenerator(object):
             et.SubElement(operation, soap_name('operation'),
                 soapAction=self.tns_prefix + function.name)
             input = et.SubElement(operation, wsdl_name('input'))
+            if function.needs_auth:
+                et.SubElement(input, soap_name('header'),
+                    message='tns:headers', part='headers',
+                    use='literal', namespace=self.tns_prefix)
             et.SubElement(input, soap_name('body'),
                 use='literal', namespace=self.tns_prefix)
             output = et.SubElement(operation, wsdl_name('output'))
