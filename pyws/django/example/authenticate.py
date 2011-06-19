@@ -1,7 +1,7 @@
 from pyws.errors import AccessDenied
 from pyws.functions.args import DictOf, String
 
-soap_headers_schema = DictOf('HeadersDict',
+soap_headers_schema = DictOf('Headers',
     ('username', String),
     ('password', String),
 )

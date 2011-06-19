@@ -5,7 +5,7 @@ import org.junit.Test;
 import org.junit.Assert;
 
 import com.example.TestBindingStub;
-import com.example.types.HeadersDict;
+import com.example.types.Headers;
 
 public class NeedsAuthTestCase extends TestServiceTestCase {
 
@@ -14,7 +14,7 @@ public class NeedsAuthTestCase extends TestServiceTestCase {
         super.setUp();
         TestBindingStub stub = (TestBindingStub)port;
         stub.setHeader("http://example.com/", "headers",
-            (Object)(new HeadersDict("user", "pass")));
+            (Object)(new Headers("user", "pass")));
     }
 
     @Test
