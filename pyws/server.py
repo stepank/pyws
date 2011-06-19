@@ -1,8 +1,8 @@
 import logging
-
+import traceback
 
 from errors import Error, BadProtocol, FunctionNotFound, ProtocolError, \
-    ProtocolNotFound, ET_SERVER
+    ProtocolNotFound, ET_CLIENT, ET_SERVER
 from protocols import Protocol
 from response import Response
 
@@ -103,14 +103,17 @@ class Server(object):
             response = protocol.get_response(name, result)
 
         except Error, e:
+            logging.error(traceback.format_exc())
             response = protocol.get_error_response(e)
         except Exception, e:
-            if self.settings.DEBUG:
+            logging.error(traceback.format_exc())
+            client_error = hasattr(e, '__module__') or type(e) == Exception
+            if not client_error and self.settings.DEBUG:
                 raise
-            e.error_type = ET_SERVER
+            e.error_type = client_error and ET_CLIENT or ET_SERVER
+            print e.error_type
             response = protocol.get_error_response(e)
 
         logging.debug(response)
 
         return response
-

@@ -1,5 +1,5 @@
-ET_CLIENT = 0
-ET_SERVER = 1
+ET_CLIENT = 1
+ET_SERVER = 2
 
 class Error(Exception):
     error_type = ET_SERVER

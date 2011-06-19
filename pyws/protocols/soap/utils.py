@@ -22,3 +22,6 @@ def soap_env_name(name):
 
 def xsd_name(name):
     return qname(name, XSD_NS)
+
+def types_ns(prefix):
+    return prefix + 'types/'

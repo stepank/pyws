@@ -45,6 +45,13 @@ def get_tree(p):
 needs_auth_adapter = NativeFunctionAdapter(
     add_simple, name='needs_auth', needs_auth=True)
 
+class HelloError(Exception):
+    def __init__(self):
+        super(HelloError, self).__init__('hello error')
+
+def raises_exception():
+    raise HelloError
+
 add_integers_adapter = NativeFunctionAdapter(
     add_simple,
     name='add_integers',

@@ -1,5 +1,7 @@
 from lxml import etree as et
 
+from pyws.functions import args
+
 import xsd
 
 from utils import * #@UnusedWildImport
@@ -33,6 +35,10 @@ class WsdlGenerator(object):
             self._add_part(
                 input, 'headers', self.headers_schema, use_element=True)
 
+        input = et.SubElement(self.definitions,
+            wsdl_name('message'), name='error')
+        self._add_part(input, 'fault', args.DictOf('Error'), use_element=True)
+
         for function in self.server.get_functions():
 
             input_name = function.name
@@ -54,6 +60,8 @@ class WsdlGenerator(object):
                 name=input_name, message='tns:%s' % input_name)
             et.SubElement(operation, wsdl_name('output'),
                 name=output_name, message='tns:%s' % output_name)
+            et.SubElement(operation, wsdl_name('fault'),
+                name='error', message='tns:error')
 
             operation = et.SubElement(self.binding,
                 wsdl_name('operation'), name=function.name)
@@ -68,13 +76,17 @@ class WsdlGenerator(object):
             output = et.SubElement(operation, wsdl_name('output'))
             et.SubElement(output, soap_name('body'),
                 use='literal', namespace=self.tns_prefix)
+            fault = et.SubElement(operation,
+                wsdl_name('fault'), name='error')
+            et.SubElement(
+                fault, soap_name('fault'), name='error', use='literal')
 
     def build_wsdl(self):
 
         self.wsdl = None
 
         tns = self.tns_prefix
-        self.types_ns = tns + 'types/'
+        self.types_ns = types_ns(tns)
 
         self.namespaces = {
             'tns': tns,

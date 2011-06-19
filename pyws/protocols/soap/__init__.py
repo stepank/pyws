@@ -1,3 +1,4 @@
+import itertools as it
 import re
 
 from StringIO import StringIO
@@ -66,6 +67,15 @@ def obj2xml(root, contents, namespace=None):
     elif contents is None:
         root.set(NIL, 'true')
     return root
+
+def get_axis_package_name(ns):
+    mo = re.search('https?://([\\w\\.-]+).*?/(.*)', ns)
+    print mo.group(1)
+    if not mo:
+        raise Exception('No domain in service namespace')
+    res = list(reversed(mo.group(1).split('.')))
+    return '.'.join(it.ifilter(lambda s: s, it.imap(
+        lambda s: re.sub('[^\w]', '_', s), res + mo.group(2).split('/'))))
 
 
 class HeadersAuthDataGetter(object):
@@ -151,7 +161,7 @@ class SoapProtocol(Protocol):
         return self.parse_request(request).func_name
 
     def get_arguments(self, request, arguments):
-        return xml2obj(self.parse_request(request).func_xml, arguments)
+        return xml2obj(self.parse_request(request).func_xml, arguments) or {}
 
     def get_response(self, name, result):
 
@@ -176,6 +186,8 @@ class SoapProtocol(Protocol):
         faultcode.text = 'se:%s' % error['type']
         faultstring = et.SubElement(fault, 'faultstring')
         faultstring.text = error['message']
+        error['exceptionName'] = \
+            get_axis_package_name(types_ns(self.tns_prefix)) + '.Error'
         fault.append(obj2xml(et.Element('detail'), error))
 
         body = et.Element(soap_env_name('Body'), nsmap=self.namespaces)

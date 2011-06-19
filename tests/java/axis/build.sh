@@ -14,6 +14,7 @@ java -cp $JAVA_CP org.apache.axis.wsdl.WSDL2Java -a -o $BASE_DIR test.wsdl
 javac -cp $JAVA_CP -d $BASE_DIR \
     $BASE_DIR/testcases/TestServiceTestCase.java \
     $BASE_DIR/testcases/NeedsAuthTestCase.java \
+    $BASE_DIR/testcases/RaisesExceptionTestCase.java \
     $BASE_DIR/testcases/AddSimpleTestCase.java \
     $BASE_DIR/testcases/AddIntegersTestCase.java \
     $BASE_DIR/testcases/AddFloatsTestCase.java \

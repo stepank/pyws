@@ -29,6 +29,7 @@ FUNCTION_MANAGERS = (
         sum_tree_adapter,
         get_tree_adapter,
         needs_auth_adapter,
+        raises_exception,
     ),
 )
 
