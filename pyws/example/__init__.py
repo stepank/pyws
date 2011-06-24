@@ -55,27 +55,28 @@ def raises_exception():
 add_integers_adapter = NativeFunctionAdapter(
     add_simple,
     name='add_integers',
-    return_type=Integer,
+    return_type=int,
     args=(
-        (Integer, 0),
-        (Integer, 0),
+        (int, 0),
+        (int, 0),
     ),
 )
 
 add_floats_adapter = NativeFunctionAdapter(
     add_simple,
     name='add_floats',
-    return_type=Float,
+    return_type=float,
     args=(
-        (Float, 0),
-        (Float, 0),
+        (float, 0),
+        (float, 0),
     ),
 )
 
-ABStringDict = DictOf('ABStringDict',
-    ('a', String),
-    ('b', String),
-)
+ABStringDict = {
+    '__name__': 'ABStringDict',
+    'a': str,
+    'b': str,
+}
 
 add_string_dicts_adapter = NativeFunctionAdapter(
     add_dicts,
@@ -87,10 +88,11 @@ add_string_dicts_adapter = NativeFunctionAdapter(
     ),
 )
 
-ABIntegerDict = DictOf('ABIntegerDict',
-    ('a', Integer, 0),
-    ('b', Integer, 0),
-)
+ABIntegerDict = {
+    '__name__': 'ABIntegerDict',
+    'a': (int, 0),
+    'b': (int, 0),
+}
 
 add_integer_dicts_adapter = NativeFunctionAdapter(
     add_dicts,
@@ -102,7 +104,7 @@ add_integer_dicts_adapter = NativeFunctionAdapter(
     ),
 )
 
-StringList = ListOf(String)
+StringList = [str]
 
 add_string_lists_adapter = NativeFunctionAdapter(
     add_string_lists,
@@ -111,7 +113,7 @@ add_string_lists_adapter = NativeFunctionAdapter(
     args=(StringList, StringList),
 )
 
-IntegerList = ListOf(Integer, 0)
+IntegerList = [int, 0]
 
 add_integer_lists_adapter = NativeFunctionAdapter(
     add_integer_lists,
@@ -120,7 +122,9 @@ add_integer_lists_adapter = NativeFunctionAdapter(
     args=(IntegerList, IntegerList),
 )
 
-Tree = DictOf('Tree', ('value', Integer, 0))
+Tree = DictOf('Tree',
+    ('value', int, 0),
+)
 Tree.add_fields(
     ('left', Tree),
     ('right', Tree),
@@ -128,12 +132,12 @@ Tree.add_fields(
 
 sum_tree_adapter = NativeFunctionAdapter(
     sum_tree,
-    return_type=Integer,
-    args=(Tree, ),
+    return_type=int,
+    args=(Tree,),
 )
 
 get_tree_adapter = NativeFunctionAdapter(
     get_tree,
     return_type=Tree,
-    args=(Integer, ),
+    args=(int,),
 )
