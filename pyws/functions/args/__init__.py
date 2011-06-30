@@ -169,7 +169,6 @@ def ListOf(element_type, element_none_value=None):
 types = (String, Integer, Float, Dict, List)
 
 def TypeFactory(type_):
-    print type_, isinstance(type_, type), isinstance(type_, type) and issubclass(type_, Type)
     if isinstance(type_, type) and issubclass(type_, Type):
         return type_
     for x in types:

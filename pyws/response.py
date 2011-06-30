@@ -1,6 +1,6 @@
 class Response(object):
 
-    def __init__(self, text, content_type='text/plain'):
+    def __init__(self, text, content_type='text/xml'):
         self.text = text
         self.content_type = content_type
 
