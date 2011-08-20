@@ -172,7 +172,7 @@ foreach($operations as $operation) {
 
 $types = $client->__getTypes();
 
-$primitive_types = array('string', 'int', 'long', 'float', 'boolean', 'dateTime', 'double', 'short', 'UNKNOWN', 'base64Binary', 'decimal', 'ArrayOfInt', 'ArrayOfFloat', 'ArrayOfString', 'decimal', 'hexBinary'); // TODO: dateTime is special, maybe use PEAR::Date or similar
+$primitive_types = array('string', 'int', 'long', 'float', 'boolean', 'date', 'dateTime', 'double', 'short', 'UNKNOWN', 'base64Binary', 'decimal', 'ArrayOfInt', 'ArrayOfFloat', 'ArrayOfString', 'decimal', 'hexBinary'); // TODO: dateTime is special, maybe use PEAR::Date or similar
 $service['types'] = array();
 foreach($types as $type) {
   $parts = explode("\n", $type);
