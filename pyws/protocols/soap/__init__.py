@@ -80,7 +80,6 @@ def obj2xml(root, contents, schema=None, namespace=None):
 
 def get_axis_package_name(ns):
     mo = re.search('https?://([\\w\\.-]+).*?/(.*)', ns)
-    print mo.group(1)
     if not mo:
         raise Exception('No domain in service namespace')
     res = list(reversed(mo.group(1).split('.')))
@@ -118,7 +117,7 @@ class SoapProtocol(Protocol):
     def __init__(self, service_name, tns_prefix, *args, **kwargs):
         super(SoapProtocol, self).__init__(*args, **kwargs)
         self.service_name = service_name
-        self.tns_prefix   = tns_prefix
+        self.tns_prefix = tns_prefix
 
     def parse_request(self, request):
 
