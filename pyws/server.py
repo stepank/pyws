@@ -100,7 +100,8 @@ class Server(object):
 
             result = function(**args)
 
-            response = protocol.get_response(name, result)
+            response = protocol.get_response(
+                result, name, function.return_type)
 
         except Error, e:
             logging.error(traceback.format_exc())
@@ -111,7 +112,6 @@ class Server(object):
             if not client_error and self.settings.DEBUG:
                 raise
             e.error_type = client_error and ET_CLIENT or ET_SERVER
-            print e.error_type
             response = protocol.get_error_response(e)
 
         logging.debug(response)

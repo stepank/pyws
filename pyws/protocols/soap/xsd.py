@@ -11,14 +11,13 @@ class NotImplemented(NotImplementedError):
 
 class UnknownType(Exception):
 
-    def __init__(self, type):
-        self.type = type
-
     def __str__(self):
-        return 'Unknown type: %s' % self.type
+        return 'Unknown type: %s' % self.args[0]
 
 
 class Type(object):
+
+    _represents = None
 
     def __init__(self, type, ns=None, nsmap=None):
         self.type = type
@@ -70,7 +69,26 @@ class Float(SimpleType):
         return 'float', 'http://www.w3.org/2001/XMLSchema'
 
 
+class Date(SimpleType):
+
+    _represents = args.Date
+
+    def get_name(self):
+        return 'date', 'http://www.w3.org/2001/XMLSchema'
+
+
+class DateTime(SimpleType):
+
+    _represents = args.DateTime
+
+    def get_name(self):
+        return 'dateTime', 'http://www.w3.org/2001/XMLSchema'
+
+
 class ComplexType(Type):
+
+    def get_children(self, sequence, types):
+        raise NotImplementedError('ComplexType.get_children')
 
     def get_types(self, types, use_element=False):
         if self.name in types:
@@ -119,7 +137,9 @@ class List(ComplexType):
         type.get_types(types)
 
 
-types = (String, Integer, Float, Dict, List)
+# The order matters: DateTime should be placed before Date.
+# Date is a superclass of DateTime, thus Date will catch all DateTime fields.
+types = (String, Integer, Float, DateTime, Date, Dict, List)
 
 def TypeFactory(type, ns=None, nsmap=None):
     for x in types:

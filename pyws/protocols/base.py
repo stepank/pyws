@@ -5,7 +5,7 @@ __all__ = ('Protocol', )
 
 class Protocol(object):
 
-    def __init__(self, auth_data_getter=None, *args, **kwargs):
+    def __init__(self, auth_data_getter=None):
         self.auth_data_getter = auth_data_getter
 
     def get_auth_data(self, request):
@@ -14,7 +14,7 @@ class Protocol(object):
     def get_function(self, request):
         raise NotImplementedError('Protocol.get_function')
 
-    def get_response(self, name, response):
+    def get_response(self, result, name, return_type):
         raise NotImplementedError('Protocol.get_response')
 
     def get_error(self, error):
@@ -23,6 +23,7 @@ class Protocol(object):
             error_type_name = 'Client'
         else:
             error_type_name = 'Server'
+        #noinspection PyUnresolvedReferences
         return {
             'type': error_type_name,
             'name': error_type.__name__,

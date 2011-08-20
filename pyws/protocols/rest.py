@@ -15,7 +15,7 @@ class RestProtocol(Protocol):
             dict((k, len(v) > 1 and v or v[0])
                 for k, v in request.GET.iteritems()))
 
-    def get_response(self, name, result):
+    def get_response(self, result, name, return_type):
         return Response(json.dumps({'result': result}))
 
     def get_error_response(self, error):
@@ -29,4 +29,4 @@ class JsonProtocol(RestProtocol):
             args = json.loads(request.text)
         except ValueError:
             raise BadRequest()
-        return (request.tail, args)
+        return request.tail, args

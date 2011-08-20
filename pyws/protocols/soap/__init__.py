@@ -1,12 +1,10 @@
 import itertools as it
 import re
 
-from StringIO import StringIO
-
 from lxml import etree as et
 
 from pyws.errors import BadRequest, BadAuthData
-from pyws.functions.args import List, Dict, String
+from pyws.functions.args import List, Dict, TypeFactory, Type
 from pyws.response import Response
 from pyws.protocols.base import Protocol
 
@@ -52,18 +50,30 @@ def xml2obj(xml, schema):
         raise BadRequest('Couldn\'t decode XML')
     return result
 
-def obj2xml(root, contents, namespace=None):
+def obj2xml(root, contents, schema=None, namespace=None):
     kwargs = namespace and {'namespace': namespace} or {}
     if isinstance(contents, (list, tuple)):
         for item in contents:
             element = et.SubElement(root, 'item', **kwargs)
-            obj2xml(element, item, namespace)
+            obj2xml(
+                element,
+                item,
+                schema and schema.element_type,
+                namespace
+            )
     elif isinstance(contents, dict):
+        fields = schema and dict((f.name, f.type) for f in schema.fields) or {}
         for name, item in contents.iteritems():
             element = et.SubElement(root, name, **kwargs)
-            obj2xml(element, item, namespace)
+            obj2xml(
+                element,
+                item,
+                fields.get(name),
+                namespace
+            )
     elif contents is not None:
-        root.text = unicode(contents)
+        root.text = \
+            schema and schema.serialize(contents) or Type.serialize(contents)
     elif contents is None:
         root.set(NIL, 'true')
     return root
@@ -121,13 +131,13 @@ class SoapProtocol(Protocol):
 
         env = xml.xpath('/se:Envelope', namespaces=self.namespaces)
 
-        if len(env) == 0:
+        if not len(env):
             raise BadRequest('No {%s}Envelope element.' % SOAP_ENV_NS)
         env = env[0]
 
         body = env.xpath('./se:Body', namespaces=self.namespaces)
 
-        if len(body) == 0:
+        if not len(body):
             raise BadRequest('No {%s}Body element.' % SOAP_ENV_NS)
         if len(body) > 1:
             raise BadRequest(
@@ -135,7 +145,7 @@ class SoapProtocol(Protocol):
         body = body[0]
 
         func = body.getchildren()
-        if len(func) == 0:
+        if not len(func):
             raise BadRequest(
                 '{%s}Body element has no child elements.' % SOAP_ENV_NS)
         if len(func) > 1:
@@ -163,10 +173,12 @@ class SoapProtocol(Protocol):
     def get_arguments(self, request, arguments):
         return xml2obj(self.parse_request(request).func_xml, arguments) or {}
 
-    def get_response(self, name, result):
+    def get_response(self, result, name, return_type):
 
-        result = obj2xml(et.Element(
-            name + '_response', namespace=self.tns_prefix), {'result': result})
+        result = obj2xml(
+            et.Element(name + '_response', namespace=self.tns_prefix),
+            {'result': result},
+            TypeFactory({'__name__': 'fake', 'result': return_type}))
 
         body = et.Element(soap_env_name('Body'), nsmap=self.namespaces)
         body.append(result)
@@ -199,6 +211,7 @@ class SoapProtocol(Protocol):
         return Response(et.tostring(xml,
             encoding=ENCODING, pretty_print=True, xml_declaration=True))
 
+    #noinspection PyUnusedLocal
     def get_wsdl(self, server, request):
         headers_schema = getattr(self.auth_data_getter, 'headers_schema', None)
         return Response(WsdlGenerator(server, self.service_name,
