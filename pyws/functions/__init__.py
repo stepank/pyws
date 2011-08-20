@@ -1,4 +1,4 @@
-from args import Field, Dict, DictOf, Type, TypeFactory
+from args import DictOf, TypeFactory
 
 
 class Function(object):
@@ -22,14 +22,16 @@ class Function(object):
 
 class NativeFunctionAdapter(Function):
 
-    def __init__(self,
-            origin, name=None, return_type=None, args=None, *nargs, **kwargs):
+    def __init__(
+            self, origin,
+            name=None, return_type=None, args=None, *nargs, **kwargs):
         self.origin = origin
         arg_names = map(lambda x: (x,), self.origin.func_code.co_varnames)
         if not args:
             args = (str,) * len(arg_names)
         args_ = map(lambda x: x[0] + x[1], zip(arg_names,
             map(lambda arg: isinstance(arg, tuple) and arg or (arg,), args)))
+        #noinspection PyArgumentList
         super(NativeFunctionAdapter, self). \
             __init__(name=name or origin.__name__,
                 return_type=return_type, args=args_, *nargs, **kwargs)
