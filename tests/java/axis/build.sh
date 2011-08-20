@@ -18,6 +18,7 @@ javac -cp $JAVA_CP -d $BASE_DIR \
     $BASE_DIR/testcases/AddSimpleTestCase.java \
     $BASE_DIR/testcases/AddIntegersTestCase.java \
     $BASE_DIR/testcases/AddFloatsTestCase.java \
+    $BASE_DIR/testcases/NextMonthTestCase.java \
     $BASE_DIR/testcases/AddStringDictsTestCase.java \
     $BASE_DIR/testcases/AddIntegerDictsTestCase.java \
     $BASE_DIR/testcases/AddStringListsTestCase.java \

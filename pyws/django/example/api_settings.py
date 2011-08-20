@@ -22,6 +22,8 @@ FUNCTION_MANAGERS = (
         add_simple,
         add_integers_adapter,
         add_floats_adapter,
+        next_month_adapter,
+        next_month_dt_adapter,
         add_string_dicts_adapter,
         add_integer_dicts_adapter,
         add_string_lists_adapter,

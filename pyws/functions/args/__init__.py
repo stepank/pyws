@@ -1,3 +1,7 @@
+import re
+
+from datetime import datetime, date
+
 from pyws.errors import MissingFieldValue, WrongFieldValueType
 
 
@@ -9,6 +13,7 @@ class UnknownType(Exception):
 
     def __init__(self, type_):
         self.type = type_
+        super(UnknownType, self).__init__(type_)
 
     def __str__(self):
         return 'Unknown type: %s' % str(self.type)
@@ -47,6 +52,7 @@ def FieldFactory(field):
 class Type(object):
 
     none_value = None
+    _represents = None
 
     @classmethod
     def represents(cls, type_):
@@ -58,17 +64,21 @@ class Type(object):
 
     @classmethod
     def validate(cls, value, none_value=None):
-        if value is None:
-            if none_value is not None:
-                return none_value
-            else:
-                return cls.none_value
-        return cls._validate(value)
+        if value is not None:
+            return cls._validate(value)
+        if none_value is None:
+            none_value = cls.none_value
+        if callable(none_value):
+            return none_value()
+        return none_value
 
     @classmethod
     def _validate(cls, value):
         raise NotImplemented('SimpleType._validate')
 
+    @classmethod
+    def serialize(cls, value):
+        return unicode(value)
 
 class String(Type):
 
@@ -101,7 +111,45 @@ class Float(Type):
         return float(value)
 
 
+class Date(Type):
+
+    _represents = date
+    format = '%Y-%m-%d'
+
+    @classmethod
+    def _parse(cls, value, format=None):
+        return datetime.strptime(value, format or cls.format)
+
+    @classmethod
+    def _validate(cls, value):
+        return cls._parse(value).date()
+
+    @classmethod
+    def serialize(cls, value):
+        return datetime.strftime(value, cls.format)
+
+
+class DateTime(Date):
+
+    _represents = datetime
+    format = '%Y-%m-%dT%H:%M:%SZ'
+
+    @classmethod
+    def _validate(cls, value):
+        try:
+            return cls._parse(value)
+        except ValueError:
+            mo = re.search('\\.\d+', value)
+            if not mo:
+                raise
+            ms = mo.group(0)
+            value = value.replace(ms, ms.ljust(7, '0'))
+            return cls._parse(value, '%Y-%m-%dT%H:%M:%S.%fZ')
+
+
 class Dict(Type):
+
+    fields = []
 
     @classmethod
     def represents(cls, type_):
@@ -135,6 +183,8 @@ class Dict(Type):
 class List(Type):
 
     none_value = []
+    element_type = None
+    element_none_value = None
 
     @classmethod
     def represents(cls, type_):
@@ -156,6 +206,7 @@ class List(Type):
 
 def DictOf(name, *fields):
     ret = type(name, (Dict,), {'fields': []})
+    #noinspection PyUnresolvedReferences
     ret.add_fields(*fields)
     return ret
 
@@ -166,10 +217,12 @@ def ListOf(element_type, element_none_value=None):
         'element_none_value': element_none_value})
 
 
-types = (String, Integer, Float, Dict, List)
+# The order matters: DateTime should be placed before Date.
+# date is a superclass of datetime, thus Date will catch all DateTime fields.
+types = (String, Integer, Float, DateTime, Date, Dict, List)
+
 
 def TypeFactory(type_):
-    print type_, isinstance(type_, type), isinstance(type_, type) and issubclass(type_, Type)
     if isinstance(type_, type) and issubclass(type_, Type):
         return type_
     for x in types:

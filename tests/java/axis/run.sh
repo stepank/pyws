@@ -10,6 +10,7 @@ java -cp $CP org.junit.runner.JUnitCore \
     testcases.AddSimpleTestCase \
     testcases.AddIntegersTestCase \
     testcases.AddFloatsTestCase \
+    testcases.NextMonthTestCase \
     testcases.AddStringDictsTestCase \
     testcases.AddIntegerDictsTestCase \
     testcases.AddStringListsTestCase \

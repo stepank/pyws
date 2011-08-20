@@ -1,8 +1,20 @@
+from datetime import date, datetime
+
 from pyws.functions import NativeFunctionAdapter
-from pyws.functions.args import String, Integer, Float, DictOf, Field, ListOf
+from pyws.functions.args import DictOf
 
 def add_simple(a, b):
     return a + b
+
+def next_month(d):
+    if not d:
+        return None
+    month = d.month + 1
+    year = d.year
+    if month > 12:
+        month = (d.month - 1) % 12 + 1
+        year += 1
+    return d.replace(year=year, month=month)
 
 def add_dicts(p, q):
     return {
@@ -25,12 +37,12 @@ def add_integer_lists(p, q):
     return list(p[i] + q[i] for i in xrange(len(p)))
 
 def sum_tree(p):
-    return p and (p['value'] + \
-        (p['left'] and sum_tree(p['left']) or 0) + \
+    return p and (p['value'] +
+        (p['left'] and sum_tree(p['left']) or 0) +
         (p['right'] and sum_tree(p['right']) or 0)) or 0
 
 def get_tree(p):
-    if p == 0:
+    if not p:
         return None
     if p == 1:
         return {'value': 1}
@@ -70,6 +82,20 @@ add_floats_adapter = NativeFunctionAdapter(
         (float, 0),
         (float, 0),
     ),
+)
+
+next_month_adapter = NativeFunctionAdapter(
+    next_month,
+    name='next_month',
+    return_type=date,
+    args=(date, ),
+)
+
+next_month_dt_adapter = NativeFunctionAdapter(
+    next_month,
+    name='next_month_dt',
+    return_type=datetime,
+    args=(datetime, )
 )
 
 ABStringDict = {
