@@ -4,7 +4,7 @@ from django.conf.urls.defaults import * #@UnusedWildImport
 from django.http import HttpRequest
 from django.shortcuts import render_to_response
 
-from pyws.django import serve
+from pyws.adapters.django import serve
 from pyws.server import Server
 
 import api_settings
