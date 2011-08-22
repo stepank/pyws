@@ -112,6 +112,7 @@ class ParsedData(object):
 
 class SoapProtocol(Protocol):
 
+    name = 'soap'
     namespaces = {'se': SOAP_ENV_NS}
 
     def __init__(self, service_name, tns_prefix, *args, **kwargs):

@@ -5,11 +5,11 @@ from django.http import HttpRequest
 from django.shortcuts import render_to_response
 
 from pyws.adapters.django import serve
-from pyws.server import Server
+from pyws.server import SoapServer
 
 import api_settings
 
-server = Server(api_settings)
+server = SoapServer(api_settings, *api_settings.SOAP_PROTOCOL_PARAMS)
 
 PROTOCOLS = (
   ('rest', 'REST'),

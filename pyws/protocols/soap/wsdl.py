@@ -1,10 +1,8 @@
 from lxml import etree as et
 
 from pyws.functions import args
-
-import xsd
-
-from utils import * #@UnusedWildImport
+from pyws.protocols.soap import xsd
+from pyws.protocols.soap.utils import *
 
 
 class WsdlGenerator(object):
@@ -86,6 +84,7 @@ class WsdlGenerator(object):
         self.wsdl = None
 
         tns = self.tns_prefix
+        #noinspection PyUnboundLocalVariable
         self.types_ns = types_ns(tns)
 
         self.namespaces = {
@@ -113,12 +112,15 @@ class WsdlGenerator(object):
         et.SubElement(self.binding, soap_name('binding'),
             style='rpc', transport='http://schemas.xmlsoap.org/soap/http')
 
+        from pyws.protocols.soap import SoapProtocol
+
         self.service = et.Element(
             wsdl_name('service'), name='%sService' % self.service_name)
         self.port = et.SubElement(self.service, wsdl_name('port'),
             binding='tns:%s' % binding_name, name='%sPort' % self.service_name)
         et.SubElement(self.port,
-            soap_name('address'), location=self.server.location)
+            soap_name('address'),
+            location=self.server.get_protocol_location(SoapProtocol))
 
         self._add_functions()
 

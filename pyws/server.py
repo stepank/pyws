@@ -1,20 +1,50 @@
 import logging
 import traceback
 
-from errors import Error, BadProtocol, FunctionNotFound, ProtocolError, \
+from pyws.errors import Error, BadProtocol, FunctionNotFound, ProtocolError, \
     ProtocolNotFound, ET_CLIENT, ET_SERVER
-from protocols import Protocol
-from response import Response
+from pyws.protocols import Protocol, SoapProtocol
+from pyws.response import Response
+from pyws.settings import Settings
 
 
 class Server(object):
 
+    defaults = dict(
+        DEBUG=False,
+    )
+
     def __init__(self, settings):
-        self.settings = settings
+        self.settings = self.gather_settings()
+        self.settings.update(settings)
+
+    def gather_settings(self, result=None, cls=None):
+        if not result:
+            result = Settings()
+        if not cls:
+            cls = type(self)
+        if not hasattr(cls, 'defaults'):
+            return Settings()
+        result = reduce(self.gather_settings, cls.__bases__, result)
+        #noinspection PyUnresolvedReferences
+        result.update(
+            callable(cls.defaults) and cls.defaults(self) or cls.defaults)
+        return result
 
     @property
     def location(self):
         return self.settings.LOCATION
+
+    def get_protocol_location(self, protocol):
+        return self.location + protocol.name
+
+    @property
+    def protocols(self):
+        if not hasattr(self, '_protocol'):
+            self._protocol = dict(
+                (protocol.name, protocol)
+                    for protocol in self.settings.PROTOCOLS)
+        return self._protocol
 
     def get_protocol(self, request):
 
@@ -24,7 +54,7 @@ class Server(object):
 
         request.tail = tail
 
-        protocol = self.settings.PROTOCOLS.get(name)
+        protocol = self.protocols.get(name)
 
         if not protocol:
             raise ProtocolNotFound(name)
@@ -65,6 +95,7 @@ class Server(object):
 
     def authenticate(self, protocol, request):
         data = protocol.get_auth_data(request)
+        #noinspection PyCallingNonCallable
         self.settings.AUTHENTICATOR(data)
 
     def process_request(self, request):
@@ -117,3 +148,15 @@ class Server(object):
         logging.debug(response)
 
         return response
+
+
+class SoapServer(Server):
+
+    def defaults(self):
+        return Settings(
+            PROTOCOLS=(self.soap_protocol, )
+        )
+
+    def __init__(self, settings=None, *args, **kwargs):
+        self.soap_protocol = SoapProtocol(*args, **kwargs)
+        super(SoapServer, self).__init__(settings)

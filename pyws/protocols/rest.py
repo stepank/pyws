@@ -10,6 +10,8 @@ __all__ = ('RestProtocol', 'JsonProtocol', )
 
 class RestProtocol(Protocol):
 
+    name = 'rest'
+
     def get_function(self, request):
         return (request.tail,
             dict((k, len(v) > 1 and v or v[0])
@@ -23,6 +25,8 @@ class RestProtocol(Protocol):
 
 
 class JsonProtocol(RestProtocol):
+
+    name = 'json'
 
     def get_function(self, request):
         try:
