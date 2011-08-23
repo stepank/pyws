@@ -23,8 +23,11 @@ class FixedFunctionManager(FunctionManager):
     def __init__(self, *functions):
         self.functions = {}
         for function in functions:
-            function = self.build_function(function)
-            self.functions[function.name] = function
+            self.add_function(function)
+
+    def add_function(self, function):
+        function = self.build_function(function)
+        self.functions[function.name] = function
 
     def get_one(self, name):
         try:
