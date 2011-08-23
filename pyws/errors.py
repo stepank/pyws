@@ -1,6 +1,21 @@
 ET_CLIENT = 1
 ET_SERVER = 2
 
+
+class ConfigurationError(Exception):
+    pass
+
+
+class ServerAlreadyRegistered(ConfigurationError):
+    def __str__(self):
+        return 'Server %s has already been registered' % self.args[0]
+
+
+class SettingNotDefined(ConfigurationError):
+    def __str__(self):
+        return 'Setting %s is not defined' % self.args[0]
+
+
 class Error(Exception):
     error_type = ET_SERVER
 

@@ -1,9 +1,11 @@
 from itertools import chain
 
+from pyws.errors import SettingNotDefined
+
 def check_exists(func):
     def decorated(self, instance, *args, **kwargs):
         if self.attr_name not in instance.state:
-            raise AttributeError('Setting %s is not defined' % self.attr_name)
+            raise SettingNotDefined(self.attr_name)
         return func(self, instance, *args, **kwargs)
     return decorated
 
@@ -43,6 +45,7 @@ class Settings(object):
 
     state = None
 
+    NAME = Slot()
     DEBUG = Slot()
     LOCATION = Slot()
     PROTOCOLS = ListSlot()

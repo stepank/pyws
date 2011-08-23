@@ -2,21 +2,37 @@ import logging
 import traceback
 
 from pyws.errors import Error, BadProtocol, FunctionNotFound, ProtocolError, \
-    ProtocolNotFound, ET_CLIENT, ET_SERVER
+    ProtocolNotFound, ET_CLIENT, ET_SERVER, ServerAlreadyRegistered, \
+    ConfigurationError
+from pyws.functions.managers import FixedFunctionManager
 from pyws.protocols import Protocol, SoapProtocol
 from pyws.response import Response
 from pyws.settings import Settings
 
 
+class ServersDict(dict):
+    default = None
+
+
+SERVERS = ServersDict()
+
+
 class Server(object):
 
-    defaults = dict(
-        DEBUG=False,
-    )
+    def defaults(self):
+        return dict(
+            NAME=None,
+            DEBUG=False,
+            FUNCTION_MANAGERS=(FixedFunctionManager(), ),
+        )
 
     def __init__(self, settings):
         self.settings = self.gather_settings()
         self.settings.update(settings)
+        if self.name in SERVERS:
+            raise ServerAlreadyRegistered(self.name)
+        SERVERS[self.name] = self
+        SERVERS.default = self
 
     def gather_settings(self, result=None, cls=None):
         if not result:
@@ -30,6 +46,10 @@ class Server(object):
         result.update(
             callable(cls.defaults) and cls.defaults(self) or cls.defaults)
         return result
+
+    @property
+    def name(self):
+        return self.settings.NAME
 
     @property
     def location(self):
@@ -75,6 +95,12 @@ class Server(object):
             return cls(*args, **kwargs)
 
         raise BadProtocol(protocol)
+
+    def add_function(self, function):
+        if not len(self.settings.FUNCTION_MANAGERS):
+            raise ConfigurationError(
+                'Where have default function manager gone?!')
+        self.settings.FUNCTION_MANAGERS[0].add_function(function)
 
     def get_function(self, name, quiet=False):
         for manager in self.settings.FUNCTION_MANAGERS:
