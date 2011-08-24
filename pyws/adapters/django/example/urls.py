@@ -38,7 +38,7 @@ def test_form(request):
         fake_request = HttpRequest()
         fake_request.GET = urlparse.parse_qs(query_string)
         if not query_string:
-            fake_request.raw_post_data = request_text
+            fake_request._raw_post_data = request_text
 
         response = serve(fake_request, protocol + '/' + tail, server)
 
