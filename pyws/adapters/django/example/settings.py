@@ -63,40 +63,20 @@ SECRET_KEY = 'ey%7==a_#)hng+6l96$=bb*gwdf=@_%toqj0^pn1z@72tfi(_m'
 # List of callables that know how to import templates from various sources.
 TEMPLATE_LOADERS = (
     'django.template.loaders.filesystem.Loader',
-#     'django.template.loaders.app_directories.Loader',
-#     'django.template.loaders.eggs.Loader',
 )
 
 MIDDLEWARE_CLASSES = (
-#    'django.middleware.common.CommonMiddleware',
-#    'django.contrib.sessions.middleware.SessionMiddleware',
-#    'django.middleware.csrf.CsrfViewMiddleware',
-#    'django.contrib.auth.middleware.AuthenticationMiddleware',
-#    'django.contrib.messages.middleware.MessageMiddleware',
 )
 
-ROOT_URLCONF = 'example.urls'
+ROOT_URLCONF = 'pyws.adapters.django.example.urls'
 
 import os
 
 TEMPLATE_DIRS = (
     os.path.abspath(os.path.dirname(__file__) + '/templates'),
-    # Put strings here, like "/home/html/django_templates" or "C:/www/django/templates".
-    # Always use forward slashes, even on Windows.
-    # Don't forget to use absolute paths, not relative paths.
 )
 
-INSTALLED_APPS = (
-    # 'django.contrib.auth',
-    # 'django.contrib.contenttypes',
-    # 'django.contrib.sessions',
-    # 'django.contrib.sites',
-    # 'django.contrib.messages',
-    # Uncomment the next line to enable the admin:
-    # 'django.contrib.admin',
-    # Uncomment the next line to enable admin documentation:
-    # 'django.contrib.admindocs',
-)
+INSTALLED_APPS = ()
 
 import logging
 
