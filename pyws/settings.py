@@ -47,7 +47,6 @@ class Settings(object):
 
     NAME = Slot()
     DEBUG = Slot()
-    LOCATION = Slot()
     PROTOCOLS = ListSlot()
     FUNCTION_MANAGERS = ListSlot()
     AUTHENTICATOR = Slot()

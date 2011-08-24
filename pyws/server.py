@@ -3,7 +3,7 @@ import traceback
 
 from pyws.errors import Error, BadProtocol, FunctionNotFound, ProtocolError, \
     ProtocolNotFound, ET_CLIENT, ET_SERVER, ServerAlreadyRegistered, \
-    ConfigurationError
+    ConfigurationError, NoProtocolsRegistered
 from pyws.functions.managers import FixedFunctionManager
 from pyws.protocols import Protocol, SoapProtocol
 from pyws.response import Response
@@ -26,7 +26,9 @@ class Server(object):
             FUNCTION_MANAGERS=(FixedFunctionManager(), ),
         )
 
-    def __init__(self, settings):
+    def __init__(self, settings=None):
+        if not settings:
+            settings = {}
         self.settings = self.gather_settings()
         self.settings.update(settings)
         if self.name in SERVERS:
@@ -52,27 +54,24 @@ class Server(object):
         return self.settings.NAME
 
     @property
-    def location(self):
-        return self.settings.LOCATION
-
-    def get_protocol_location(self, protocol):
-        return self.location + protocol.name
-
-    @property
     def protocols(self):
-        if not hasattr(self, '_protocol'):
-            self._protocol = dict(
+        if not hasattr(self, '_protocols'):
+            self._protocols = dict(
                 (protocol.name, protocol)
                     for protocol in self.settings.PROTOCOLS)
-        return self._protocol
+        return self._protocols
 
     def get_protocol(self, request):
 
-        parts = request.tail.split('/', 1)
+        if not self.protocols:
+            raise NoProtocolsRegistered()
 
-        name, tail = parts[0], (len(parts) > 1 and parts[1] or '')
-
-        request.tail = tail
+        if len(self.protocols) == 1:
+            name, tail = self.protocols.keys()[0], request.tail
+        else:
+            parts = request.tail.split('/', 1)
+            name, tail = parts[0], (len(parts) > 1 and parts[1] or '')
+            request.tail = tail
 
         protocol = self.protocols.get(name)
 

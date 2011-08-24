@@ -16,6 +16,11 @@ class SettingNotDefined(ConfigurationError):
         return 'Setting %s is not defined' % self.args[0]
 
 
+class NoProtocolsRegistered(ConfigurationError):
+    def __str__(self):
+        return 'Server has no protocols'
+
+
 class Error(Exception):
     error_type = ET_SERVER
 

@@ -8,11 +8,13 @@ from pyws.protocols.soap.utils import *
 class WsdlGenerator(object):
 
     def __init__(self,
-            server, service_name, tns_prefix, headers_schema, encoding):
+            server, service_name, tns_prefix,
+            location, headers_schema, encoding):
 
         self.server = server
         self.service_name = service_name
         self.tns_prefix = tns_prefix
+        self.location = location
         self.headers_schema = headers_schema
         self.encoding = encoding
 
@@ -112,15 +114,11 @@ class WsdlGenerator(object):
         et.SubElement(self.binding, soap_name('binding'),
             style='rpc', transport='http://schemas.xmlsoap.org/soap/http')
 
-        from pyws.protocols.soap import SoapProtocol
-
         self.service = et.Element(
             wsdl_name('service'), name='%sService' % self.service_name)
         self.port = et.SubElement(self.service, wsdl_name('port'),
             binding='tns:%s' % binding_name, name='%sPort' % self.service_name)
-        et.SubElement(self.port,
-            soap_name('address'),
-            location=self.server.get_protocol_location(SoapProtocol))
+        et.SubElement(self.port, soap_name('address'), location=self.location)
 
         self._add_functions()
 

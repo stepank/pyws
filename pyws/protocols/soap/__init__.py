@@ -115,10 +115,11 @@ class SoapProtocol(Protocol):
     name = 'soap'
     namespaces = {'se': SOAP_ENV_NS}
 
-    def __init__(self, service_name, tns_prefix, *args, **kwargs):
+    def __init__(self, service_name, tns_prefix, location, *args, **kwargs):
         super(SoapProtocol, self).__init__(*args, **kwargs)
         self.service_name = service_name
         self.tns_prefix = tns_prefix
+        self.location = location
 
     def parse_request(self, request):
 
@@ -214,5 +215,7 @@ class SoapProtocol(Protocol):
     #noinspection PyUnusedLocal
     def get_wsdl(self, server, request):
         headers_schema = getattr(self.auth_data_getter, 'headers_schema', None)
-        return Response(WsdlGenerator(server, self.service_name,
-            self.tns_prefix, headers_schema, ENCODING).get_wsdl())
+        return Response(
+            WsdlGenerator(
+                server, self.service_name, self.tns_prefix, self.location,
+                headers_schema, ENCODING).get_wsdl())
