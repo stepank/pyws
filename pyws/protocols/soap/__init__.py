@@ -4,7 +4,7 @@ import re
 from lxml import etree as et
 
 from pyws.errors import BadRequest, BadAuthData
-from pyws.functions.args import List, Dict, TypeFactory, Type
+from pyws.functions.args import List, Dict, TypeFactory, Type, DICT_NAME_KEY
 from pyws.response import Response
 from pyws.protocols.base import Protocol
 
@@ -179,7 +179,7 @@ class SoapProtocol(Protocol):
         result = obj2xml(
             et.Element(name + '_response', namespace=self.tns),
             {'result': result},
-            TypeFactory({'__name__': 'fake', 'result': return_type}))
+            TypeFactory({DICT_NAME_KEY: 'fake', 'result': return_type}))
 
         body = et.Element(soap_env_name('Body'), nsmap=self.namespaces)
         body.append(result)

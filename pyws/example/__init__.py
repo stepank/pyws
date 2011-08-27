@@ -31,17 +31,8 @@ def next_month(d):
 
 # = add dicts =================================================================
 
-ABStringDict = {
-    '__name__': 'ABStringDict',
-    'a': str,
-    'b': str,
-}
-
-ABIntegerDict = {
-    '__name__': 'ABIntegerDict',
-    'a': (int, 0),
-    'b': (int, 0),
-}
+ABStringDict = {0: 'ABStringDict', 'a': str, 'b': str}
+ABIntegerDict = {0: 'ABIntegerDict', 'a': (int, 0), 'b': (int, 0)}
 
 @register(
     'add_string_dicts',

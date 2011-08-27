@@ -147,6 +147,8 @@ class DateTime(Date):
             return cls._parse(value, '%Y-%m-%dT%H:%M:%S.%fZ')
 
 
+DICT_NAME_KEY = 0
+
 class Dict(Type):
 
     fields = []
@@ -158,12 +160,12 @@ class Dict(Type):
     @classmethod
     def get(cls, type_):
         try:
-            dict_name = type_['__name__']
+            dict_name = type_[DICT_NAME_KEY]
         except KeyError:
-            raise BadType('__name__ is required for Dict type')
+            raise BadType('%s is required for Dict type' % repr(DICT_NAME_KEY))
         fields = [
             isinstance(type_, tuple) and (name,) + type_ or (name, type_)
-            for name, type_ in type_.iteritems() if name != '__name__']
+            for name, type_ in type_.iteritems() if name != DICT_NAME_KEY]
         return DictOf(dict_name, *fields)
 
     @classmethod
