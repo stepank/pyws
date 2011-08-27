@@ -2,7 +2,7 @@ from lxml import etree as et
 
 from pyws.functions import args
 
-from utils import * #@UnusedWildImport
+from utils import *
 
 
 class NotImplemented(NotImplementedError):
@@ -94,7 +94,8 @@ class ComplexType(Type):
         if self.name in types:
             return
         if not use_element:
-            complexType = et.Element(xsd_name('complexType'), name=self.name[0])
+            complexType = et.Element(
+                xsd_name('complexType'), name=self.name[0])
             types[self.name] = complexType
         else:
             element = et.Element(xsd_name('element'), name=self.name[0])

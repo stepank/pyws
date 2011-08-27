@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsil:testLog
+  xmlns:wsil="http://www.ws-i.org/testing/2008/02/log/"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+  xmlns:xyz="http://schemas.unknownspace.org/"
+  xmlns:wsam="http://www.w3.org/2007/05/addressing/metadata">
+
+  <docSource timestamp="2008-12-31T12:00:00">testlog.xml</docSource>
+
+  <wsil:descriptionFiles>
+    <wsil:descriptionFile filename="test.wsdl">
+***WSDL***    
+    </wsil:descriptionFile>
+  </wsil:descriptionFiles>
+</wsil:testLog>

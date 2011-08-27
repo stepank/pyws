@@ -115,10 +115,10 @@ class SoapProtocol(Protocol):
     name = 'soap'
     namespaces = {'se': SOAP_ENV_NS}
 
-    def __init__(self, service_name, tns_prefix, location, *args, **kwargs):
+    def __init__(self, service_name, tns, location, *args, **kwargs):
         super(SoapProtocol, self).__init__(*args, **kwargs)
         self.service_name = service_name
-        self.tns_prefix = tns_prefix
+        self.tns = tns
         self.location = location
 
     def parse_request(self, request):
@@ -177,7 +177,7 @@ class SoapProtocol(Protocol):
     def get_response(self, result, name, return_type):
 
         result = obj2xml(
-            et.Element(name + '_response', namespace=self.tns_prefix),
+            et.Element(name + '_response', namespace=self.tns),
             {'result': result},
             TypeFactory({'__name__': 'fake', 'result': return_type}))
 
@@ -200,7 +200,7 @@ class SoapProtocol(Protocol):
         faultstring = et.SubElement(fault, 'faultstring')
         faultstring.text = error['message']
         error['exceptionName'] = \
-            get_axis_package_name(types_ns(self.tns_prefix)) + '.Error'
+            get_axis_package_name(types_ns(self.tns)) + '.Error'
         fault.append(obj2xml(et.Element('detail'), error))
 
         body = et.Element(soap_env_name('Body'), nsmap=self.namespaces)
@@ -217,5 +217,5 @@ class SoapProtocol(Protocol):
         headers_schema = getattr(self.auth_data_getter, 'headers_schema', None)
         return Response(
             WsdlGenerator(
-                server, self.service_name, self.tns_prefix, self.location,
+                server, self.service_name, self.tns, self.location,
                 headers_schema, ENCODING).get_wsdl())
