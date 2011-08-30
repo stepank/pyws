@@ -1,10 +1,10 @@
 from pyws.errors import AccessDenied
-from pyws.functions.args import DictOf, String
 
-soap_headers_schema = DictOf('Headers',
-    ('username', String),
-    ('password', String),
-)
+soap_headers_schema = {
+    0: 'Headers',
+    'username': str,
+    'password': str,
+}
 
 def authenticate(data):
     if not data.get('username') == 'user' or \
