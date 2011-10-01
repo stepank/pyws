@@ -6,12 +6,19 @@ from pyws.functions.register import register
 
 # = add simple ================================================================
 
+#noinspection PyUnusedLocal
 @register
 @register('add_integers', return_type=int, args=((int, 0), (int, 0)))
 @register('add_floats', return_type=float, args=((float, 0), (float, 0)))
-@register('needs_auth', needs_auth=True)
 def add_simple(a, b):
     return a + b
+
+
+# = add simple ================================================================
+
+@register('say_hello', needs_context=True)
+def add_simple(context=None):
+    return 'hello ' + context
 
 
 # = next month ================================================================

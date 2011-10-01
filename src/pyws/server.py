@@ -17,6 +17,25 @@ class ServersDict(dict):
 SERVERS = ServersDict()
 
 
+class ContextManager(object):
+
+    def __init__(self, context_data, enter, exit):
+        self.context_data = context_data
+        self.enter = enter
+        self.exit = exit
+
+    def __enter__(self):
+        try:
+            self.context = self.enter(self.context_data)
+        except Exception, e:
+            self.context = e
+        return self.context
+
+    #noinspection PyUnusedLocal
+    def __exit__(self, *args, **kwargs):
+        self.exit(self.context)
+
+
 class Server(object):
 
     def defaults(self):
@@ -24,6 +43,8 @@ class Server(object):
             NAME=None,
             DEBUG=False,
             FUNCTION_MANAGERS=(FixedFunctionManager(), ),
+            CREATE_CONTEXT=lambda x: None,
+            DESTROY_CONTEXT=lambda x: None,
         )
 
     def __init__(self, settings=None):
@@ -101,27 +122,27 @@ class Server(object):
                 'Where have default function manager gone?!')
         self.settings.FUNCTION_MANAGERS[0].add_function(function)
 
-    def get_function(self, name, quiet=False):
+    def get_function(self, context, name):
         for manager in self.settings.FUNCTION_MANAGERS:
             try:
-                return manager.get_one(name)
+                return manager.get_one(context, name)
             except FunctionNotFound:
                 pass
-        if quiet:
-            return None
         raise FunctionNotFound(name)
 
-    def get_functions(self):
-        return reduce(lambda x, y: x + y,
-            (manager.get_all() for manager in self.settings.FUNCTION_MANAGERS))
+    def get_functions(self, context):
+        return reduce(
+            lambda x, y: x + y,
+            (manager.get_all(context)
+                for manager in self.settings.FUNCTION_MANAGERS)
+        )
 
-    def can_authenticate(self):
-        return hasattr(self.settings, 'AUTHENTICATOR')
-
-    def authenticate(self, protocol, request):
-        data = protocol.get_auth_data(request)
-        #noinspection PyCallingNonCallable
-        self.settings.AUTHENTICATOR(data)
+    def get_context_manager(self, context_data):
+        return ContextManager(
+            context_data,
+            getattr(self.settings, 'CREATE_CONTEXT', lambda a: None),
+            getattr(self.settings, 'DESTROY_CONTEXT', lambda a: None)
+        )
 
     def process_request(self, request):
 
@@ -136,25 +157,30 @@ class Server(object):
 
             function = protocol.get_function(request)
 
-            if callable(function):
-                return function(self, request)
-
-            if isinstance(function, tuple):
-                name, args = function
+            if not callable(function):
+                context_data = protocol.get_context_data(request)
             else:
-                name, args = function, None
+                context_data = protocol.get_common_context_data(request)
 
-            can_authenticate = self.can_authenticate()
-            function = self.get_function(name, quiet=can_authenticate)
-            if can_authenticate and (not function or function.needs_auth):
-                self.authenticate(protocol, request)
-                if not function:
-                    function = self.get_function(name)
+            with self.get_context_manager(context_data) as context:
 
-            if args is None:
-                args = protocol.get_arguments(request, function.args)
+                if callable(function):
+                    return function(self, request, context)
 
-            result = function(**args)
+                if isinstance(function, tuple):
+                    name, args = function
+                else:
+                    name, args = function, None
+
+                function = self.get_function(context, name)
+
+                if function.needs_context and isinstance(context, Exception):
+                    raise context
+
+                if args is None:
+                    args = protocol.get_arguments(request, function.args)
+
+                result = function(context, **args)
 
             response = protocol.get_response(
                 result, name, function.return_type)

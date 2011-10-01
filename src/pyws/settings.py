@@ -49,7 +49,8 @@ class Settings(object):
     DEBUG = Slot()
     PROTOCOLS = ListSlot()
     FUNCTION_MANAGERS = ListSlot()
-    AUTHENTICATOR = Slot()
+    CREATE_CONTEXT = Slot()
+    DESTROY_CONTEXT = Slot()
 
     def __init__(self, **state):
         self.state = state

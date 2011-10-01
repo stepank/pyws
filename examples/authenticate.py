@@ -7,6 +7,6 @@ soap_headers_schema = {
 }
 
 def authenticate(data):
-    if not data.get('username') == 'user' or \
-            not data.get('password') == 'pass':
+    if data != {'username': 'user', 'password': 'pass'}:
         raise AccessDenied(data.get('username'))
+    return data.get('username')

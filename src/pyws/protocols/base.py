@@ -5,11 +5,17 @@ __all__ = ('Protocol', )
 
 class Protocol(object):
 
-    def __init__(self, auth_data_getter=None):
-        self.auth_data_getter = auth_data_getter
+    def __init__(
+            self, context_data_getter=None, common_context_data_getter=None):
+        self.context_data_getter = context_data_getter or (lambda a: None)
+        self.common_context_data_getter = \
+            common_context_data_getter or (lambda a: None)
 
-    def get_auth_data(self, request):
-        return self.auth_data_getter(request)
+    def get_context_data(self, request):
+        return self.context_data_getter(request)
+
+    def get_common_context_data(self, request):
+        return self.common_context_data_getter(request)
 
     def get_function(self, request):
         raise NotImplementedError('Protocol.get_function')

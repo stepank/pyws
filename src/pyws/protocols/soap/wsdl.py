@@ -8,9 +8,11 @@ from pyws.protocols.soap.utils import *
 class WsdlGenerator(object):
 
     def __init__(self,
-            server, service_name, tns, location, headers_schema, encoding):
+            server, context,
+            service_name, tns, location, headers_schema, encoding):
 
         self.server = server
+        self.context = context
         self.service_name = service_name
         self.tns = tns
         self.location = location
@@ -38,7 +40,7 @@ class WsdlGenerator(object):
             self.definitions, wsdl_name('message'), name='error')
         self._add_part(input, 'fault', args.DictOf('Error'), use_element=True)
 
-        for function in self.server.get_functions():
+        for function in self.server.get_functions(self.context):
 
             input_name = function.name
             input = et.SubElement(
@@ -71,7 +73,7 @@ class WsdlGenerator(object):
                 operation, soap_name('operation'),
                 soapAction=self.tns + function.name)
             input = et.SubElement(operation, wsdl_name('input'))
-            if function.needs_auth:
+            if function.needs_context:
                 et.SubElement(
                     input, soap_name('header'),
                     message='tns:headers', part='headers', use='literal')

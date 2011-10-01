@@ -1,6 +1,5 @@
 package testcases;
 
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.Assert;
 
@@ -9,21 +8,33 @@ import com.example.types.Headers;
 
 public class NeedsAuthTestCase extends TestServiceTestCase {
 
-    @Before
-    public void setUp() {
-        super.setUp();
-        TestBindingStub stub = (TestBindingStub)port;
-        stub.setHeader("http://example.com/", "headers",
-            (Object)(new Headers("user", "pass")));
-    }
-
     @Test
-    public void needs_auth() {
+    public void needs_context() {
+        com.example.TestBindingStub stub = (com.example.TestBindingStub)port;
+        stub.setHeader("http://example.com/", "headers",
+            (Object)(new com.example.types.Headers("user", "pass")));
         try {
             Assert.assertTrue(
-                port.needs_auth("hello", " world").equals("hello world"));
+                port.say_hello().equals("hello user"));
         } catch (java.rmi.RemoteException e) {
             System.out.println("Exception: " + e.toString());
         }
+    }
+
+    @Test
+    public void needs_context_exception() {
+        com.example.TestBindingStub stub = (com.example.TestBindingStub)port;
+        stub.setHeader("http://example.com/", "headers",
+            (Object)(new com.example.types.Headers("fake", "pass")));
+        try {
+            port.say_hello();
+        } catch (com.example.types.Error e) {
+            Assert.assertTrue(
+                e.toString().equals("Access denied for user fake"));
+            return;
+        } catch (java.rmi.RemoteException e) {
+            System.out.println("Exception: " + e.toString());
+        }
+        Assert.assertTrue("Exception hasn't been thrown", false);
     }
 }

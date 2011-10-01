@@ -11,10 +11,10 @@ class FunctionManager(object):
             return NativeFunctionAdapter(function)
         raise BadFunction(function)
 
-    def get_one(self, name):
+    def get_one(self, context, name):
         raise NotImplementedError('FunctionManager.get_one')
 
-    def get_all(self):
+    def get_all(self, context):
         raise NotImplementedError('FunctionManager.get_all')
 
 
@@ -29,11 +29,11 @@ class FixedFunctionManager(FunctionManager):
         function = self.build_function(function)
         self.functions[function.name] = function
 
-    def get_one(self, name):
+    def get_one(self, context, name):
         try:
             return self.functions[name]
         except KeyError:
             raise FunctionNotFound(name)
 
-    def get_all(self):
+    def get_all(self, context):
         return self.functions.values()

@@ -3,7 +3,7 @@ import re
 
 from lxml import etree as et
 
-from pyws.errors import BadRequest, BadAuthData
+from pyws.errors import BadRequest
 from pyws.functions.args import List, Dict, TypeFactory, Type, DICT_NAME_KEY
 from pyws.response import Response
 from pyws.protocols.base import Protocol
@@ -87,12 +87,15 @@ def get_axis_package_name(ns):
         lambda s: re.sub('[^\w]', '_', s), res + mo.group(2).split('/'))))
 
 
-class HeadersAuthDataGetter(object):
+class HeadersContextDataGetter(object):
 
     def __init__(self, headers_schema):
         self.headers_schema = headers_schema
 
     def __call__(self, request):
+
+        if not self.headers_schema:
+            return None
 
         env = request.parsed_data.xml. \
             xpath('/se:Envelope', namespaces=SoapProtocol.namespaces)[0]
@@ -100,7 +103,7 @@ class HeadersAuthDataGetter(object):
         header = env.xpath(
             './se:Header/*', namespaces=SoapProtocol.namespaces)
         if len(header) != 1:
-            raise BadAuthData()
+            return None
         header = header[0]
 
         return xml2obj(header, self.headers_schema)
@@ -115,11 +118,19 @@ class SoapProtocol(Protocol):
     name = 'soap'
     namespaces = {'se': SOAP_ENV_NS}
 
-    def __init__(self, service_name, tns, location, *args, **kwargs):
-        super(SoapProtocol, self).__init__(*args, **kwargs)
+    def __init__(
+            self, service_name, tns, location,
+            headers_schema, *args, **kwargs):
+
+        headers_schema = TypeFactory(headers_schema)
+
+        super(SoapProtocol, self).__init__(
+            HeadersContextDataGetter(headers_schema), *args, **kwargs)
+
         self.service_name = service_name
         self.tns = tns
         self.location = location
+        self.headers_schema = headers_schema
 
     def parse_request(self, request):
 
@@ -213,9 +224,9 @@ class SoapProtocol(Protocol):
             encoding=ENCODING, pretty_print=True, xml_declaration=True))
 
     #noinspection PyUnusedLocal
-    def get_wsdl(self, server, request):
-        headers_schema = getattr(self.auth_data_getter, 'headers_schema', None)
+    def get_wsdl(self, server, request, context):
         return Response(
             WsdlGenerator(
-                server, self.service_name, self.tns, self.location,
-                headers_schema, ENCODING).get_wsdl())
+                server, context,
+                self.service_name, self.tns, self.location,
+                self.headers_schema, ENCODING).get_wsdl())
