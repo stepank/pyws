@@ -1,6 +1,7 @@
 import re
 
-from datetime import datetime, date
+from datetime import datetime, date, tzinfo, timedelta
+from time import mktime
 
 from pyws.errors import MissingFieldValue, WrongFieldValueType
 
@@ -132,19 +133,57 @@ class Date(Type):
 class DateTime(Date):
 
     _represents = datetime
-    format = '%Y-%m-%dT%H:%M:%SZ'
+    format = '%Y-%m-%dT%H:%M:%S'
+    tz_re = re.compile('((\\+|-)(\d\d):?(\d\d))$')
+
+    @classmethod
+    def default_offset(cls):
+        return -mktime(datetime(1970, 1, 1).timetuple())
+
+    @classmethod
+    def get_offset(cls, value):
+        tz = cls.tz_re.search(value)
+        if not tz:
+            return value, 0
+        return (
+            cls.tz_re.sub('', value),
+            (tz.group(2) == '+' and 1 or -1) *
+                (int(tz.group(3)) * 60 + int(tz.group(4))) * 60
+        )
+
+    @classmethod
+    def get_tzinfo(cls, offset):
+        class TempTzInfo(tzinfo):
+            def utcoffset(self, dt):
+                return timedelta(seconds=offset)
+            def dst(self, dt):
+                return timedelta(0)
+        return TempTzInfo()
 
     @classmethod
     def _validate(cls, value):
+        value, offset = cls.get_offset(value)
+        if value[-1] == 'Z':
+            value = value[:-1]
+        tz = cls.get_tzinfo(offset)
         try:
-            return cls._parse(value)
+            return cls._parse(value).replace(tzinfo=tz)
         except ValueError:
             mo = re.search('\\.\d+', value)
             if not mo:
                 raise
             ms = mo.group(0)
             value = value.replace(ms, ms.ljust(7, '0'))
-            return cls._parse(value, '%Y-%m-%dT%H:%M:%S.%fZ')
+            return cls._parse(value, '%Y-%m-%dT%H:%M:%S.%f').replace(tzinfo=tz)
+
+    @classmethod
+    def serialize(cls, value):
+        if value.tzinfo:
+            delta = value.utcoffset() + value.dst()
+        else:
+            delta = timedelta(seconds=cls.default_offset())
+        value = value.replace(tzinfo=cls.get_tzinfo(0)) - delta
+        return super(DateTime, cls).serialize(value) + 'Z'
 
 
 DICT_NAME_KEY = 0
