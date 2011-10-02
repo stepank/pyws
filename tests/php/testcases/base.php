@@ -2,9 +2,11 @@
 ini_set('display_errors', true);
 error_reporting(E_ALL);
 
-require_once 'TestService.php';
+require_once dirname(dirname(realpath(__FILE__))) . '/TestService.php';
 
 class TestServiceTestCase extends PHPUnit_Framework_TestCase {
+
+    public $service;
 
     protected function setUp() {
         $this->service = new TestService('test.wsdl',

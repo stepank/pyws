@@ -3,7 +3,7 @@ require_once 'base.php';
 
 class AddIntegerDictsTestCase extends TestServiceTestCase {
 
-    public function test_add_integer_dicts_notset() {
+    public function test_notset() {
         $p = new ABIntegerDict();
         $q = new ABIntegerDict();
         $r = $this->service->add_integer_dicts($p, $q);
@@ -11,7 +11,7 @@ class AddIntegerDictsTestCase extends TestServiceTestCase {
         $this->assertEquals($r->b, 0);
     }
 
-    public function test_add_integer_dicts_null() {
+    public function test_null() {
         $p = new ABIntegerDict();
         $p->a = null;
         $p->b = null;
@@ -23,7 +23,7 @@ class AddIntegerDictsTestCase extends TestServiceTestCase {
         $this->assertEquals($r->b, 0);
     }
 
-    public function test_add_integer_dicts_empty() {
+    public function test_empty() {
         $p = new ABIntegerDict();
         $p->a = 0;
         $p->b = 0;
@@ -35,7 +35,7 @@ class AddIntegerDictsTestCase extends TestServiceTestCase {
         $this->assertEquals($r->b, 0);
     }
 
-    public function test_add_integer_dicts() {
+    public function test() {
         $p = new ABIntegerDict();
         $p->a = 100;
         $p->b = 50;

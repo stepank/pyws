@@ -3,7 +3,7 @@ require_once 'base.php';
 
 class AddStringListsTestCase extends TestServiceTestCase {
 
-    public function test_add_string_lists_notset() {
+    public function test_notset() {
         $p = new StringList();
         $q = new StringList();
         $r = $this->service->add_string_lists($p, $q);
@@ -13,7 +13,7 @@ class AddStringListsTestCase extends TestServiceTestCase {
         # is wrong. Avoid using *List with non-specified item property.
     }
 
-    public function test_add_string_lists_null() {
+    public function test_null() {
         $p = new StringList();
         $p->item = null;
         $q = new StringList();
@@ -25,7 +25,7 @@ class AddStringListsTestCase extends TestServiceTestCase {
         # is wrong. Avoid using *List with non-specified item property.
     }
 
-    public function test_add_string_lists_empty() {
+    public function test_empty() {
         $p = new StringList();
         $p->item = array();
         $q = new StringList();
@@ -34,7 +34,7 @@ class AddStringListsTestCase extends TestServiceTestCase {
         $this->assertEquals(count($r->item), 0);
     }
 
-    public function test_add_string_lists_null_value() {
+    public function test_null_value() {
         $p = new StringList();
         $p->item = array(null);
         $q = new StringList();
@@ -46,7 +46,7 @@ class AddStringListsTestCase extends TestServiceTestCase {
         # SoapClient interprets it not as an array.
     }
 
-    public function test_add_string_lists_empty_value() {
+    public function test_empty_value() {
         $p = new StringList();
         $p->item = array('');
         $q = new StringList();
@@ -58,7 +58,7 @@ class AddStringListsTestCase extends TestServiceTestCase {
         # SoapClient interprets it not as an array.
     }
 
-    public function test_add_string_lists_equal_size() {
+    public function test_equal_size() {
         $p = new StringList();
         $p->item = array('a', 'b', 'c');
         $q = new StringList();
@@ -70,7 +70,7 @@ class AddStringListsTestCase extends TestServiceTestCase {
         $this->assertEquals($r->item[2], 'cf');
     }
 
-    public function test_add_string_lists_diff_size() {
+    public function test_diff_size() {
         $p = new StringList();
         $p->item = array('a', 'b', 'c');
         $q = new StringList();

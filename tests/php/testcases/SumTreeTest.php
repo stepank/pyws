@@ -3,13 +3,13 @@ require_once 'base.php';
 
 class SumTreeTestCase extends TestServiceTestCase {
 
-    public function test_sum_tree_notset() {
+    public function test_notset() {
         $p = new Tree();
         $r = $this->service->sum_tree($p);
         $this->assertEquals($r, 0);
     }
 
-    public function test_sum_tree_null() {
+    public function test_null() {
         $p = new Tree();
         $p->value = null;
         $p->left = null;
@@ -18,7 +18,7 @@ class SumTreeTestCase extends TestServiceTestCase {
         $this->assertEquals($r, 0);
     }
 
-    public function test_sum_tree_value() {
+    public function test_value() {
         $p = new Tree();
         $p->value = 10;
         $p->left = null;
@@ -27,7 +27,7 @@ class SumTreeTestCase extends TestServiceTestCase {
         $this->assertEquals($r, 10);
     }
 
-    public function test_sum_tree() {
+    public function test() {
         $p = new Tree();
         $p->value = 10;
         $p->left = new Tree();

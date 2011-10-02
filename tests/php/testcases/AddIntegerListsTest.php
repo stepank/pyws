@@ -3,7 +3,7 @@ require_once 'base.php';
 
 class AddIntegerListsTestCase extends TestServiceTestCase {
 
-    public function test_add_integer_lists_notset() {
+    public function test_notset() {
         $p = new IntegerList();
         $q = new IntegerList();
         $r = $this->service->add_integer_lists($p, $q);
@@ -13,7 +13,7 @@ class AddIntegerListsTestCase extends TestServiceTestCase {
         # is wrong. Avoid using *List with non-specified item property.
     }
 
-    public function test_add_integer_lists_null() {
+    public function test_null() {
         $p = new IntegerList();
         $p->item = null;
         $q = new IntegerList();
@@ -25,7 +25,7 @@ class AddIntegerListsTestCase extends TestServiceTestCase {
         # is wrong. Avoid using *List with non-specified item property.
     }
 
-    public function test_add_integer_lists_empty() {
+    public function test_empty() {
         $p = new IntegerList();
         $p->item = array();
         $q = new IntegerList();
@@ -34,7 +34,7 @@ class AddIntegerListsTestCase extends TestServiceTestCase {
         $this->assertEquals(count($r->item), 0);
     }
 
-    public function test_add_integer_lists_null_value() {
+    public function test_null_value() {
         $p = new IntegerList();
         $p->item = array(null);
         $q = new IntegerList();
@@ -46,7 +46,7 @@ class AddIntegerListsTestCase extends TestServiceTestCase {
         # SoapClient interprets it not as an array.
     }
 
-    public function test_add_integer_lists_empty_value() {
+    public function test_empty_value() {
         $p = new IntegerList();
         $p->item = array(0);
         $q = new IntegerList();
@@ -58,7 +58,7 @@ class AddIntegerListsTestCase extends TestServiceTestCase {
         # SoapClient interprets it not as an array.
     }
 
-    public function test_add_integer_lists_equal_size() {
+    public function test_equal_size() {
         $p = new IntegerList();
         $p->item = array(1, 2, 3);
         $q = new IntegerList();
@@ -70,7 +70,7 @@ class AddIntegerListsTestCase extends TestServiceTestCase {
         $this->assertEquals($r->item[2], 3);
     }
 
-    public function test_add_integer_lists_diff_size() {
+    public function test_diff_size() {
         $p = new IntegerList();
         $p->item = array(1, 2, 3);
         $q = new IntegerList();

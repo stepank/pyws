@@ -3,7 +3,7 @@ require_once 'base.php';
 
 class AddStringDictsTestCase extends TestServiceTestCase {
 
-    public function test_add_string_dicts_notset() {
+    public function test_notset() {
         $p = new ABStringDict();
         $q = new ABStringDict();
         $r = $this->service->add_string_dicts($p, $q);
@@ -11,7 +11,7 @@ class AddStringDictsTestCase extends TestServiceTestCase {
         $this->assertEquals($r->b, '');
     }
 
-    public function test_add_string_dicts_null() {
+    public function test_null() {
         $p = new ABStringDict();
         $p->a = null;
         $p->b = null;
@@ -23,7 +23,7 @@ class AddStringDictsTestCase extends TestServiceTestCase {
         $this->assertEquals($r->b, '');
     }
 
-    public function test_add_string_dicts_empty() {
+    public function test_empty() {
         $p = new ABStringDict();
         $p->a = '';
         $p->b = '';
@@ -35,7 +35,7 @@ class AddStringDictsTestCase extends TestServiceTestCase {
         $this->assertEquals($r->b, '');
     }
 
-    public function test_add_string_dicts() {
+    public function test() {
         $p = new ABStringDict();
         $p->a = 'hello';
         $p->b = 'say';

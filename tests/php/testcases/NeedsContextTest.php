@@ -3,7 +3,7 @@ require_once 'base.php';
 
 class NeedsAuthTestCase extends TestServiceTestCase {
 
-    public function test_needs_context() {
+    public function test() {
         $headers = new Headers();
         $headers->username = 'user';
         $headers->password = 'pass';
@@ -13,7 +13,7 @@ class NeedsAuthTestCase extends TestServiceTestCase {
             $this->service->say_hello(), 'hello user');
     }
 
-    public function test_needs_context_exception() {
+    public function test_exception() {
         $headers = new Headers();
         $headers->username = 'fake';
         $headers->password = 'pass';

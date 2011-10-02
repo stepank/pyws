@@ -3,7 +3,7 @@ require_once 'base.php';
 
 class RaisesExceptionTestCase extends TestServiceTestCase {
 
-    public function test_raises_exception() {
+    public function test() {
         try {
             $this->service->raises_exception();
         } catch (SoapFault $e) {
