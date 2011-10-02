@@ -8,7 +8,7 @@ import org.junit.Assert;
 public class RaisesExceptionTestCase extends TestServiceTestCase {
 
     @Test
-    public void raises_exception() {
+    public void test() {
         try {
             System.out.println(port.raises_exception());
         } catch (com.example.types.Error e) {

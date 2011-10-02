@@ -8,7 +8,7 @@ import com.example.types.ABStringDict;
 public class AddStringDictsTestCase extends TestServiceTestCase {
 
     @Test
-    public void add_string_dicts_null_args() {
+    public void test_null_args() {
         try {
             ABStringDict r = port.add_string_dicts(null, null);
             Assert.assertTrue(r.getA().equals(""));
@@ -19,7 +19,7 @@ public class AddStringDictsTestCase extends TestServiceTestCase {
     }
 
     @Test
-    public void add_string_dicts_notset() {
+    public void test_notset() {
         try {
             ABStringDict p = new ABStringDict();
             ABStringDict q = new ABStringDict();
@@ -32,7 +32,7 @@ public class AddStringDictsTestCase extends TestServiceTestCase {
     }
 
     @Test
-    public void add_string_dicts_null() {
+    public void test_null() {
         try {
             ABStringDict p = new ABStringDict(null, null);
             ABStringDict q = new ABStringDict(null, null);
@@ -45,7 +45,7 @@ public class AddStringDictsTestCase extends TestServiceTestCase {
     }
 
     @Test
-    public void add_string_dicts_empty() {
+    public void test_empty() {
         try {
             ABStringDict p = new ABStringDict("", "");
             ABStringDict q = new ABStringDict("", "");
@@ -58,7 +58,7 @@ public class AddStringDictsTestCase extends TestServiceTestCase {
     }
 
     @Test
-    public void add_string_dicts() {
+    public void test() {
         try {
             ABStringDict p = new ABStringDict("hello", "say");
             ABStringDict q = new ABStringDict(" world", " hello");

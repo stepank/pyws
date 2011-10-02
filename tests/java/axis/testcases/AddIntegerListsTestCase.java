@@ -6,7 +6,7 @@ import org.junit.Assert;
 public class AddIntegerListsTestCase extends TestServiceTestCase {
 
     @Test
-    public void add_integer_lists_null_args() {
+    public void test_null_args() {
         try {
             int[] r = port.add_integer_lists(null, null);
             Assert.assertTrue(r.length == 0);
@@ -16,7 +16,7 @@ public class AddIntegerListsTestCase extends TestServiceTestCase {
     }
 
     @Test
-    public void add_integer_lists_empty() {
+    public void test_empty() {
         try {
             int[] a1 = {};
             int[] a2 = {};
@@ -28,7 +28,7 @@ public class AddIntegerListsTestCase extends TestServiceTestCase {
     }
 
     @Test
-    public void add_integer_lists_empty_value() {
+    public void test_empty_value() {
         try {
             int[] a1 = {0};
             int[] a2 = {0};
@@ -41,7 +41,7 @@ public class AddIntegerListsTestCase extends TestServiceTestCase {
     }
 
     @Test
-    public void add_integer_lists_equal_size() {
+    public void test_equal_size() {
         try {
             int[] a1 = {1, 2, 3};
             int[] a2 = {3, -5, 0};
@@ -56,7 +56,7 @@ public class AddIntegerListsTestCase extends TestServiceTestCase {
     }
 
     @Test
-    public void add_integer_lists_diff_size() {
+    public void test_diff_size() {
         try {
             int[] a1 = {1, 2, 3};
             int[] a2 = {3, -5, 0, 11, -5};

@@ -8,7 +8,7 @@ import com.example.types.ABIntegerDict;
 public class AddIntegerDictsTestCase extends TestServiceTestCase {
 
     @Test
-    public void add_integer_dicts_null_args() {
+    public void test_null_args() {
         try {
             ABIntegerDict r = port.add_integer_dicts(null, null);
             Assert.assertTrue(r.getA() == 0);
@@ -19,7 +19,7 @@ public class AddIntegerDictsTestCase extends TestServiceTestCase {
     }
 
     @Test
-    public void add_integer_dicts_notset() {
+    public void test_notset() {
         try {
             ABIntegerDict p = new ABIntegerDict();
             ABIntegerDict q = new ABIntegerDict();
@@ -32,7 +32,7 @@ public class AddIntegerDictsTestCase extends TestServiceTestCase {
     }
 
     @Test
-    public void add_integer_dicts_null() {
+    public void test_null() {
         try {
             ABIntegerDict p = new ABIntegerDict(null, null);
             ABIntegerDict q = new ABIntegerDict(null, null);
@@ -45,7 +45,7 @@ public class AddIntegerDictsTestCase extends TestServiceTestCase {
     }
 
     @Test
-    public void add_integer_dicts_empty() {
+    public void test_empty() {
         try {
             ABIntegerDict p = new ABIntegerDict(0, 0);
             ABIntegerDict q = new ABIntegerDict(0, 0);
@@ -58,7 +58,7 @@ public class AddIntegerDictsTestCase extends TestServiceTestCase {
     }
 
     @Test
-    public void add_integer_dicts() {
+    public void test() {
         try {
             ABIntegerDict p = new ABIntegerDict(100, 50);
             ABIntegerDict q = new ABIntegerDict(50, 25);

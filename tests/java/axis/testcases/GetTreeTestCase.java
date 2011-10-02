@@ -9,7 +9,7 @@ import com.example.types.ABStringDict;
 public class GetTreeTestCase extends TestServiceTestCase {
 
     @Test
-    public void get_tree_null_ret() {
+    public void test_null_ret() {
         try {
             Tree r = port.get_tree(0);
             Assert.assertTrue(r == null);
@@ -19,7 +19,7 @@ public class GetTreeTestCase extends TestServiceTestCase {
     }
 
     @Test
-    public void get_tree_notset() {
+    public void test_notset() {
         try {
             Tree r = port.get_tree(1);
             Assert.assertTrue(r.getValue() == 1);
@@ -31,7 +31,7 @@ public class GetTreeTestCase extends TestServiceTestCase {
     }
 
     @Test
-    public void get_tree_null() {
+    public void test_null() {
         try {
             Tree r = port.get_tree(2);
             Assert.assertTrue(r.getValue() == 2);
@@ -43,7 +43,7 @@ public class GetTreeTestCase extends TestServiceTestCase {
     }
 
     @Test
-    public void get_tree() {
+    public void test() {
         try {
             Tree r = port.get_tree(3);
             Assert.assertTrue(r.getValue() == 3);

@@ -6,7 +6,7 @@ import org.junit.Assert;
 public class AddStringListsTestCase extends TestServiceTestCase {
 
     @Test
-    public void add_string_lists_null_args() {
+    public void test_null_args() {
         try {
             java.lang.String[] r = port.add_string_lists(null, null);
             Assert.assertTrue(r.length == 0);
@@ -16,7 +16,7 @@ public class AddStringListsTestCase extends TestServiceTestCase {
     }
 
     @Test
-    public void add_string_lists_empty() {
+    public void test_empty() {
         try {
             java.lang.String[] a1 = {};
             java.lang.String[] a2 = {};
@@ -28,7 +28,7 @@ public class AddStringListsTestCase extends TestServiceTestCase {
     }
 
     @Test
-    public void add_string_lists_null_value() {
+    public void test_null_value() {
         try {
             java.lang.String[] a1 = {null};
             java.lang.String[] a2 = {null};
@@ -41,7 +41,7 @@ public class AddStringListsTestCase extends TestServiceTestCase {
     }
 
     @Test
-    public void add_string_lists_empty_value() {
+    public void test_empty_value() {
         try {
             java.lang.String[] a1 = {""};
             java.lang.String[] a2 = {""};
@@ -54,7 +54,7 @@ public class AddStringListsTestCase extends TestServiceTestCase {
     }
 
     @Test
-    public void add_string_lists_equal_size() {
+    public void test_equal_size() {
         try {
             java.lang.String[] a1 = {"a", "b", "c"};
             java.lang.String[] a2 = {"d", "e", "f"};
@@ -69,7 +69,7 @@ public class AddStringListsTestCase extends TestServiceTestCase {
     }
 
     @Test
-    public void add_string_lists_diff_size() {
+    public void test_diff_size() {
         try {
             java.lang.String[] a1 = {"a", "b", "c"};
             java.lang.String[] a2 = {"d", "e", "f", "g", "h"};

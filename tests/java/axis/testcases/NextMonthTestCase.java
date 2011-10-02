@@ -9,7 +9,7 @@ import org.junit.Test;
 public class NextMonthTestCase extends TestServiceTestCase {
 
     @Test
-    public void next_month_null() {
+    public void test_null() {
         try {
             //noinspection NullableProblems
             Assert.assertTrue(port.next_month(null) == null);
@@ -19,7 +19,7 @@ public class NextMonthTestCase extends TestServiceTestCase {
     }
 
     @Test
-    public void next_month() {
+    public void test() {
         Date d = new Date(1313784000000L);
         try {
             Assert.assertTrue(port.next_month(d).getTime() == 1316462400000L);
@@ -29,7 +29,7 @@ public class NextMonthTestCase extends TestServiceTestCase {
     }
 
     @Test
-    public void next_month_dt_null() {
+    public void test_dt_null() {
         try {
             //noinspection NullableProblems
             Assert.assertTrue(port.next_month_dt(null) == null);
@@ -39,7 +39,7 @@ public class NextMonthTestCase extends TestServiceTestCase {
     }
 
     @Test
-    public void next_month_dt_() {
+    public void test_dt() {
         Calendar d = Calendar.getInstance();
         d.setTime(new Date(1313826085000L));
         try {

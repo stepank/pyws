@@ -9,10 +9,10 @@ import com.example.types.Headers;
 public class NeedsAuthTestCase extends TestServiceTestCase {
 
     @Test
-    public void needs_context() {
-        com.example.TestBindingStub stub = (com.example.TestBindingStub)port;
+    public void test() {
+        TestBindingStub stub = (TestBindingStub)port;
         stub.setHeader("http://example.com/", "headers",
-            (Object)(new com.example.types.Headers("user", "pass")));
+            (new Headers("user", "pass")));
         try {
             Assert.assertTrue(
                 port.say_hello().equals("hello user"));
@@ -22,10 +22,10 @@ public class NeedsAuthTestCase extends TestServiceTestCase {
     }
 
     @Test
-    public void needs_context_exception() {
-        com.example.TestBindingStub stub = (com.example.TestBindingStub)port;
+    public void test_exception() {
+        TestBindingStub stub = (TestBindingStub)port;
         stub.setHeader("http://example.com/", "headers",
-            (Object)(new com.example.types.Headers("fake", "pass")));
+            (new Headers("fake", "pass")));
         try {
             port.say_hello();
         } catch (com.example.types.Error e) {
