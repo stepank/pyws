@@ -142,6 +142,8 @@ class DateTime(Date):
 
     @classmethod
     def get_offset(cls, value):
+        if value[-1] == 'Z':
+            return value[:-1], 0
         tz = cls.tz_re.search(value)
         if not tz:
             return value, 0
@@ -163,8 +165,6 @@ class DateTime(Date):
     @classmethod
     def _validate(cls, value):
         value, offset = cls.get_offset(value)
-        if value[-1] == 'Z':
-            value = value[:-1]
         tz = cls.get_tzinfo(offset)
         try:
             return cls._parse(value).replace(tzinfo=tz)
