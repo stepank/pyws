@@ -7,10 +7,7 @@ class AddIntegerListsTestCase extends TestServiceTestCase {
         $p = new IntegerList();
         $q = new IntegerList();
         $r = $this->service->add_integer_lists($p, $q);
-        $this->assertEquals(count($r->item), 1);
-        $this->assertEquals($r->item, 0);
-        # Warning: SoapClient sends an array of one "null" element, which
-        # is wrong. Avoid using *List with non-specified item property.
+        $this->assertEquals(count($r->item), 0);
     }
 
     public function test_null() {
@@ -19,10 +16,7 @@ class AddIntegerListsTestCase extends TestServiceTestCase {
         $q = new IntegerList();
         $q->item = null;
         $r = $this->service->add_integer_lists($p, $q);
-        $this->assertEquals(count($r->item), 1);
-        $this->assertEquals($r->item, 0);
-        # Warning: SoapClient sends an array of one "null" element, which
-        # is wrong. Avoid using *List with non-specified item property.
+        $this->assertEquals(count($r->item), 0);
     }
 
     public function test_empty() {

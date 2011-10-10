@@ -134,7 +134,7 @@ class List(ComplexType):
         et.SubElement(sequence,
             xsd_name('element'), name='item',
             type=qname(*(type.name + (self.nsmap, ))),
-            minOccurs='0', maxOccurs='unbounded', nillable='true')
+            minOccurs='0', maxOccurs='unbounded')
         type.get_types(types)
 
 

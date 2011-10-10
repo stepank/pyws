@@ -4,18 +4,27 @@ from base import BaseTestCaseMixin
 
 class AddIntegerListsTestCase(BaseTestCaseMixin, unittest.TestCase):
 
-    def test(self):
-        q = self.factory.create('types:IntegerList')
-        q.item = [1, 2, 3]
+    def test_empty(self):
         p = self.factory.create('types:IntegerList')
-        p.item = [3, -5, 0]
-        res = self.service.add_integer_lists(q, p)
+        p.item = []
+        q = self.factory.create('types:IntegerList')
+        q.item = []
+        # This one does not work, unfortunatelly,
+        # suds sends neither first argument nor second
+        #res = self.service.add_integer_lists(p, q)
+
+    def test(self):
+        p = self.factory.create('types:IntegerList')
+        p.item = [1, 2, 3]
+        q = self.factory.create('types:IntegerList')
+        q.item = [3, -5, 0]
+        res = self.service.add_integer_lists(p, q)
         self.assertEqual(res.item, [4, -3, 3])
 
     def test_diff_size(self):
-        q = self.factory.create('types:IntegerList')
-        q.item = [1, 2, 3]
         p = self.factory.create('types:IntegerList')
-        p.item = [3, -5, 0, 11, -5]
-        res = self.service.add_integer_lists(q, p)
+        p.item = [1, 2, 3]
+        q = self.factory.create('types:IntegerList')
+        q.item = [3, -5, 0, 11, -5]
+        res = self.service.add_integer_lists(p, q)
         self.assertEqual(res.item, [4, -3, 3, 11, -5])
