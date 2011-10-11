@@ -47,6 +47,7 @@ class Settings(object):
 
     NAME = Slot()
     DEBUG = Slot()
+    DEFAULT = Slot()
     PROTOCOLS = ListSlot()
     FUNCTION_MANAGERS = ListSlot()
     CREATE_CONTEXT = Slot()

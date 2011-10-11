@@ -11,6 +11,11 @@ class ServerAlreadyRegistered(ConfigurationError):
         return 'Server %s has already been registered' % self.args[0]
 
 
+class DefaultServerAlreadyRegistered(ConfigurationError):
+    def __str__(self):
+        return 'Default server has already been registered'
+
+
 class SettingNotDefined(ConfigurationError):
     def __str__(self):
         return 'Setting %s is not defined' % self.args[0]

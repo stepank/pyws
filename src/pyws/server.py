@@ -3,7 +3,7 @@ import traceback
 
 from pyws.errors import Error, BadProtocol, FunctionNotFound, ProtocolError, \
     ProtocolNotFound, ET_CLIENT, ET_SERVER, ServerAlreadyRegistered, \
-    ConfigurationError, NoProtocolsRegistered
+    ConfigurationError, NoProtocolsRegistered, DefaultServerAlreadyRegistered
 from pyws.functions.managers import FixedFunctionManager
 from pyws.protocols import Protocol, SoapProtocol
 from pyws.response import Response
@@ -42,6 +42,7 @@ class Server(object):
         return dict(
             NAME=None,
             DEBUG=False,
+            DEFAULT=False,
             FUNCTION_MANAGERS=(FixedFunctionManager(), ),
             CREATE_CONTEXT=lambda x: None,
             DESTROY_CONTEXT=lambda x: None,
@@ -55,7 +56,11 @@ class Server(object):
         if self.name in SERVERS:
             raise ServerAlreadyRegistered(self.name)
         SERVERS[self.name] = self
-        SERVERS.default = self
+        if not SERVERS.default or self.settings.DEFAULT:
+            if self.settings.DEFAULT and \
+                    SERVERS.default and SERVERS.default.settings.DEFAULT:
+                raise DefaultServerAlreadyRegistered()
+            SERVERS.default = self
 
     def gather_settings(self, result=None, cls=None):
         if not result:
