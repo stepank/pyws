@@ -5,10 +5,6 @@ from pyws.functions import args
 from utils import *
 
 
-class NotImplemented(NotImplementedError):
-    pass
-
-
 class UnknownType(Exception):
 
     def __str__(self):
@@ -33,10 +29,10 @@ class Type(object):
         return self.get_name()
 
     def get_name(self):
-        raise NotImplemented('Type.get_name')
+        raise NotImplementedError('Type.get_name')
 
     def get_types(self, types, use_element=False):
-        raise NotImplemented('Type.get_types')
+        raise NotImplementedError('Type.get_types')
 
 
 class SimpleType(Type):
@@ -140,10 +136,10 @@ class List(ComplexType):
 
 # The order matters: DateTime should be placed before Date.
 # Date is a superclass of DateTime, thus Date will catch all DateTime fields.
-types = (String, Integer, Float, DateTime, Date, Dict, List)
+__types__ = (String, Integer, Float, DateTime, Date, Dict, List)
 
 def TypeFactory(type, ns=None, nsmap=None):
-    for x in types:
+    for x in __types__:
         if x.represents(type):
             return x(type, ns, nsmap)
     raise UnknownType(type)

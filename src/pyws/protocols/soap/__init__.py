@@ -3,7 +3,7 @@ import re
 
 from lxml import etree as et
 
-from pyws.errors import BadRequest
+from pyws.errors import BadRequest, ConfigurationError
 from pyws.functions.args import List, Dict, TypeFactory, Type, DICT_NAME_KEY
 from pyws.response import Response
 from pyws.protocols.base import Protocol
@@ -81,13 +81,16 @@ def obj2xml(root, contents, schema=None, namespace=None):
 def get_axis_package_name(ns):
     mo = re.search('https?://([\\w\\.-]+).*?/(.*)', ns)
     if not mo:
-        raise Exception('No domain in service namespace')
+        raise ConfigurationError('No domain in service namespace')
     res = list(reversed(mo.group(1).split('.')))
     return '.'.join(it.ifilter(lambda s: s, it.imap(
         lambda s: re.sub('[^\w]', '_', s), res + mo.group(2).split('/'))))
 
 
 class HeadersContextDataGetter(object):
+    """
+    Extracts context data from request headers according to specified schema.
+    """
 
     def __init__(self, headers_schema):
         self.headers_schema = headers_schema
@@ -121,6 +124,15 @@ class SoapProtocol(Protocol):
     def __init__(
             self, service_name, tns, location,
             headers_schema, *args, **kwargs):
+        """
+        ``service_name`` gives a name to the server, it is used to generate
+        WSDL file. ``tns`` is a root namespace, where all the stuff lives, SOAP
+        is based on XML, so no wonder we need it. ``location`` tells the
+        server, where it lives. It is only a piece of information required by
+        pyws to generate a proper WSDL file, it is not a real binding to an
+        URL. ``headers_schema`` a schema used to retrive context data from
+        request headers. Other arguments are passed to parent constructor.
+        """
 
         headers_schema = TypeFactory(headers_schema)
 
