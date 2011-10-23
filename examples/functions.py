@@ -7,7 +7,7 @@ from pyws.functions.register import register
 # = add simple ================================================================
 
 #noinspection PyUnusedLocal
-@register
+@register()
 @register('add_integers', return_type=int, args=((int, 0), (int, 0)))
 @register('add_floats', return_type=float, args=((float, 0), (float, 0)))
 def add_simple(a, b):
@@ -132,6 +132,6 @@ class HelloError(Exception):
     def __init__(self):
         super(HelloError, self).__init__('hello error')
 
-@register
+@register()
 def raises_exception():
     raise HelloError
