@@ -1,0 +1,171 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Overview &mdash; pyws dev documentation</title>
+    
+    <link rel="stylesheet" href="_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '',
+        VERSION:     'dev',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="top" title="pyws dev documentation" href="index.html" />
+    <link rel="up" title="Introduction" href="introduction.html" />
+    <link rel="next" title="Getting started, part 1" href="getting_started_part_1.html" />
+    <link rel="prev" title="Introduction" href="introduction.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="getting_started_part_1.html" title="Getting started, part 1"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="introduction.html" title="Introduction"
+             accesskey="P">previous</a> |</li>
+        <li><a href="index.html">pyws dev documentation</a> &raquo;</li>
+          <li><a href="introduction.html" accesskey="U">Introduction</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="overview">
+<h1>Overview<a class="headerlink" href="#overview" title="Permalink to this headline">¶</a></h1>
+<p>Pyws is a project, which purpuse is to help developers to expose some functions
+of their systems as public APIs via SOAP with WSDL description. The main idea
+is to let developers completely forget about SOAP itself and make creating of
+APIs fast and painless.</p>
+<p>After you integrate pyws with your project, you&#8217;ll be able to generate WSDL
+description of your public API. When someone wants to use the API, all you need
+to do is to give him a link to WSDL description of the service. Using this
+description, anyone can easily call your functions remotely via SOAP and he
+won&#8217;t need to bother himself with generating XML, sending requests manually
+via HTTP, parsing responses and so on. pyws will take care of processing
+requests on the server and numerous SOAP clients are at your disposal to send
+requests and process responces.</p>
+<div class="section" id="what-is-already-implemented">
+<h2>What is already implemented<a class="headerlink" href="#what-is-already-implemented" title="Permalink to this headline">¶</a></h2>
+<p>Common features:</p>
+<ul class="simple">
+<li>a web framework agnostic server,</li>
+<li>an adapter for Django,</li>
+<li>protocols: SOAP 1.1, REST, JSON,</li>
+<li>context handling &amp; authentication framework,</li>
+<li>a simple types description system.</li>
+</ul>
+<p>SOAP specific features:</p>
+<ul class="simple">
+<li>request, response, exceptions,</li>
+<li>WSDL 1.1 service description, including headers and exceptions,</li>
+<li>simple types handling: integer, float, string, date, datetime,</li>
+<li>complex types handling: dict, list (nested structures of any depth are
+allowed),</li>
+<li>integration tests: PHP, Java (Axis 1.4), WS-I Basic Profile 1.2.</li>
+</ul>
+</div>
+<div class="section" id="what-will-be-done-next">
+<h2>What will be done next<a class="headerlink" href="#what-will-be-done-next" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li>documentation, comments and unit tests,</li>
+<li>installation script and instructions,</li>
+<li>maybe, declarative function arguments description (smth like Django models),</li>
+<li>other <a class="reference external" href="https://github.com/stepank/pyws/issues">issues</a>.</li>
+</ul>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Overview</a><ul>
+<li><a class="reference internal" href="#what-is-already-implemented">What is already implemented</a></li>
+<li><a class="reference internal" href="#what-will-be-done-next">What will be done next</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="introduction.html"
+                        title="previous chapter">Introduction</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="getting_started_part_1.html"
+                        title="next chapter">Getting started, part 1</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="_sources/overview.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="getting_started_part_1.html" title="Getting started, part 1"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="introduction.html" title="Introduction"
+             >previous</a> |</li>
+        <li><a href="index.html">pyws dev documentation</a> &raquo;</li>
+          <li><a href="introduction.html" >Introduction</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2011, stepank.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.
+    </div>
+  </body>
+</html>

@@ -1,0 +1,202 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Getting started, part 2 &mdash; pyws dev documentation</title>
+    
+    <link rel="stylesheet" href="_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '',
+        VERSION:     'dev',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="top" title="pyws dev documentation" href="index.html" />
+    <link rel="up" title="Introduction" href="introduction.html" />
+    <link rel="next" title="Complete reference" href="complete_reference.html" />
+    <link rel="prev" title="Getting started, part 1" href="getting_started_part_1.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="complete_reference.html" title="Complete reference"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="getting_started_part_1.html" title="Getting started, part 1"
+             accesskey="P">previous</a> |</li>
+        <li><a href="index.html">pyws dev documentation</a> &raquo;</li>
+          <li><a href="introduction.html" accesskey="U">Introduction</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="getting-started-part-2">
+<h1>Getting started, part 2<a class="headerlink" href="#getting-started-part-2" title="Permalink to this headline">¶</a></h1>
+<p>In this tutorial we&#8217;re going to introduce WSDL and send a couple of requests
+using a SOAP client. It is based on the
+<a class="reference internal" href="getting_started_part_1.html"><em>previous one</em></a>, so you&#8217;d better walk through it,
+if you hadn&#8217;t before.</p>
+<div class="section" id="introducing-wsdl">
+<h2>Introducing WSDL<a class="headerlink" href="#introducing-wsdl" title="Permalink to this headline">¶</a></h2>
+<p>Ok, if you are intereseted in SOAP you might have already heard about WSDL and
+what it is. If you hadn&#8217;t then it&#8217;s the most wonderful thing about SOAP, it is
+a language which may be used to provide a formal specification of a SOAP web
+service. This specification can be used to generate clients which can easily
+interact with a server taking away all the burden of making and sending
+requests from your shoulders.</p>
+<p>Having our pyws server running on <tt class="docutils literal"><span class="pre">localhost:8000</span></tt> and bound to <tt class="docutils literal"><span class="pre">/api/</span></tt> we
+can get it&#8217;s WSDL description at <a class="reference external" href="http://localhost:8000/api/wsdl">http://localhost:8000/api/wsdl</a>. You may
+want to cast a glance on it, but it isn&#8217;t necessary.</p>
+<p>Now, let&#8217;s create a client and send a few requests. We will use
+<a class="reference external" href="https://fedorahosted.org/suds/">suds</a>, it is written in Python and is quite
+pretty to use. Open python console and let&#8217;s write some code there:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">suds</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">suds</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">Client</span><span class="p">(</span><span class="s">&#39;http://localhost:8000/api/wsdl&#39;</span><span class="p">,</span> <span class="n">cache</span><span class="o">=</span><span class="bp">None</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">client</span><span class="o">.</span><span class="n">service</span><span class="o">.</span><span class="n">add_simple</span><span class="p">(</span><span class="s">&#39;hello &#39;</span><span class="p">,</span> <span class="s">&#39;world&#39;</span><span class="p">)</span>
+<span class="go">hello world</span>
+</pre></div>
+</div>
+<p>That&#8217;s it! Isn&#8217;t it awesome? No curl, HTTP, POST and so on, we just call a
+method and it just works!</p>
+</div>
+<div class="section" id="complex-types">
+<h2>Complex types<a class="headerlink" href="#complex-types" title="Permalink to this headline">¶</a></h2>
+<p>Now it&#8217;s time to play with some comlex types: lists and dicts.</p>
+<p>First, we need to add a couple of functions to the server, again edit
+<tt class="docutils literal"><span class="pre">server.py</span></tt>, add this:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="nd">@register</span><span class="p">(</span><span class="n">return_type</span><span class="o">=</span><span class="p">[</span><span class="nb">int</span><span class="p">],</span> <span class="n">args</span><span class="o">=</span><span class="p">([</span><span class="nb">int</span><span class="p">],</span> <span class="p">))</span>
+<span class="k">def</span> <span class="nf">double_list</span><span class="p">(</span><span class="n">a</span><span class="p">):</span>
+    <span class="k">return</span> <span class="nb">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span> <span class="o">*</span> <span class="mi">2</span><span class="p">,</span> <span class="n">a</span><span class="p">)</span>
+
+<span class="n">ABDict</span> <span class="o">=</span> <span class="p">{</span><span class="mi">0</span><span class="p">:</span> <span class="s">&#39;ABDict&#39;</span><span class="p">,</span> <span class="s">&#39;a&#39;</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="s">&#39;b&#39;</span><span class="p">:</span> <span class="nb">int</span><span class="p">}</span>
+
+<span class="nd">@register</span><span class="p">(</span><span class="n">return_type</span><span class="o">=</span><span class="n">ABDict</span><span class="p">,</span> <span class="n">args</span><span class="o">=</span><span class="p">(</span><span class="n">ABDict</span><span class="p">,</span> <span class="p">))</span>
+<span class="k">def</span> <span class="nf">double_dict</span><span class="p">(</span><span class="n">a</span><span class="p">):</span>
+    <span class="k">return</span> <span class="nb">dict</span><span class="p">((</span><span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="o">*</span> <span class="mi">2</span><span class="p">)</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">a</span><span class="o">.</span><span class="n">iteritems</span><span class="p">())</span>
+</pre></div>
+</div>
+<p>The code seems to be quite self-explanatory, the only thing is that
+<tt class="docutils literal"><span class="pre">0:</span> <span class="pre">'ABDict'</span></tt> gives the dict a name, it&#8217;s required as pyws can&#8217;t just invent
+it. Now, restart the server and go back to python console:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">suds</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">suds</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">Client</span><span class="p">(</span><span class="s">&#39;http://localhost:8000/api/wsdl&#39;</span><span class="p">,</span> <span class="n">cache</span><span class="o">=</span><span class="bp">None</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">lst</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">factory</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="s">&#39;ns0:IntegerList&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">lst</span><span class="o">.</span><span class="n">item</span> <span class="o">=</span> <span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">client</span><span class="o">.</span><span class="n">service</span><span class="o">.</span><span class="n">double_list</span><span class="p">(</span><span class="n">lst</span><span class="p">)</span>
+<span class="go">(IntegerList){</span>
+<span class="go">   item[] =</span>
+<span class="go">      0,</span>
+<span class="go">      2,</span>
+<span class="go">      4,</span>
+<span class="go"> }</span>
+
+<span class="gp">&gt;&gt;&gt; </span><span class="n">dct</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">factory</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="s">&#39;ns0:ABDict&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">dct</span><span class="o">.</span><span class="n">a</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">dct</span><span class="o">.</span><span class="n">b</span> <span class="o">=</span> <span class="mi">2</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">client</span><span class="o">.</span><span class="n">service</span><span class="o">.</span><span class="n">double_dict</span><span class="p">(</span><span class="n">dct</span><span class="p">)</span>
+<span class="go">(ABDict){</span>
+<span class="go">   a = 2</span>
+<span class="go">   b = 4</span>
+<span class="go"> }</span>
+</pre></div>
+</div>
+<p>Pretty simple, huh?</p>
+<p>Now that you&#8217;ve done with this introduction, you may want to go
+<a class="reference internal" href="working_with_pyws.html"><em>deeper</em></a>.</p>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Getting started, part 2</a><ul>
+<li><a class="reference internal" href="#introducing-wsdl">Introducing WSDL</a></li>
+<li><a class="reference internal" href="#complex-types">Complex types</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="getting_started_part_1.html"
+                        title="previous chapter">Getting started, part 1</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="complete_reference.html"
+                        title="next chapter">Complete reference</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="_sources/getting_started_part_2.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="complete_reference.html" title="Complete reference"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="getting_started_part_1.html" title="Getting started, part 1"
+             >previous</a> |</li>
+        <li><a href="index.html">pyws dev documentation</a> &raquo;</li>
+          <li><a href="introduction.html" >Introduction</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2011, stepank.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.
+    </div>
+  </body>
+</html>
