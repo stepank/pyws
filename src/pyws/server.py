@@ -104,24 +104,15 @@ class Server(object):
         if not protocol:
             raise ProtocolNotFound(name)
 
-        if isinstance(protocol, Protocol):
-            return protocol
+        if not isinstance(protocol, Protocol):
+            raise BadProtocol(protocol)
 
-        if isinstance(protocol, type) and issubclass(protocol, Protocol):
-            return protocol()
-
-        if isinstance(protocol, dict):
-            try:
-                cls = protocol['class']
-                args = protocol['args']
-                kwargs = protocol['kwargs']
-            except KeyError:
-                raise BadProtocol(protocol)
-            return cls(*args, **kwargs)
-
-        raise BadProtocol(protocol)
+        return protocol
 
     def add_function(self, function):
+        """
+        Registers the function to the server's default fixed function manager.
+        """
         if not len(self.settings.FUNCTION_MANAGERS):
             raise ConfigurationError(
                 'Where have default function manager gone?!')
@@ -172,23 +163,14 @@ class Server(object):
                 if callable(function):
                     return function(self, request, context)
 
-                if isinstance(function, tuple):
-                    name, args = function
-                else:
-                    name, args = function, None
+                function = self.get_function(context, function)
 
-                function = self.get_function(context, name)
-
-                if function.needs_context and isinstance(context, Exception):
-                    raise context
-
-                if args is None:
-                    args = protocol.get_arguments(request, function.args)
+                args = protocol.get_arguments(request, function.args)
 
                 result = function(context, **args)
 
             response = protocol.get_response(
-                result, name, function.return_type)
+                result, function.name, function.return_type)
 
         except Error, e:
             logging.error(traceback.format_exc())

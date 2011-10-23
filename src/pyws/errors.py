@@ -26,6 +26,24 @@ class NoProtocolsRegistered(ConfigurationError):
         return 'Server has no protocols'
 
 
+class BadProtocol(ConfigurationError):
+
+    def __str__(self):
+        return 'Bad protocol: %s' % self.args[0]
+
+
+class FunctionAlreadyRegistered(ConfigurationError):
+
+    def __str__(self):
+        return 'Function %s is already registered' % self.args[0]
+
+
+class BadFunction(ConfigurationError):
+
+    def __str__(self):
+        return 'Bad function: %s' % self.args[0]
+
+
 class Error(Exception):
     error_type = ET_SERVER
 
@@ -38,16 +56,10 @@ class ProtocolError(Error):
     pass
 
 
-class ProtocolNotFound(ProtocolError):
+class ProtocolNotFound(ClientErrorTypeMixin, ProtocolError):
 
     def __str__(self):
         return 'A protocol cannot be found: %s' % self.args[0]
-
-
-class BadProtocol(ProtocolError):
-
-    def __str__(self):
-        return 'Bad protocol: %s' % self.args[0]
 
 
 class BadRequest(ClientErrorTypeMixin, ProtocolError):
@@ -74,12 +86,6 @@ class FunctionNotFound(ClientErrorTypeMixin, FunctionError):
 
     def __str__(self):
         return 'A function cannot be found: %s' % self.args[0]
-
-
-class BadFunction(FunctionError):
-
-    def __str__(self):
-        return 'Bad function: %s' % self.args[0]
 
 
 class FieldError(ClientErrorTypeMixin, Error):
