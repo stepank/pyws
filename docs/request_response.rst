@@ -3,7 +3,8 @@
 Request
 =======
 
-To be described soon...
+.. autoclass:: pyws.request.Request
+    :members: __init__
 
 
 .. _response:
@@ -11,4 +12,5 @@ To be described soon...
 Response
 ========
 
-To be described soon...
+.. autoclass:: pyws.response.Response
+    :members: text,content_type

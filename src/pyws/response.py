@@ -1,4 +1,13 @@
 class Response(object):
+    """
+    Response objects contain response information, adapters should transform it
+    using into the form suitable for the application which pyws integrated into.
+    """
+
+    #: Response text
+    text = None
+    #: Response content type
+    content_type = None
 
     def __init__(self, text, content_type='text/xml'):
         self.text = text

@@ -6,6 +6,7 @@ using a SOAP client. It is based on the
 :doc:`previous one <getting_started_part_1>`, so you'd better walk through it,
 if you hadn't before.
 
+
 Introducing WSDL
 ----------------
 
@@ -31,6 +32,7 @@ pretty to use. Open python console and let's write some code there::
 
 That's it! Isn't it awesome? No curl, HTTP, POST and so on, we just call a
 method and it just works!
+
 
 Complex types
 -------------

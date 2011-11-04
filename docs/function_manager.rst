@@ -26,6 +26,8 @@ Each pyws server has a fixed function manager preinstalled, however there is no
 restriction on how many and what function managers a server might have.
 
 
+.. _registering_function:
+
 Registering a function
 ----------------------
 

@@ -6,7 +6,6 @@ from pyws.functions.register import register
 
 # = add simple ================================================================
 
-#noinspection PyUnusedLocal
 @register()
 @register('add_integers', return_type=int, args=((int, 0), (int, 0)))
 @register('add_floats', return_type=float, args=((float, 0), (float, 0)))
@@ -41,20 +40,23 @@ def next_month(d):
 ABStringDict = {0: 'ABStringDict', 'a': str, 'b': str}
 ABIntegerDict = {0: 'ABIntegerDict', 'a': (int, 0), 'b': (int, 0)}
 
+ab_string_dict_none = lambda: {'a': '', 'b': ''}
+ab_integer_dict_none = lambda: {'a': 0, 'b': 0}
+
 @register(
     'add_string_dicts',
     return_type=ABStringDict,
     args=(
-        (ABStringDict, {'a': '', 'b': ''}),
-        (ABStringDict, {'a': '', 'b': ''}),
+        (ABStringDict, ab_string_dict_none),
+        (ABStringDict, ab_string_dict_none),
     ),
 )
 @register(
     'add_integer_dicts',
     return_type=ABIntegerDict,
     args=(
-        (ABIntegerDict, {'a': 0, 'b': 0}),
-        (ABIntegerDict, {'a': 0, 'b': 0}),
+        (ABIntegerDict, ab_integer_dict_none),
+        (ABIntegerDict, ab_integer_dict_none),
     ),
 )
 def add_dicts(p, q):

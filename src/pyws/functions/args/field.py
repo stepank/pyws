@@ -12,10 +12,11 @@ class Field(object):
     def __init__(self, name, type_, none_value=None):
         """
         ``name`` is the name of a field. ``type_`` is its type and
-        ``none_value`` represents an empty value. ``type_`` can be specified
-        in both standard and simplified form, more on that read in chapter
-        :ref:`type_specification`. ``none_value`` is used to replace ``None``,
-        if field's ``none_value`` is ``None`` then that of its type is used.
+        ``none_value`` represents an empty value, callables are accepted as
+        well. ``type_`` can be specified in both standard and simplified form,
+        more on that read in chapter :ref:`type_specification`. ``none_value``
+        is used to replace ``None``, if field's ``none_value`` is ``None`` then
+        that of its type is used.
         """
         self.name = name
         self.type = TypeFactory(type_)

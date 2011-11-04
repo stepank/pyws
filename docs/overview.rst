@@ -40,7 +40,6 @@ SOAP specific features:
 What will be done next
 ----------------------
 
-* documentation, comments and unit tests,
 * installation script and instructions,
 * maybe, declarative function arguments description (smth like Django models),
 * other `issues <https://github.com/stepank/pyws/issues>`_.

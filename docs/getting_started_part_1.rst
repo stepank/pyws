@@ -4,6 +4,7 @@ Getting started, part 1
 In this tutorial we are going to install pyws SOAP server providing WSDL,
 add there some functions and test it.
 
+
 Environment
 -----------
 
@@ -23,6 +24,7 @@ bash, then this should work::
 
 For testing purposes we'll use curl.
 
+
 Project
 -------
 
@@ -37,6 +39,7 @@ Here we will create a file ``server.py``, which we are going to edit::
 
 NOTE: You need to turn off ``django.middleware.csrf.CsrfViewMiddleware`` in
 ``settings.py``, otherwise you may encounter problems.
+
 
 Some code
 ---------
@@ -87,6 +90,7 @@ Here we binded our server to a real URL. Function ``serve`` is an adapter used
 to convert Django requests/responses to/from pyws requests/responses.
 
 That's it! Let's test it.
+
 
 Results
 -------

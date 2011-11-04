@@ -62,6 +62,7 @@ are:
    information required by pyws to generate a proper WSDL description, it is
    not a real binding to an URL.
 
+
 Settings
 --------
 
@@ -75,6 +76,8 @@ pyws servers, you have to specify a server name to register a function to it.
 Server name is unique, thus creating two servers with the same name raises an
 exception. Default is ``None``.
 
+.. _settings_debug:
+
 DEBUG
 ^^^^^
 
@@ -82,6 +85,8 @@ If ``DEBUG`` is ``True`` a server will not catch exceptions occuring in
 registered functions, but rather it will just pass them further so that you
 could handle them your own way. For example, Django in debug mode will print a
 pretty formatted stack trace. Default is ``False``.
+
+.. _settings_protocols:
 
 PROTOCOLS
 ^^^^^^^^^
@@ -96,6 +101,8 @@ FUNCTION_MANAGERS
 
 A tuple of :ref:`function managers <function_manager>` that provide a server
 with functions. Default is a tuple of a single fixed function manager.
+
+.. _settings_create_context:
 
 CREATE_CONTEXT
 ^^^^^^^^^^^^^^
