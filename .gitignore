@@ -1,0 +1,9 @@
+*.pyc
+*.class
+*.mo
+*.log
+*.project
+*.pydevproject
+*.classpath
+*.iml
+*.idea

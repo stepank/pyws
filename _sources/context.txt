@@ -1,3 +1,5 @@
+.. _context:
+
 Context
 =======
 
@@ -33,6 +35,9 @@ In pyws this mechanism consists of the following parts:
     specified in the server settings. This function accepts exactly one
     argument, namely the context, it cleans it, if it is necessary.
 
+
+.. _authentication:
+
 Authentcation
 -------------
 
@@ -40,23 +45,18 @@ All the stuff described above can be easily used to handle authentication in
 an API.
 
 For instance, if we use :ref:`SOAP protocol <soap_protocol>`, we can
-instantiate it with the following ``headers_schema``::
+instantiate it with the following ``headers_schema``:
 
-    soap_headers_schema = {
-        0: 'Headers',
-        'username': str,
-        'password': str,
-    }
+.. literalinclude:: ../examples/authenticate.py
+    :lines: 3-7
 
 Then we can define a function creating a context that will check a username
 and a password. If the protocol is able to extract context data according to
 this schema, the function will receive a dict
-``{'username': '...', 'password': '...'}`` as its only argument::
+``{'username': '...', 'password': '...'}`` as its only argument:
 
-    def authenticate(data):
-        if data != {'username': 'user', 'password': 'pass'}:
-            raise AccessDenied(data and data.get('username'))
-        return data.get('username')
+.. literalinclude:: ../examples/authenticate.py
+    :lines: 9-12
 
 This function returns a username, that will be passed as ``context`` keyword
 argument to functions, that need a context. If you are working in thread safe

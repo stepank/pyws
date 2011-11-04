@@ -11,4 +11,3 @@ Complete reference
    context
    function
    function_manager
-   examples

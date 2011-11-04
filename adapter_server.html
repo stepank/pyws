@@ -123,14 +123,14 @@ Server name is unique, thus creating two servers with the same name raises an
 exception. Default is <tt class="docutils literal"><span class="pre">None</span></tt>.</p>
 </div>
 <div class="section" id="debug">
-<h3>DEBUG<a class="headerlink" href="#debug" title="Permalink to this headline">¶</a></h3>
+<span id="settings-debug"></span><h3>DEBUG<a class="headerlink" href="#debug" title="Permalink to this headline">¶</a></h3>
 <p>If <tt class="docutils literal"><span class="pre">DEBUG</span></tt> is <tt class="docutils literal"><span class="pre">True</span></tt> a server will not catch exceptions occuring in
 registered functions, but rather it will just pass them further so that you
 could handle them your own way. For example, Django in debug mode will print a
 pretty formatted stack trace. Default is <tt class="docutils literal"><span class="pre">False</span></tt>.</p>
 </div>
 <div class="section" id="protocols">
-<h3>PROTOCOLS<a class="headerlink" href="#protocols" title="Permalink to this headline">¶</a></h3>
+<span id="settings-protocols"></span><h3>PROTOCOLS<a class="headerlink" href="#protocols" title="Permalink to this headline">¶</a></h3>
 <p>A tuple of <a class="reference internal" href="protocol.html"><em>protocol</em></a> instances that a server will use to
 process requests. For <tt class="docutils literal"><span class="pre">SoapServer</span></tt> default is a tuple of a single SOAP
 protocol instance. For a generic <tt class="docutils literal"><span class="pre">Server</span></tt> there are no protocol predefined,
@@ -142,7 +142,7 @@ so make sure you&#8217;ve register at least one yourself.</p>
 with functions. Default is a tuple of a single fixed function manager.</p>
 </div>
 <div class="section" id="create-context">
-<h3>CREATE_CONTEXT<a class="headerlink" href="#create-context" title="Permalink to this headline">¶</a></h3>
+<span id="settings-create-context"></span><h3>CREATE_CONTEXT<a class="headerlink" href="#create-context" title="Permalink to this headline">¶</a></h3>
 <p>A function creating a context for request processing. Default is <tt class="docutils literal"><span class="pre">None</span></tt>. More
 about context handling read in chapter <a class="reference internal" href="context.html"><em>Context</em></a>.</p>
 </div>

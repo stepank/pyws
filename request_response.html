@@ -58,11 +58,44 @@
             
   <div class="section" id="request">
 <span id="id1"></span><h1>Request<a class="headerlink" href="#request" title="Permalink to this headline">¶</a></h1>
-<p>To be described soon...</p>
+<dl class="class">
+<dt id="pyws.request.Request">
+<em class="property">class </em><tt class="descclassname">pyws.request.</tt><tt class="descname">Request</tt><big>(</big><em>tail</em>, <em>text</em>, <em>GET</em>, <em>POST</em>, <em>COOKIES</em><big>)</big><a class="headerlink" href="#pyws.request.Request" title="Permalink to this definition">¶</a></dt>
+<dd><p>Request objects contain request, this information is provided by adapters
+in the way that pyws could handle it.</p>
+<dl class="method">
+<dt id="pyws.request.Request.__init__">
+<tt class="descname">__init__</tt><big>(</big><em>tail</em>, <em>text</em>, <em>GET</em>, <em>POST</em>, <em>COOKIES</em><big>)</big><a class="headerlink" href="#pyws.request.Request.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p><tt class="docutils literal"><span class="pre">tail</span></tt> is everything left from URL to which pyws server is attached.
+<tt class="docutils literal"><span class="pre">text</span></tt> is request text, <tt class="docutils literal"><span class="pre">GET</span></tt>, <tt class="docutils literal"><span class="pre">POST</span></tt> and <tt class="docutils literal"><span class="pre">COOKIES</span></tt> are dicts
+of the form <tt class="docutils literal"><span class="pre">{'param1':</span> <span class="pre">['value1',</span> <span class="pre">'value2'],</span> <span class="pre">...}</span></tt>. SOAP protocol
+requires only the first two.</p>
+</dd></dl>
+
+</dd></dl>
+
 </div>
 <div class="section" id="response">
 <span id="id2"></span><h1>Response<a class="headerlink" href="#response" title="Permalink to this headline">¶</a></h1>
-<p>To be described soon...</p>
+<dl class="class">
+<dt id="pyws.response.Response">
+<em class="property">class </em><tt class="descclassname">pyws.response.</tt><tt class="descname">Response</tt><big>(</big><em>text</em>, <em>content_type='text/xml'</em><big>)</big><a class="headerlink" href="#pyws.response.Response" title="Permalink to this definition">¶</a></dt>
+<dd><p>Response objects contain response information, adapters should transform it
+using into the form suitable for the application which pyws integrated into.</p>
+<dl class="attribute">
+<dt id="pyws.response.Response.text">
+<tt class="descname">text</tt><em class="property"> = None</em><a class="headerlink" href="#pyws.response.Response.text" title="Permalink to this definition">¶</a></dt>
+<dd><p>Response text</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyws.response.Response.content_type">
+<tt class="descname">content_type</tt><em class="property"> = None</em><a class="headerlink" href="#pyws.response.Response.content_type" title="Permalink to this definition">¶</a></dt>
+<dd><p>Response content type</p>
+</dd></dl>
+
+</dd></dl>
+
 </div>
 
 
