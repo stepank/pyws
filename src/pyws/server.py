@@ -9,6 +9,8 @@ from pyws.protocols import Protocol, SoapProtocol
 from pyws.response import Response
 from pyws.settings import Settings
 
+logger = logging.getLogger('pyws')
+
 
 class ServersDict(dict):
     default = None
@@ -142,7 +144,7 @@ class Server(object):
 
     def process_request(self, request):
 
-        logging.debug(request)
+        logger.debug(request)
 
         try:
             protocol = self.get_protocol(request)
@@ -173,17 +175,17 @@ class Server(object):
                 result, function.name, function.return_type)
 
         except Error, e:
-            logging.error(traceback.format_exc())
+            logger.error(traceback.format_exc())
             response = protocol.get_error_response(e)
         except Exception, e:
-            logging.error(traceback.format_exc())
+            logger.error(traceback.format_exc())
             client_error = hasattr(e, '__module__') or type(e) == Exception
             if not client_error and self.settings.DEBUG:
                 raise
             e.error_type = client_error and ET_CLIENT or ET_SERVER
             response = protocol.get_error_response(e)
 
-        logging.debug(response)
+        logger.debug(response)
 
         return response
 

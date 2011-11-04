@@ -65,8 +65,7 @@ TEMPLATE_LOADERS = (
     'django.template.loaders.filesystem.Loader',
 )
 
-MIDDLEWARE_CLASSES = (
-)
+MIDDLEWARE_CLASSES = ()
 
 ROOT_URLCONF = '_django.urls'
 
@@ -78,6 +77,27 @@ TEMPLATE_DIRS = (
 
 INSTALLED_APPS = ()
 
-import logging
-
-logging.basicConfig(level=logging.DEBUG)
+#noinspection PyUnresolvedReferences
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': True,
+    'formatters': {
+        'simple': {
+            'format': '%(levelname)s:%(asctime)s:%(message)s'
+        },
+    },
+    'handlers': {
+        'stdout': {
+            'level': 'DEBUG',
+            'class': 'logging.StreamHandler',
+            'formatter': 'simple',
+        },
+    },
+    'loggers': {
+        'pyws': {
+            'handlers': ['stdout'],
+            'propagate': True,
+            'level': 'DEBUG',
+        },
+    }
+}
