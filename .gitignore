@@ -7,3 +7,5 @@
 *.classpath
 *.iml
 *.idea
+dist
+*.egg-info
