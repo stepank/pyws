@@ -1,0 +1,401 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Function &mdash; pyws 1.0 documentation</title>
+    
+    <link rel="stylesheet" href="_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '',
+        VERSION:     '1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="top" title="pyws 1.0 documentation" href="index.html" />
+    <link rel="up" title="Complete reference" href="complete_reference.html" />
+    <link rel="next" title="Function manager" href="function_manager.html" />
+    <link rel="prev" title="Context" href="context.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="function_manager.html" title="Function manager"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="context.html" title="Context"
+             accesskey="P">previous</a> |</li>
+        <li><a href="index.html">pyws 1.0 documentation</a> &raquo;</li>
+          <li><a href="complete_reference.html" accesskey="U">Complete reference</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="function">
+<span id="id1"></span><h1>Function<a class="headerlink" href="#function" title="Permalink to this headline">¶</a></h1>
+<p>To implement a function, you need to inherit its class from class
+<tt class="docutils literal"><span class="pre">pyws.functions.Function</span></tt> and implement its method <tt class="docutils literal"><span class="pre">call</span></tt>, also it must
+have attributes <tt class="docutils literal"><span class="pre">name</span></tt>, <tt class="docutils literal"><span class="pre">return_type</span></tt> and <tt class="docutils literal"><span class="pre">args</span></tt>. To call a function, a
+server just calls it as any callable object, so there is a default
+implemenetation of method <tt class="docutils literal"><span class="pre">__call__</span></tt>:</p>
+<dl class="class">
+<dt id="pyws.functions.Function">
+<em class="property">class </em><tt class="descclassname">pyws.functions.</tt><tt class="descname">Function</tt><a class="headerlink" href="#pyws.functions.Function" title="Permalink to this definition">¶</a></dt>
+<dd><p>An abstract function class. Implements simple context handling and argument
+values validation.</p>
+<dl class="attribute">
+<dt id="pyws.functions.Function.name">
+<tt class="descname">name</tt><em class="property"> = None</em><a class="headerlink" href="#pyws.functions.Function.name" title="Permalink to this definition">¶</a></dt>
+<dd><p>the name of the function;</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyws.functions.Function.return_type">
+<tt class="descname">return_type</tt><em class="property"> = None</em><a class="headerlink" href="#pyws.functions.Function.return_type" title="Permalink to this definition">¶</a></dt>
+<dd><p>the type of values returning by the function (standard form only), see
+<a class="reference internal" href="#type-specification"><em>Type specification</em></a>;</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyws.functions.Function.args">
+<tt class="descname">args</tt><em class="property"> = None</em><a class="headerlink" href="#pyws.functions.Function.args" title="Permalink to this definition">¶</a></dt>
+<dd><p>function arguments specification, a <tt class="docutils literal"><span class="pre">pyws.functions.args.Dict</span></tt> type
+(standard form only) with arguments as fields, see
+<a class="reference internal" href="#arguments-specification"><em>Arguments &amp; fields specification</em></a> and <a class="reference internal" href="#type-specification"><em>Type specification</em></a>;</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyws.functions.Function.needs_context">
+<tt class="descname">needs_context</tt><em class="property"> = False</em><a class="headerlink" href="#pyws.functions.Function.needs_context" title="Permalink to this definition">¶</a></dt>
+<dd><p>shows whether the function requires a context to run.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyws.functions.Function.__call__">
+<tt class="descname">__call__</tt><big>(</big><em>context</em>, <em>**args</em><big>)</big><a class="headerlink" href="#pyws.functions.Function.__call__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Validates argument values and checks if the function requires a
+context. If it does, argument <tt class="docutils literal"><span class="pre">context</span></tt> is added to other arguments
+and method <tt class="docutils literal"><span class="pre">call</span></tt> is called.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyws.functions.Function.call">
+<tt class="descname">call</tt><big>(</big><em>**args</em><big>)</big><a class="headerlink" href="#pyws.functions.Function.call" title="Permalink to this definition">¶</a></dt>
+<dd><p>This method must implement the logic of the function. <tt class="docutils literal"><span class="pre">args</span></tt> is a
+dict of validated argument values including key <tt class="docutils literal"><span class="pre">context</span></tt> if it is
+required.</p>
+</dd></dl>
+
+</dd></dl>
+
+<div class="section" id="native-function-adapter">
+<h2>Native function adapter<a class="headerlink" href="#native-function-adapter" title="Permalink to this headline">¶</a></h2>
+<p>However, there is an easier way to implement a function, namely using
+<tt class="docutils literal"><span class="pre">pyws.functions.NativeFunctionAdapter</span></tt> class:</p>
+<dl class="class">
+<dt id="pyws.functions.NativeFunctionAdapter">
+<em class="property">class </em><tt class="descclassname">pyws.functions.</tt><tt class="descname">NativeFunctionAdapter</tt><big>(</big><em>origin</em>, <em>name=None</em>, <em>return_type=&lt;type 'str'&gt;</em>, <em>args=None</em>, <em>needs_context=False</em><big>)</big><a class="headerlink" href="#pyws.functions.NativeFunctionAdapter" title="Permalink to this definition">¶</a></dt>
+<dd><p>This class allows to wrap any native python function so that it behaved
+like <tt class="docutils literal"><span class="pre">pyws.functions.Function</span></tt>.</p>
+<dl class="method">
+<dt id="pyws.functions.NativeFunctionAdapter.__init__">
+<tt class="descname">__init__</tt><big>(</big><em>origin</em>, <em>name=None</em>, <em>return_type=&lt;type 'str'&gt;</em>, <em>args=None</em>, <em>needs_context=False</em><big>)</big><a class="headerlink" href="#pyws.functions.NativeFunctionAdapter.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p><tt class="docutils literal"><span class="pre">origin</span></tt> is a native Python function to be wrapped.
+<tt class="docutils literal"><span class="pre">name</span></tt> is the name of the function, if it is not specified,
+<tt class="docutils literal"><span class="pre">origin.__name__</span></tt> is used. <tt class="docutils literal"><span class="pre">return_type</span></tt> and <tt class="docutils literal"><span class="pre">needs_context</span></tt>
+correspond to <tt class="docutils literal"><span class="pre">pyws.functions.Function</span></tt> arguments. <tt class="docutils literal"><span class="pre">args</span></tt> is a
+tuple, each of its elements may be:</p>
+<ul class="simple">
+<li>a type,</li>
+<li>a tuple, first element is a type, second is a value representing an
+empty one.</li>
+</ul>
+<p>If <tt class="docutils literal"><span class="pre">args</span></tt> is not specified all arguments will be treated as strings.
+Argument names are infered from <tt class="docutils literal"><span class="pre">origin.func_code.co_varnames</span></tt>.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyws.functions.NativeFunctionAdapter.call">
+<tt class="descname">call</tt><big>(</big><em>**args</em><big>)</big><a class="headerlink" href="#pyws.functions.NativeFunctionAdapter.call" title="Permalink to this definition">¶</a></dt>
+<dd><p>Simply calls origin function with <tt class="docutils literal"><span class="pre">args</span></tt> argument values.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="arguments-fields-specification">
+<span id="arguments-specification"></span><h2>Arguments &amp; fields specification<a class="headerlink" href="#arguments-fields-specification" title="Permalink to this headline">¶</a></h2>
+<p>One of the main differences between python and WSDL is that the former uses
+duck typing, whereas the latter requires strict types specification, therefore
+we need to be able to specify types. In most cases, when you need to specify an
+argument or a field, you can do it in two forms:</p>
+<ul class="simple">
+<li>standard, a <tt class="docutils literal"><span class="pre">Field</span></tt> object,</li>
+<li>simplified, a tuple of arguments for a <tt class="docutils literal"><span class="pre">Field</span></tt> object.</li>
+</ul>
+<dl class="class">
+<dt id="pyws.functions.args.field.Field">
+<em class="property">class </em><tt class="descclassname">pyws.functions.args.field.</tt><tt class="descname">Field</tt><big>(</big><em>name</em>, <em>type_</em>, <em>none_value=None</em><big>)</big><a class="headerlink" href="#pyws.functions.args.field.Field" title="Permalink to this definition">¶</a></dt>
+<dd><p>A field combines a name, a type and a value that represents an empty value.</p>
+<dl class="method">
+<dt id="pyws.functions.args.field.Field.__init__">
+<tt class="descname">__init__</tt><big>(</big><em>name</em>, <em>type_</em>, <em>none_value=None</em><big>)</big><a class="headerlink" href="#pyws.functions.args.field.Field.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p><tt class="docutils literal"><span class="pre">name</span></tt> is the name of a field. <tt class="docutils literal"><span class="pre">type_</span></tt> is its type and
+<tt class="docutils literal"><span class="pre">none_value</span></tt> represents an empty value, callables are accepted as
+well. <tt class="docutils literal"><span class="pre">type_</span></tt> can be specified in both standard and simplified form,
+more on that read in chapter <a class="reference internal" href="#type-specification"><em>Type specification</em></a>. <tt class="docutils literal"><span class="pre">none_value</span></tt>
+is used to replace <tt class="docutils literal"><span class="pre">None</span></tt>, if field&#8217;s <tt class="docutils literal"><span class="pre">none_value</span></tt> is <tt class="docutils literal"><span class="pre">None</span></tt> then
+that of its type is used.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="type-specification">
+<span id="id2"></span><h2>Type specification<a class="headerlink" href="#type-specification" title="Permalink to this headline">¶</a></h2>
+<p>In pyws in all cases, when you need to specify a type, you can do it in two
+forms:</p>
+<ul class="simple">
+<li>standard, using one of <tt class="docutils literal"><span class="pre">pyws.functions.args.types.base.Type</span></tt> successors,</li>
+<li>simplified, using python built-in types,</li>
+</ul>
+<p>pyws supports the following types:</p>
+<span class="target" id="module-pyws.functions.args.types"></span><dl class="class">
+<dt id="pyws.functions.args.types.String">
+<em class="property">class </em><tt class="descclassname">pyws.functions.args.types.</tt><tt class="descname">String</tt><a class="headerlink" href="#pyws.functions.args.types.String" title="Permalink to this definition">¶</a></dt>
+<dd><p>Represents strings, simplified form is <tt class="docutils literal"><span class="pre">str</span></tt>, default <tt class="docutils literal"><span class="pre">none_value</span></tt> is
+<tt class="docutils literal"><span class="pre">''</span></tt>.</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="pyws.functions.args.types.Integer">
+<em class="property">class </em><tt class="descclassname">pyws.functions.args.types.</tt><tt class="descname">Integer</tt><a class="headerlink" href="#pyws.functions.args.types.Integer" title="Permalink to this definition">¶</a></dt>
+<dd><p>Represents integer numbers, simplified form is <tt class="docutils literal"><span class="pre">int</span></tt>, default
+<tt class="docutils literal"><span class="pre">none_value</span></tt> is <tt class="docutils literal"><span class="pre">None</span></tt>.</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="pyws.functions.args.types.Float">
+<em class="property">class </em><tt class="descclassname">pyws.functions.args.types.</tt><tt class="descname">Float</tt><a class="headerlink" href="#pyws.functions.args.types.Float" title="Permalink to this definition">¶</a></dt>
+<dd><p>Represents floating point numbers, simplified form is <tt class="docutils literal"><span class="pre">float</span></tt>, default
+<tt class="docutils literal"><span class="pre">none_value</span></tt> is <tt class="docutils literal"><span class="pre">None</span></tt>.</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="pyws.functions.args.types.Date">
+<em class="property">class </em><tt class="descclassname">pyws.functions.args.types.</tt><tt class="descname">Date</tt><a class="headerlink" href="#pyws.functions.args.types.Date" title="Permalink to this definition">¶</a></dt>
+<dd><p>Represents date values, simplified form is <tt class="docutils literal"><span class="pre">date</span></tt>, default
+<tt class="docutils literal"><span class="pre">none_value</span></tt> is <tt class="docutils literal"><span class="pre">None</span></tt>.</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="pyws.functions.args.types.DateTime">
+<em class="property">class </em><tt class="descclassname">pyws.functions.args.types.</tt><tt class="descname">DateTime</tt><a class="headerlink" href="#pyws.functions.args.types.DateTime" title="Permalink to this definition">¶</a></dt>
+<dd><p>Represents datetime values, simplified form is <tt class="docutils literal"><span class="pre">datetime</span></tt>, default
+<tt class="docutils literal"><span class="pre">none_value</span></tt> is <tt class="docutils literal"><span class="pre">None</span></tt>.</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="pyws.functions.args.types.Dict">
+<em class="property">class </em><tt class="descclassname">pyws.functions.args.types.</tt><tt class="descname">Dict</tt><a class="headerlink" href="#pyws.functions.args.types.Dict" title="Permalink to this definition">¶</a></dt>
+<dd><p>Represents dicts, simplified form is
+<tt class="docutils literal"><span class="pre">{0:</span> <span class="pre">'dict_name',</span> <span class="pre">'field_name':</span> <span class="pre">field_type,</span> <span class="pre">...}</span></tt>, default <tt class="docutils literal"><span class="pre">none_value</span></tt>
+is <tt class="docutils literal"><span class="pre">None</span></tt>. If you want to create your own <tt class="docutils literal"><span class="pre">Dict</span></tt> type, you have to
+inherit it from this type and specify <tt class="docutils literal"><span class="pre">fields</span></tt> attribute, which is a list
+of fields in either standard or simplified form. Or you can just use
+<tt class="docutils literal"><span class="pre">DictOf</span></tt> factory or simplified form. The name is required because it
+will be propagated to WSDL description.</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="pyws.functions.args.types.List">
+<em class="property">class </em><tt class="descclassname">pyws.functions.args.types.</tt><tt class="descname">List</tt><a class="headerlink" href="#pyws.functions.args.types.List" title="Permalink to this definition">¶</a></dt>
+<dd><p>Represents lists, simplified form is <tt class="docutils literal"><span class="pre">[element_type]</span></tt>, default
+<tt class="docutils literal"><span class="pre">none_value</span></tt> is <tt class="docutils literal"><span class="pre">[]</span></tt>. If you want to create your own <tt class="docutils literal"><span class="pre">List</span></tt> type,
+you have to inherit it from this type and specify <tt class="docutils literal"><span class="pre">element_type</span></tt>
+attribute in either standard or simplified form, and
+<tt class="docutils literal"><span class="pre">element_none_value</span></tt>. Or you can just use <tt class="docutils literal"><span class="pre">ListOf</span></tt> factory or
+simplified form.</p>
+</dd></dl>
+
+<p>Three helper functions are also at your disposal:</p>
+<dl class="function">
+<dt id="pyws.functions.args.DictOf">
+<tt class="descclassname">pyws.functions.args.</tt><tt class="descname">DictOf</tt><big>(</big><em>name</em>, <em>*fields</em><big>)</big><a class="headerlink" href="#pyws.functions.args.DictOf" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function creates a dict type with the specified name and fields.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pyws.functions.args</span> <span class="kn">import</span> <span class="n">DictOf</span><span class="p">,</span> <span class="n">Field</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">dct</span> <span class="o">=</span> <span class="n">DictOf</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="s">&#39;HelloWorldDict&#39;</span><span class="p">,</span> <span class="n">Field</span><span class="p">(</span><span class="s">&#39;hello&#39;</span><span class="p">,</span> <span class="nb">str</span><span class="p">),</span> <span class="n">Field</span><span class="p">(</span><span class="s">&#39;hello&#39;</span><span class="p">,</span> <span class="nb">int</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">issubclass</span><span class="p">(</span><span class="n">dct</span><span class="p">,</span> <span class="n">Dict</span><span class="p">)</span>
+<span class="go">True</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">dct</span><span class="o">.</span><span class="n">__name__</span>
+<span class="go">&#39;HelloWorldDict&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">len</span><span class="p">(</span><span class="n">dct</span><span class="o">.</span><span class="n">fields</span><span class="p">)</span>
+<span class="go">2</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="function">
+<dt id="pyws.functions.args.ListOf">
+<tt class="descclassname">pyws.functions.args.</tt><tt class="descname">ListOf</tt><big>(</big><em>element_type</em>, <em>element_none_value=None</em><big>)</big><a class="headerlink" href="#pyws.functions.args.ListOf" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function creates a list type with element type <tt class="docutils literal"><span class="pre">element_type</span></tt> and an
+empty element value <tt class="docutils literal"><span class="pre">element_none_value</span></tt>.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pyws.functions.args</span> <span class="kn">import</span> <span class="n">Integer</span><span class="p">,</span> <span class="n">ListOf</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">lst</span> <span class="o">=</span> <span class="n">ListOf</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">issubclass</span><span class="p">(</span><span class="n">lst</span><span class="p">,</span> <span class="n">List</span><span class="p">)</span>
+<span class="go">True</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">lst</span><span class="o">.</span><span class="n">__name__</span>
+<span class="go">&#39;IntegerList&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">lst</span><span class="o">.</span><span class="n">element_type</span> <span class="o">==</span> <span class="n">Integer</span>
+<span class="go">True</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="function">
+<dt id="pyws.functions.args.TypeFactory">
+<tt class="descclassname">pyws.functions.args.</tt><tt class="descname">TypeFactory</tt><big>(</big><em>type_</em><big>)</big><a class="headerlink" href="#pyws.functions.args.TypeFactory" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function creates a standard form type from a simplified form.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">date</span><span class="p">,</span> <span class="n">datetime</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pyws.functions.args</span> <span class="kn">import</span> <span class="n">TypeFactory</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pyws.functions.args</span> <span class="kn">import</span> <span class="n">String</span><span class="p">,</span> <span class="n">Integer</span><span class="p">,</span> <span class="n">Float</span><span class="p">,</span> <span class="n">Date</span><span class="p">,</span> <span class="n">DateTime</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">TypeFactory</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span> <span class="o">==</span> <span class="n">String</span>
+<span class="go">True</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">TypeFactory</span><span class="p">(</span><span class="nb">float</span><span class="p">)</span> <span class="o">==</span> <span class="n">Float</span>
+<span class="go">True</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">TypeFactory</span><span class="p">(</span><span class="n">date</span><span class="p">)</span> <span class="o">==</span> <span class="n">Date</span>
+<span class="go">True</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">TypeFactory</span><span class="p">(</span><span class="n">datetime</span><span class="p">)</span> <span class="o">==</span> <span class="n">DateTime</span>
+<span class="go">True</span>
+</pre></div>
+</div>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">operator</span> <span class="kn">import</span> <span class="n">attrgetter</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pyws.functions.args</span> <span class="kn">import</span> <span class="n">Dict</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">dct</span> <span class="o">=</span> <span class="n">TypeFactory</span><span class="p">({</span><span class="mi">0</span><span class="p">:</span> <span class="s">&#39;HelloWorldDict&#39;</span><span class="p">,</span> <span class="s">&#39;hello&#39;</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="s">&#39;world&#39;</span><span class="p">:</span> <span class="nb">int</span><span class="p">})</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">issubclass</span><span class="p">(</span><span class="n">dct</span><span class="p">,</span> <span class="n">Dict</span><span class="p">)</span>
+<span class="go">True</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">dct</span><span class="o">.</span><span class="n">__name__</span>
+<span class="go">&#39;HelloWorldDict&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">fields</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">dct</span><span class="o">.</span><span class="n">fields</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="n">attrgetter</span><span class="p">(</span><span class="s">&#39;name&#39;</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">len</span><span class="p">(</span><span class="n">dct</span><span class="o">.</span><span class="n">fields</span><span class="p">)</span>
+<span class="go">2</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">fields</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="s">&#39;hello&#39;</span>
+<span class="go">True</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">fields</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="n">String</span>
+<span class="go">True</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">fields</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="s">&#39;world&#39;</span>
+<span class="go">True</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">fields</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="n">Integer</span>
+<span class="go">True</span>
+</pre></div>
+</div>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pyws.functions.args</span> <span class="kn">import</span> <span class="n">List</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">lst</span> <span class="o">=</span> <span class="n">TypeFactory</span><span class="p">([</span><span class="nb">int</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">issubclass</span><span class="p">(</span><span class="n">lst</span><span class="p">,</span> <span class="n">List</span><span class="p">)</span>
+<span class="go">True</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">lst</span><span class="o">.</span><span class="n">__name__</span>
+<span class="go">&#39;IntegerList&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">lst</span><span class="o">.</span><span class="n">element_type</span> <span class="o">==</span> <span class="n">Integer</span>
+<span class="go">True</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Function</a><ul>
+<li><a class="reference internal" href="#native-function-adapter">Native function adapter</a></li>
+<li><a class="reference internal" href="#arguments-fields-specification">Arguments &amp; fields specification</a></li>
+<li><a class="reference internal" href="#type-specification">Type specification</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="context.html"
+                        title="previous chapter">Context</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="function_manager.html"
+                        title="next chapter">Function manager</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="_sources/function.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="function_manager.html" title="Function manager"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="context.html" title="Context"
+             >previous</a> |</li>
+        <li><a href="index.html">pyws 1.0 documentation</a> &raquo;</li>
+          <li><a href="complete_reference.html" >Complete reference</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2011, stepank.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.
+    </div>
+  </body>
+</html>
