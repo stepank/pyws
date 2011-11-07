@@ -123,7 +123,7 @@ class SoapProtocol(Protocol):
 
     def __init__(
             self, service_name, tns, location,
-            headers_schema, *args, **kwargs):
+            headers_schema=None, *args, **kwargs):
         """
         ``service_name`` gives a name to the server, it is used to generate
         WSDL file. ``tns`` is a root namespace, where all the stuff lives, SOAP
@@ -134,10 +134,12 @@ class SoapProtocol(Protocol):
         request headers. Other arguments are passed to parent constructor.
         """
 
-        headers_schema = TypeFactory(headers_schema)
+        headers_schema = headers_schema and TypeFactory(headers_schema)
 
         super(SoapProtocol, self).__init__(
-            HeadersContextDataGetter(headers_schema), *args, **kwargs)
+            headers_schema and
+                HeadersContextDataGetter(headers_schema) or None,
+            *args, **kwargs)
 
         self.service_name = service_name
         self.tns = tns
