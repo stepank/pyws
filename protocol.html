@@ -137,7 +137,7 @@ convenience. The only thing you need to do to implement context data extraction
 from a request is to specify headers schema:</p>
 <dl class="method">
 <dt id="pyws.protocols.soap.SoapProtocol.__init__">
-<tt class="descclassname">SoapProtocol.</tt><tt class="descname">__init__</tt><big>(</big><em>service_name</em>, <em>tns</em>, <em>location</em>, <em>headers_schema</em>, <em>*args</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#pyws.protocols.soap.SoapProtocol.__init__" title="Permalink to this definition">¶</a></dt>
+<tt class="descclassname">SoapProtocol.</tt><tt class="descname">__init__</tt><big>(</big><em>service_name</em>, <em>tns</em>, <em>location</em>, <em>headers_schema=None</em>, <em>*args</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#pyws.protocols.soap.SoapProtocol.__init__" title="Permalink to this definition">¶</a></dt>
 <dd><p><tt class="docutils literal"><span class="pre">service_name</span></tt> gives a name to the server, it is used to generate
 WSDL file. <tt class="docutils literal"><span class="pre">tns</span></tt> is a root namespace, where all the stuff lives, SOAP
 is based on XML, so no wonder we need it. <tt class="docutils literal"><span class="pre">location</span></tt> tells the

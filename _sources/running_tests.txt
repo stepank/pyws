@@ -17,9 +17,7 @@ In any case we need a pyws server running. The easiest way to do this is::
     cd [pyws_dir]/examples/_django
     python manage.py runserver
 
-This will run a server based on Django, so, of course, we need to have Django
-installed. I tested it on Django 1.3. The server will be running on
-``localhost:8000``.
+This will run a server based on Django on ``localhost:8000``.
 
 
 PHP

@@ -10,6 +10,11 @@ in pyws. The next chapter :ref:`running_tests` explains how to run a server and
 all the tests. All of this can also be considered examples of pyws usage since
 much of pyws's functionality is used here.
 
+To proceed with the tests, first, ensure that pyws is installed, read more
+about :ref:`requirements` and :ref:`installation`. However, you should note
+that tests and examples can be found in source distribution archive or in your
+on clone of the repo.
+
 
 Directory structure
 -------------------

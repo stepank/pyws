@@ -62,30 +62,20 @@
 add there some functions and test it.</p>
 <div class="section" id="environment">
 <h2>Environment<a class="headerlink" href="#environment" title="Permalink to this headline">¶</a></h2>
-<p>pyws itself depends only on python standard library and lxml. I&#8217;ve tested pyws
-mainly on python 2.6.</p>
-<p>pyws is written the way that it might be integrated with any web server and
-python framework; it is achieved by using different adapters. However, at
-present, the only existing adapter is the one for Django. Therefore, of course,
-we need to have Django installed, I use Django 1.3.</p>
-<p>Also pyws root directory (i.e. the one containing <tt class="docutils literal"><span class="pre">examples</span></tt>, <tt class="docutils literal"><span class="pre">src</span></tt> and
-<tt class="docutils literal"><span class="pre">tests</span></tt> directories) should be the part of your <tt class="docutils literal"><span class="pre">PYTHONPATH</span></tt>. If you use
-bash, then this should work:</p>
-<div class="highlight-python"><pre>export PYTHONPATH=/path/to/pyws/root/directory</pre>
-</div>
-<p>For testing purposes we&#8217;ll use curl.</p>
+<p>Ensure that pyws is installed, read more about <a class="reference internal" href="index.html#requirements"><em>Requirements</em></a> and
+<a class="reference internal" href="index.html#installation"><em>Installation</em></a>. Also you will need curl for testing purposes.</p>
 </div>
 <div class="section" id="project">
 <h2>Project<a class="headerlink" href="#project" title="Permalink to this headline">¶</a></h2>
 <p>Let&#8217;s create a new Django project:</p>
-<div class="highlight-python"><pre>$ django-admin startproject pywstest
+<div class="highlight-python"><pre>$ django-admin.py startproject pywstest
 $ cd !$</pre>
 </div>
+<p>If you have problems with this refer to
+<a class="reference external" href="https://docs.djangoproject.com/en/1.3/intro/tutorial01/#creating-a-project">Django documentation</a>.</p>
 <p>Here we will create a file <tt class="docutils literal"><span class="pre">server.py</span></tt>, which we are going to edit:</p>
 <div class="highlight-python"><pre>$ touch server.py</pre>
 </div>
-<p>NOTE: You need to turn off <tt class="docutils literal"><span class="pre">django.middleware.csrf.CsrfViewMiddleware</span></tt> in
-<tt class="docutils literal"><span class="pre">settings.py</span></tt>, otherwise you may encounter problems.</p>
 </div>
 <div class="section" id="some-code">
 <h2>Some code<a class="headerlink" href="#some-code" title="Permalink to this headline">¶</a></h2>
@@ -115,7 +105,7 @@ binding to URL will appear later.</li>
 it up with a special decorator, so it will look like this:</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">pyws.functions.register</span> <span class="kn">import</span> <span class="n">register</span>
 
-<span class="nd">@register</span>
+<span class="nd">@register</span><span class="p">()</span>
 <span class="k">def</span> <span class="nf">add_simple</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">):</span>
     <span class="k">return</span> <span class="n">a</span> <span class="o">+</span> <span class="n">b</span>
 </pre></div>
@@ -138,7 +128,7 @@ to convert Django requests/responses to/from pyws requests/responses.</p>
 <div class="section" id="results">
 <h2>Results<a class="headerlink" href="#results" title="Permalink to this headline">¶</a></h2>
 <p>First, start a server:</p>
-<div class="highlight-python"><pre>$ python ./manage.py runserver</pre>
+<div class="highlight-python"><pre>$ python manage.py runserver</pre>
 </div>
 <p>Prepare a request:</p>
 <div class="highlight-python"><pre>$ cat &gt; request
