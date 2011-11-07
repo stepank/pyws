@@ -8,21 +8,8 @@ add there some functions and test it.
 Environment
 -----------
 
-pyws itself depends only on python standard library and lxml. I've tested pyws
-mainly on python 2.6.
-
-pyws is written the way that it might be integrated with any web server and
-python framework; it is achieved by using different adapters. However, at
-present, the only existing adapter is the one for Django. Therefore, of course,
-we need to have Django installed, I use Django 1.3.
-
-Also pyws root directory (i.e. the one containing ``examples``, ``src`` and
-``tests`` directories) should be the part of your ``PYTHONPATH``. If you use
-bash, then this should work::
-
-    export PYTHONPATH=/path/to/pyws/root/directory
-
-For testing purposes we'll use curl.
+Ensure that pyws is installed, read more about :ref:`requirements` and
+:ref:`installation`. Also you will need curl for testing purposes.
 
 
 Project
@@ -30,15 +17,15 @@ Project
 
 Let's create a new Django project::
 
-    $ django-admin startproject pywstest
+    $ django-admin.py startproject pywstest
     $ cd !$
+
+If you have problems with this refer to
+`Django documentation <https://docs.djangoproject.com/en/1.3/intro/tutorial01/#creating-a-project>`_.
 
 Here we will create a file ``server.py``, which we are going to edit::
 
     $ touch server.py
-
-NOTE: You need to turn off ``django.middleware.csrf.CsrfViewMiddleware`` in
-``settings.py``, otherwise you may encounter problems.
 
 
 Some code
@@ -71,7 +58,7 @@ it up with a special decorator, so it will look like this::
 
     from pyws.functions.register import register
 
-    @register
+    @register()
     def add_simple(a, b):
         return a + b
 
@@ -97,7 +84,7 @@ Results
 
 First, start a server::
 
-    $ python ./manage.py runserver
+    $ python manage.py runserver
 
 Prepare a request::
 
