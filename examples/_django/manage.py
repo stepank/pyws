@@ -2,7 +2,11 @@
 from django.core.management import execute_manager
 
 import os, sys
-sys.path += [os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))]
+dirname = os.path.dirname(__file__)
+sys.path += [
+    os.path.abspath(os.path.join(dirname, '..')),
+    os.path.abspath(os.path.join(dirname, '..', '..', 'src')),
+]
 
 try:
     #noinspection PyUnresolvedReferences
