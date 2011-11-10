@@ -12,17 +12,21 @@ Basically, an adapter does the following things:
 #. transforms the response into something that matters in the context of your
    application.
 
-For instance, Django adapter is a simple function
-``pyws.adapters._django.serve``. It has three arguments:
 
-#. a Django request object,
-#. a tail, i.e. everything that's left from an URL, which adapter is attached
-   to,
-#. a pyws server object.
+Django adapter
+--------------
 
-First two are the context of фт application, function ``serve`` transforms them
-into a pyws request object. Then it feeds the request to the server, gets a
-response and transforms it into a Django response object.
+Django adapter is a simple function:
+
+.. autofunction:: pyws.adapters._django.serve
+
+
+Twisted Web adapter
+-------------------
+
+Twisted Web adapter is a simple function:
+
+.. autofunction:: pyws.adapters._twisted.serve
 
 
 .. _server:

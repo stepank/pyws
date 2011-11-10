@@ -67,17 +67,42 @@
 <li>transforms the response into something that matters in the context of your
 application.</li>
 </ol>
-<p>For instance, Django adapter is a simple function
-<tt class="docutils literal"><span class="pre">pyws.adapters._django.serve</span></tt>. It has three arguments:</p>
+<div class="section" id="django-adapter">
+<h2>Django adapter<a class="headerlink" href="#django-adapter" title="Permalink to this headline">¶</a></h2>
+<p>Django adapter is a simple function:</p>
+<dl class="function">
+<dt id="pyws.adapters._django.serve">
+<tt class="descclassname">pyws.adapters._django.</tt><tt class="descname">serve</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#pyws.adapters._django.serve" title="Permalink to this definition">¶</a></dt>
+<dd><p>Django adapter. It has three arguments:</p>
 <ol class="arabic simple">
-<li>a Django request object,</li>
-<li>a tail, i.e. everything that&#8217;s left from an URL, which adapter is attached
-to,</li>
+<li><tt class="docutils literal"><span class="pre">request</span></tt> is a Django request object,</li>
+<li><tt class="docutils literal"><span class="pre">tail</span></tt> is everything that&#8217;s left from an URL, which adapter is
+attached to,</li>
+<li><tt class="docutils literal"><span class="pre">server</span></tt> is a pyws server object.</li>
+</ol>
+<p>First two are the context of an application, function <tt class="docutils literal"><span class="pre">serve</span></tt> transforms
+them into a pyws request object. Then it feeds the request to the server,
+gets a response and transforms it into a Django response object.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="twisted-web-adapter">
+<h2>Twisted Web adapter<a class="headerlink" href="#twisted-web-adapter" title="Permalink to this headline">¶</a></h2>
+<p>Twisted Web adapter is a simple function:</p>
+<dl class="function">
+<dt id="pyws.adapters._twisted.serve">
+<tt class="descclassname">pyws.adapters._twisted.</tt><tt class="descname">serve</tt><big>(</big><em>request</em>, <em>server</em><big>)</big><a class="headerlink" href="#pyws.adapters._twisted.serve" title="Permalink to this definition">¶</a></dt>
+<dd><p>Twisted Web adapter. It has two arguments:</p>
+<ol class="arabic simple">
+<li>a Twisted Web request object,</li>
 <li>a pyws server object.</li>
 </ol>
-<p>First two are the context of фт application, function <tt class="docutils literal"><span class="pre">serve</span></tt> transforms them
-into a pyws request object. Then it feeds the request to the server, gets a
-response and transforms it into a Django response object.</p>
+<p>First one is the context of an application, function <tt class="docutils literal"><span class="pre">serve</span></tt> transforms
+it into a pyws request object. Then it feeds the request to the server,
+gets a response, sets header <tt class="docutils literal"><span class="pre">Content-Type</span></tt> and returns response text.</p>
+</dd></dl>
+
+</div>
 </div>
 <div class="section" id="server">
 <span id="id2"></span><h1>Server<a class="headerlink" href="#server" title="Permalink to this headline">¶</a></h1>
@@ -162,7 +187,11 @@ about context handling read in chapter <a class="reference internal" href="conte
         <div class="sphinxsidebarwrapper">
   <h3><a href="index.html">Table Of Contents</a></h3>
   <ul>
-<li><a class="reference internal" href="#">Adapter</a></li>
+<li><a class="reference internal" href="#">Adapter</a><ul>
+<li><a class="reference internal" href="#django-adapter">Django adapter</a></li>
+<li><a class="reference internal" href="#twisted-web-adapter">Twisted Web adapter</a></li>
+</ul>
+</li>
 <li><a class="reference internal" href="#server">Server</a><ul>
 <li><a class="reference internal" href="#settings">Settings</a><ul>
 <li><a class="reference internal" href="#name">NAME</a></li>
