@@ -15,7 +15,7 @@ def serve(request, tail, server):
 
     First two are the context of an application, function ``serve`` transforms
     them into a pyws request object. Then it feeds the request to the server,
-    gets a response and transforms it into a Django response object.
+    gets the response and transforms it into a Django response object.
     """
 
     request = Request(tail,

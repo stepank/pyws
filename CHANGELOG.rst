@@ -24,4 +24,4 @@ SOAP specific features:
 Development version
 -------------------
 
-* added Twisted Web adapter.
+* added adapters for Twisted Web ans WSGI.

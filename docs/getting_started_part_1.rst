@@ -9,7 +9,8 @@ Environment
 -----------
 
 Ensure that pyws is installed, read more about :ref:`requirements` and
-:ref:`installation`. Also you will need curl for testing purposes.
+:ref:`installation`, this tutorial is based on Django adapter, so check up its
+requirements too. Also you will need curl for testing purposes.
 
 
 Project

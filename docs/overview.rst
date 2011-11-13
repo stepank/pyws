@@ -22,7 +22,7 @@ What is already implemented
 Common features:
 
 * a web framework agnostic server,
-* adapters for Django and Twisted Web,
+* adapters for Django, Twisted Web, WSGI,
 * protocols: SOAP 1.1, REST, JSON,
 * context handling & authentication framework,
 * a simple types description system.
