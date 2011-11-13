@@ -22,7 +22,7 @@ A more sophisticated scenario, however, might also include:
 How it works
 ============
 
-The entry point to pyws is an :ref:`adapter <adapter>`. It can be anything you
+The entry point to pyws is an :ref:`adapter <adapters>`. It can be anything you
 want and its role is to tie pyws and your project together. An adapter must
 create and feed a :ref:`request <request>` object to a :ref:`server <server>`,
 after which the latter performs several actions.

@@ -5,7 +5,8 @@ Complete reference
    :maxdepth: 2
 
    working_with_pyws
-   adapter_server
+   adapters
+   server
    request_response
    protocol
    context

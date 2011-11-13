@@ -102,7 +102,7 @@ look at its contents:</p>
 adapter <tt class="docutils literal"><span class="pre">serve</span></tt>, the adapter will pass everything left after <tt class="docutils literal"><span class="pre">api/</span></tt> to
 pyws request object as its first argument <tt class="docutils literal"><span class="pre">tail</span></tt>. Also the adapter will
 create a <tt class="docutils literal"><span class="pre">django.http.HttpResponse</span></tt> object.</p>
-<p>Read more in chapters <a class="reference internal" href="adapter_server.html#adapter"><em>Adapter</em></a>, <a class="reference internal" href="adapter_server.html#server"><em>Server</em></a>, <a class="reference internal" href="request_response.html#request"><em>Request</em></a>,
+<p>Read more in chapters <em class="xref std std-ref">adapter</em>, <a class="reference internal" href="server.html#server"><em>Server</em></a>, <a class="reference internal" href="request_response.html#request"><em>Request</em></a>,
 <a class="reference internal" href="request_response.html#response"><em>Response</em></a>.</p>
 </div>
 <div class="section" id="server-settings">
@@ -120,14 +120,14 @@ as SOAP protocol parameters.</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="n">DEBUG</span> <span class="o">=</span> <span class="bp">True</span>
 </pre></div>
 </div>
-<p>That&#8217;s easy, turns debug mode on, read more in <a class="reference internal" href="adapter_server.html#settings-debug"><em>DEBUG</em></a>.</p>
+<p>That&#8217;s easy, turns debug mode on, read more in <a class="reference internal" href="server.html#settings-debug"><em>DEBUG</em></a>.</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="n">PROTOCOLS</span> <span class="o">=</span> <span class="p">(</span>
     <span class="n">RestProtocol</span><span class="p">(),</span>
     <span class="n">JsonProtocol</span><span class="p">(),</span>
 <span class="p">)</span>
 </pre></div>
 </div>
-<p>Additional protocols for the server, read more in <a class="reference internal" href="adapter_server.html#settings-protocols"><em>PROTOCOLS</em></a>.</p>
+<p>Additional protocols for the server, read more in <a class="reference internal" href="server.html#settings-protocols"><em>PROTOCOLS</em></a>.</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="n">SOAP_PROTOCOL_PARAMS</span> <span class="o">=</span> <span class="p">(</span>
     <span class="s">&#39;Test&#39;</span><span class="p">,</span>
     <span class="s">&#39;http://example.com/&#39;</span><span class="p">,</span>
@@ -141,7 +141,7 @@ as SOAP protocol parameters.</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="n">CREATE_CONTEXT</span> <span class="o">=</span> <span class="n">authenticate</span>
 </pre></div>
 </div>
-<p>The function creating a context , read more in <a class="reference internal" href="adapter_server.html#settings-create-context"><em>CREATE_CONTEXT</em></a>.</p>
+<p>The function creating a context , read more in <a class="reference internal" href="server.html#settings-create-context"><em>CREATE_CONTEXT</em></a>.</p>
 </div>
 <div class="section" id="authentication">
 <h2>Authentication<a class="headerlink" href="#authentication" title="Permalink to this headline">¶</a></h2>

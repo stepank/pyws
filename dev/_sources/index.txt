@@ -18,9 +18,11 @@ pyws itself depends only on python standard library and lxml. I've tested pyws
 on python 2.6 and python 2.7.
 
 pyws is written the way that it might be integrated with any web server and
-python framework; it is achieved by using different adapters. However, at
-present, the only existing adapter is the one for Django. Therefore, of course,
-you need to have Django installed, I use Django 1.3.
+python framework; it is achieved by using different adapters:
+
+* :ref:`django_adapter` depends on Django, I use 1.3;
+* :ref:`twisted_web_adapter` depends on Twisted, I use 11.0.0;
+* :ref:`wsgi_adapter` depends on wsgiref, I use 0.1.2.
 
 
 .. _installation:
