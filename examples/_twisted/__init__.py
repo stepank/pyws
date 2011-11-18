@@ -1,13 +1,11 @@
+#!/usr/bin/env python
+
 from twisted.internet import reactor
 from twisted.web.resource import Resource
 from twisted.web.server import Site
 
 import os, sys
-dirname = os.path.dirname(__file__)
-sys.path += [
-    os.path.abspath(os.path.join(dirname, '..')),
-    os.path.abspath(os.path.join(dirname, '..', '..', 'src')),
-]
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
 from pyws.adapters._twisted import serve
 

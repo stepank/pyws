@@ -13,7 +13,7 @@ much of pyws's functionality is used here.
 To proceed with the tests, first, ensure that pyws is installed, read more
 about :ref:`requirements` and :ref:`installation`. However, you should note
 that tests and examples can be found in source distribution archive or in your
-on clone of the repo.
+own clone of the repo.
 
 
 Directory structure
@@ -50,7 +50,7 @@ adapter ``serve``, the adapter will pass everything left after ``api/`` to
 pyws request object as its first argument ``tail``. Also the adapter will
 create a ``django.http.HttpResponse`` object.
 
-Read more in chapters :ref:`adapter`, :ref:`server`, :ref:`request`,
+Read more in chapters :ref:`adapters`, :ref:`server`, :ref:`request`,
 :ref:`response`.
 
 

@@ -1,11 +1,9 @@
+#!/usr/bin/env python
+
 from wsgiref.simple_server import make_server
 
 import os, sys
-dirname = os.path.dirname(__file__)
-sys.path += [
-    os.path.abspath(os.path.join(dirname, '..')),
-    os.path.abspath(os.path.join(dirname, '..', '..', 'src')),
-]
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
 from pyws.adapters._wsgi import create_application
 

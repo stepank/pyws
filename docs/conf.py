@@ -16,11 +16,8 @@
 # documentation root, use os.path.abspath to make it absolute, like shown here.
 
 import os, sys
-dirname = os.path.dirname(__file__)
-sys.path += [
-    os.path.abspath(os.path.join(dirname, '..', 'examples')),
-    os.path.abspath(os.path.join(dirname, '..', 'src')),
-]
+sys.path.append(
+    os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'examples')))
 
 os.environ['DJANGO_SETTINGS_MODULE'] = '_django.settings'
 
