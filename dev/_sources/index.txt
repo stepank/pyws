@@ -42,6 +42,11 @@ run::
 
     python setup.py install
 
+To install pyws in development mode (read more about `development mode
+<http://packages.python.org/distribute/setuptools.html#development-mode>`_)::
+
+    python setup.py develop
+
 
 Topics
 ========
