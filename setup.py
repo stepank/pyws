@@ -9,13 +9,22 @@ from setuptools import find_packages
 
 import pyws
 
+short_description = 'Python SOAP server providing WSDL'
+long_description = \
+    '''
+    Pyws is a project, which purpuse is to help developers to expose some
+    functions of their systems as public APIs via SOAP with WSDL description.
+    The main idea is to let developers completely forget about SOAP itself and
+    make creating of APIs fast and painless.
+    '''
+
 setup(
     name='pyws',
     version=pyws.VERSION,
     package_dir={'': 'src'},
     packages=find_packages('src'),
-    description='Python SOAP server providing WSDL',
-    long_description='Python SOAP server providing WSDL',
+    description=short_description,
+    long_description=long_description,
     keywords=['soap', 'wsdl', 'server', 'xml', 'json'],
     author='Stepan N. Kornyakov',
     author_email='stepankk@gmail.com',
