@@ -1,3 +1,4 @@
+from pyws.adapters import get_http_response_code_num
 from pyws.request import Request
 
 def serve(request, server):
@@ -19,5 +20,6 @@ def serve(request, server):
     response = server.process_request(request_)
 
     request.setHeader('Content-Type', response.content_type)
+    request.setResponseCode(get_http_response_code_num(response))
 
     return response.text

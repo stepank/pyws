@@ -1,6 +1,7 @@
 from django.http import HttpResponse
 from django.views.decorators.csrf import csrf_exempt
 
+from pyws.adapters import get_http_response_code_num
 from pyws.request import Request
 
 @csrf_exempt
@@ -24,4 +25,6 @@ def serve(request, tail, server):
 
     response = server.process_request(request)
 
-    return HttpResponse(response.text, content_type=response.content_type)
+    return HttpResponse(
+        response.text, content_type=response.content_type,
+        status=get_http_response_code_num(response))

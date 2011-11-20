@@ -1,11 +1,16 @@
 import json
 
+from functools import partial
+
 from pyws.errors import BadRequest
 from pyws.response import Response
 
 from base import Protocol
 
 __all__ = ('RestProtocol', 'JsonProtocol', )
+
+create_response = partial(Response, content_type='application/json')
+create_error_response = partial(create_response, status=Response.STATUS_ERROR)
 
 
 class RestProtocol(Protocol):
@@ -20,10 +25,11 @@ class RestProtocol(Protocol):
             for k, v in request.GET.iteritems())
 
     def get_response(self, result, name, return_type):
-        return Response(json.dumps({'result': result}))
+        return create_response(json.dumps({'result': result}))
 
     def get_error_response(self, error):
-        return Response(json.dumps({'error': self.get_error(error)}))
+        return create_error_response(
+            json.dumps({'error': self.get_error(error)}))
 
 
 class JsonProtocol(RestProtocol):

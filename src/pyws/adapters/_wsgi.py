@@ -2,6 +2,7 @@ from urlparse import parse_qs
 
 from wsgiref import util
 
+from pyws.adapters import get_http_response_code
 from pyws.request import Request
 
 def create_application(server, root_url):
@@ -27,6 +28,7 @@ def create_application(server, root_url):
         result = []
 
         content_type = 'text/plain'
+        status = '200 OK'
         if tail.startswith(root):
 
             tail = tail[len(root):]
@@ -44,9 +46,9 @@ def create_application(server, root_url):
                 Request(tail, text, get, post, {}))
 
             content_type = response.content_type
+            status = get_http_response_code(response)
             result.append(response.text)
 
-        status = '200 OK'
         headers = [('Content-type', content_type)]
         start_response(status, headers)
 

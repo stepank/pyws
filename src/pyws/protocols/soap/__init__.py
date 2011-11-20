@@ -1,6 +1,7 @@
 import itertools as it
 import re
 
+from functools import partial
 from lxml import etree as et
 
 from pyws.errors import BadRequest, ConfigurationError
@@ -13,6 +14,10 @@ from wsdl import WsdlGenerator
 
 TAG_NAME_RE = re.compile('{(.*?)}(.*)')
 ENCODING = 'utf-8'
+
+create_response = partial(Response, content_type='text/xml')
+create_error_response = partial(create_response, status=Response.STATUS_ERROR)
+
 
 def get_element_name(el):
     name = el.tag
@@ -100,7 +105,7 @@ class HeadersContextDataGetter(object):
         if not self.headers_schema:
             return None
 
-        env = request.parsed_data.xml. \
+        env = request.parsed_data.xml.\
             xpath('/se:Envelope', namespaces=SoapProtocol.namespaces)[0]
 
         header = env.xpath(
@@ -212,8 +217,8 @@ class SoapProtocol(Protocol):
         xml = et.Element(soap_env_name('Envelope'), nsmap=self.namespaces)
         xml.append(body)
 
-        return Response(et.tostring(xml,
-            encoding=ENCODING, pretty_print=True, xml_declaration=True))
+        return create_response(et.tostring(
+            xml, encoding=ENCODING, pretty_print=True, xml_declaration=True))
 
     def get_error_response(self, error):
 
@@ -234,13 +239,13 @@ class SoapProtocol(Protocol):
         xml = et.Element(soap_env_name('Envelope'), nsmap=self.namespaces)
         xml.append(body)
 
-        return Response(et.tostring(xml,
-            encoding=ENCODING, pretty_print=True, xml_declaration=True))
+        return create_error_response(et.tostring(
+            xml, encoding=ENCODING, pretty_print=True, xml_declaration=True))
 
     #noinspection PyUnusedLocal
     def get_wsdl(self, server, request, context):
-        return Response(
+        return create_response(
             WsdlGenerator(
                 server, context,
                 self.service_name, self.tns, self.location,
-                self.headers_schema, ENCODING).get_wsdl())
+                self.headers_schema,ENCODING).get_wsdl())
