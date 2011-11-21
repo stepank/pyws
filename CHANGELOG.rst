@@ -1,3 +1,11 @@
+Development version
+-------------------
+
+* added adapters for Twisted Web and WSGI, issue #7,
+* adapters report HTTP 500 response code on error, issue #4,
+* examples rely on pyws being installed (at least in development mode).
+
+
 Version 1.0
 -----------
 
@@ -19,9 +27,3 @@ SOAP specific features:
   allowed),
 * integration tests: PHP, Java (Axis 1.4), Python (suds), WS-I Basic Profile
   1.2.
-
-
-Development version
--------------------
-
-* added adapters for Twisted Web ans WSGI.
