@@ -4,6 +4,7 @@ import doctest
 import sys
 
 modules = [
+    'pyws.functions',
     'pyws.functions.register',
     'pyws.functions.args.types',
     'pyws.functions.args.types.complex',
