@@ -75,15 +75,16 @@ python framework; it is achieved by using different adapters:</p>
 <p>The easiest way to install pyws is to run:</p>
 <div class="highlight-python"><pre>easy_install pyws</pre>
 </div>
-<p>Or you might download source distribution archive from PyPI (available at
-<a class="reference external" href="http://pypi.python.org/pypi/pyws">http://pypi.python.org/pypi/pyws</a>) or clone GIT repo. In these cases you ought
-to change current directory to the root of pyws&#8217;s distribution package and
-run:</p>
-<div class="highlight-python"><pre>python setup.py install</pre>
+<p>Or you might download a source distribution archive from PyPI (available at
+<a class="reference external" href="http://pypi.python.org/pypi/pyws">http://pypi.python.org/pypi/pyws</a>) or clone the GIT repo. In these cases you
+ought to change current directory to the root of pyws&#8217;s distribution package
+and run:</p>
+<div class="highlight-python"><pre>make install</pre>
 </div>
 <p>To install pyws in development mode (read more about <a class="reference external" href="http://packages.python.org/distribute/setuptools.html#development-mode">development mode</a>):</p>
-<div class="highlight-python"><pre>python setup.py develop</pre>
+<div class="highlight-python"><pre>make develop</pre>
 </div>
+<p>(They both actually run <cite>python setup.py ...</cite>.)</p>
 </div>
 <div class="section" id="topics">
 <h1>Topics<a class="headerlink" href="#topics" title="Permalink to this headline">¶</a></h1>
@@ -149,18 +150,17 @@ run:</p>
 <li class="toctree-l1"><a class="reference internal" href="integration_tests.html">Integration tests &amp; examples</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="test_bench.html">Test bench</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="test_bench.html#directory-structure">Directory structure</a></li>
-<li class="toctree-l3"><a class="reference internal" href="test_bench.html#attaching-a-server-to-an-url">Attaching a server to an URL</a></li>
 <li class="toctree-l3"><a class="reference internal" href="test_bench.html#server-settings">Server &amp; settings</a></li>
 <li class="toctree-l3"><a class="reference internal" href="test_bench.html#authentication">Authentication</a></li>
 <li class="toctree-l3"><a class="reference internal" href="test_bench.html#functions">Functions</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="running_tests.html">Running tests</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="running_tests.html#running-a-server">Running a server</a></li>
 <li class="toctree-l3"><a class="reference internal" href="running_tests.html#php">PHP</a></li>
 <li class="toctree-l3"><a class="reference internal" href="running_tests.html#java-axis">Java (Axis)</a></li>
 <li class="toctree-l3"><a class="reference internal" href="running_tests.html#python-suds">Python (suds)</a></li>
 <li class="toctree-l3"><a class="reference internal" href="running_tests.html#ws-i-basic-profile-1-2">WS-I Basic Profile 1.2</a></li>
+<li class="toctree-l3"><a class="reference internal" href="running_tests.html#known-problems">Known problems</a></li>
 </ul>
 </li>
 </ul>

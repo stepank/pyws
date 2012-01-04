@@ -135,8 +135,76 @@ tuple, each of its elements may be:</p>
 <li>a tuple, first element is a type, second is a value representing an
 empty one.</li>
 </ul>
-<p>If <tt class="docutils literal"><span class="pre">args</span></tt> is not specified all arguments will be treated as strings.
-Argument names are infered from <tt class="docutils literal"><span class="pre">origin.func_code.co_varnames</span></tt>.</p>
+<p>If <tt class="docutils literal"><span class="pre">args</span></tt> is not specified all arguments will be treated as strings,
+the same thing with <tt class="docutils literal"><span class="pre">return_type</span></tt>. Argument names are infered from
+<tt class="docutils literal"><span class="pre">origin.func_code.co_varnames</span></tt>.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pyws.functions</span> <span class="kn">import</span> <span class="n">NativeFunctionAdapter</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pyws.functions.args</span> <span class="kn">import</span> <span class="n">String</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pyws.functions.args</span> <span class="kn">import</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">Field</span>
+</pre></div>
+</div>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="k">def</span> <span class="nf">nothing</span><span class="p">():</span>
+<span class="gp">... </span>    <span class="k">pass</span>
+</pre></div>
+</div>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">a</span> <span class="o">=</span> <span class="n">NativeFunctionAdapter</span><span class="p">(</span><span class="n">nothing</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">a</span><span class="o">.</span><span class="n">origin</span> <span class="o">==</span> <span class="n">nothing</span>
+<span class="go">True</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">a</span><span class="o">.</span><span class="n">name</span>
+<span class="go">&#39;nothing&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">a</span><span class="o">.</span><span class="n">return_type</span>
+<span class="go">&lt;class &#39;pyws.functions.args.types.simple.String&#39;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">issubclass</span><span class="p">(</span><span class="n">a</span><span class="o">.</span><span class="n">args</span><span class="p">,</span> <span class="n">Dict</span><span class="p">)</span>
+<span class="go">True</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">a</span><span class="o">.</span><span class="n">args</span><span class="o">.</span><span class="n">fields</span>
+<span class="go">[]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">a</span><span class="p">(</span><span class="n">context</span><span class="o">=</span><span class="bp">None</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="k">def</span> <span class="nf">add</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="k">return</span> <span class="n">a</span> <span class="o">+</span> <span class="n">b</span>
+</pre></div>
+</div>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">a</span> <span class="o">=</span> <span class="n">NativeFunctionAdapter</span><span class="p">(</span><span class="n">add</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s">&#39;concat&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">a</span><span class="o">.</span><span class="n">name</span>
+<span class="go">&#39;concat&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">len</span><span class="p">(</span><span class="n">a</span><span class="o">.</span><span class="n">args</span><span class="o">.</span><span class="n">fields</span><span class="p">)</span>
+<span class="go">2</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">f</span> <span class="o">=</span> <span class="n">a</span><span class="o">.</span><span class="n">args</span><span class="o">.</span><span class="n">fields</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">type</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+<span class="go">&lt;class &#39;pyws.functions.args.field.Field&#39;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">f</span><span class="o">.</span><span class="n">name</span>
+<span class="go">&#39;a&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">f</span><span class="o">.</span><span class="n">type</span>
+<span class="go">&lt;class &#39;pyws.functions.args.types.simple.String&#39;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">a</span><span class="o">.</span><span class="n">return_type</span>
+<span class="go">&lt;class &#39;pyws.functions.args.types.simple.String&#39;&gt;</span>
+</pre></div>
+</div>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">a</span> <span class="o">=</span> <span class="n">NativeFunctionAdapter</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="n">add</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">name</span><span class="o">=</span><span class="s">&#39;sum&#39;</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">return_type</span><span class="o">=</span><span class="nb">int</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">args</span><span class="o">=</span><span class="p">(</span><span class="nb">int</span><span class="p">,),</span>
+<span class="gp">... </span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">a</span><span class="o">.</span><span class="n">name</span>
+<span class="go">&#39;sum&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">f</span> <span class="o">=</span> <span class="n">a</span><span class="o">.</span><span class="n">args</span><span class="o">.</span><span class="n">fields</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">f</span><span class="o">.</span><span class="n">type</span>
+<span class="go">&lt;class &#39;pyws.functions.args.types.simple.Integer&#39;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">a</span><span class="o">.</span><span class="n">return_type</span>
+<span class="go">&lt;class &#39;pyws.functions.args.types.simple.Integer&#39;&gt;</span>
+</pre></div>
+</div>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="k">def</span> <span class="nf">empty_value</span><span class="p">(</span><span class="n">a</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="k">return</span> <span class="s">&#39;hello &#39;</span> <span class="o">+</span> <span class="n">a</span>
+</pre></div>
+</div>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">a</span> <span class="o">=</span> <span class="n">NativeFunctionAdapter</span><span class="p">(</span><span class="n">empty_value</span><span class="p">,</span> <span class="n">args</span><span class="o">=</span><span class="p">((</span><span class="nb">str</span><span class="p">,</span> <span class="s">&#39;world&#39;</span><span class="p">),</span> <span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">a</span><span class="p">(</span><span class="n">context</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">a</span><span class="o">=</span><span class="bp">None</span><span class="p">)</span> <span class="c"># note that &#39;world&#39; is used instead of None</span>
+<span class="go">&#39;hello world&#39;</span>
+</pre></div>
+</div>
 </dd></dl>
 
 <dl class="method">

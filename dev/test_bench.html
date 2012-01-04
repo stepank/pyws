@@ -65,45 +65,27 @@ in pyws. The next chapter <a class="reference internal" href="running_tests.html
 all the tests. All of this can also be considered examples of pyws usage since
 much of pyws&#8217;s functionality is used here.</p>
 <p>To proceed with the tests, first, ensure that pyws is installed, read more
-about <a class="reference internal" href="index.html#requirements"><em>Requirements</em></a> and <a class="reference internal" href="index.html#installation"><em>Installation</em></a>. However, you should note
-that tests and examples can be found in source distribution archive or in your
-own clone of the repo.</p>
+about <a class="reference internal" href="index.html#requirements"><em>Requirements</em></a> and <a class="reference internal" href="index.html#installation"><em>Installation</em></a>, this tutorial is based on
+WSGI adapter, so check up its requirements too. You should also note that tests
+and examples can be found only in a source distribution archive or in your own
+clone of the GIT repo.</p>
 <div class="section" id="directory-structure">
 <h2>Directory structure<a class="headerlink" href="#directory-structure" title="Permalink to this headline">¶</a></h2>
 <p>In pyws distribution, there is a directory called <tt class="docutils literal"><span class="pre">examples</span></tt>, let&#8217;s have a
 look at its contents:</p>
 <div class="highlight-python"><pre>examples/
-    _django/                # a simple django project for testing
-        templates/
-            test_form.html
-        __init__.py
-        manage.py
-        settings.py
-        urls.py
+    _django/                # not for now ...
+    _twisted/               # not for now either ...
+    _wsgi/
+        __init__.py         # a simple WSGI application for testing
+        Makefile            # a make file to automate running and stopping
+                            # a server
     __init__.py
     api_settings.py         # common pyws server settings
     authenticate.py         # authentication related stuff
     functions.py            # example functions
     server.py               # server definition</pre>
 </div>
-</div>
-<div class="section" id="attaching-a-server-to-an-url">
-<h2>Attaching a server to an URL<a class="headerlink" href="#attaching-a-server-to-an-url" title="Permalink to this headline">¶</a></h2>
-<p>Take a look at <tt class="docutils literal"><span class="pre">urls.py</span></tt>:</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">pyws.adapters._django</span> <span class="kn">import</span> <span class="n">serve</span>
-
-<span class="n">urlpatterns</span> <span class="o">=</span> <span class="n">patterns</span><span class="p">(</span><span class="s">&#39;&#39;</span><span class="p">,</span>
-    <span class="n">url</span><span class="p">(</span><span class="s">&#39;^$&#39;</span><span class="p">,</span> <span class="n">test_form</span><span class="p">),</span>
-    <span class="n">url</span><span class="p">(</span><span class="s">&#39;^api/(.*)&#39;</span><span class="p">,</span> <span class="n">serve</span><span class="p">,</span> <span class="p">{</span><span class="s">&#39;server&#39;</span><span class="p">:</span> <span class="n">server</span><span class="p">})</span>
-<span class="p">)</span>
-</pre></div>
-</div>
-<p>In the last line, we attached the server <tt class="docutils literal"><span class="pre">server</span></tt> to an URL using Django
-adapter <tt class="docutils literal"><span class="pre">serve</span></tt>, the adapter will pass everything left after <tt class="docutils literal"><span class="pre">api/</span></tt> to
-pyws request object as its first argument <tt class="docutils literal"><span class="pre">tail</span></tt>. Also the adapter will
-create a <tt class="docutils literal"><span class="pre">django.http.HttpResponse</span></tt> object.</p>
-<p>Read more in chapters <a class="reference internal" href="adapters.html#adapters"><em>Adapters</em></a>, <a class="reference internal" href="server.html#server"><em>Server</em></a>, <a class="reference internal" href="request_response.html#request"><em>Request</em></a>,
-<a class="reference internal" href="request_response.html#response"><em>Response</em></a>.</p>
 </div>
 <div class="section" id="server-settings">
 <h2>Server &amp; settings<a class="headerlink" href="#server-settings" title="Permalink to this headline">¶</a></h2>
@@ -321,7 +303,6 @@ represent field names and their types.</p>
   <ul>
 <li><a class="reference internal" href="#">Test bench</a><ul>
 <li><a class="reference internal" href="#directory-structure">Directory structure</a></li>
-<li><a class="reference internal" href="#attaching-a-server-to-an-url">Attaching a server to an URL</a></li>
 <li><a class="reference internal" href="#server-settings">Server &amp; settings</a></li>
 <li><a class="reference internal" href="#authentication">Authentication</a></li>
 <li><a class="reference internal" href="#functions">Functions</a><ul>
