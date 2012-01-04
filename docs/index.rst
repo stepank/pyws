@@ -35,17 +35,19 @@ The easiest way to install pyws is to run::
 
     easy_install pyws
 
-Or you might download source distribution archive from PyPI (available at
-http://pypi.python.org/pypi/pyws) or clone GIT repo. In these cases you ought
-to change current directory to the root of pyws's distribution package and
-run::
+Or you might download a source distribution archive from PyPI (available at
+http://pypi.python.org/pypi/pyws) or clone the GIT repo. In these cases you
+ought to change current directory to the root of pyws's distribution package
+and run::
 
-    python setup.py install
+    make install
 
 To install pyws in development mode (read more about `development mode
 <http://packages.python.org/distribute/setuptools.html#development-mode>`_)::
 
-    python setup.py develop
+    make develop
+
+(They both actually run `python setup.py ...`.)
 
 
 Topics

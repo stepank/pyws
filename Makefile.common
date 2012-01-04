@@ -1,0 +1,2 @@
+SHELL=/bin/bash
+TEST_DIR=$(ROOT_DIR)/tests

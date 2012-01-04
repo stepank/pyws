@@ -3,7 +3,8 @@ Development version
 
 * added adapters for Twisted Web and WSGI, issue #7,
 * adapters report HTTP 500 response code on error, issue #4,
-* examples rely on pyws being installed (at least in development mode).
+* examples and tests rely on pyws being installed (at least in dev mode),
+* lots of automation (mainly for tests) using make files, issue #11.
 
 
 Version 1.0

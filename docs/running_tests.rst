@@ -5,19 +5,18 @@ Running tests
 =============
 
 This chapter explains how to run pyws interoperability tests, for detailed
-description of the test bench refer to :ref:`test_bench`. These tests can also
+description of the test bench, refer to :ref:`test_bench`. These tests can also
 be treated as examples of how different clients work with pyws.
 
+You can run all the tests (except WS-I Basic Profile ones, about which read
+below) using one single command::
 
-Running a server
-----------------
+    make
 
-In any case we need a pyws server running. The easiest way to do this is::
+However, each set of tests has it own requirements, which you can learn below.
 
-    cd [pyws_dir]/examples/_django
-    python manage.py runserver
-
-This will run a server based on Django on ``localhost:8000``.
+In any case we need a pyws server running, but all tests deal with it
+themselves, so don't bother yourself with it and just keep reading.
 
 
 PHP
@@ -31,18 +30,9 @@ a WSDL file, I use a slightly modified version of ``wsdl2php.php`` script
 (the original comes from http://www.urdalen.no/wsdl2php/, support of ``date``
 type was added), so this script is included in the project.
 
-Download WSDL file and build PHP classes::
+Running PHP tests is easy::
 
-    cd [pyws_dir]/tests/php
-    ./build.sh
-
-Run the tests::
-
-    ./run.sh
-
-To clean generated PHP classes and WSDL file::
-
-    ./clean.sh
+    make
 
 
 Java (Axis)
@@ -56,18 +46,9 @@ to have Apache Axis and JUnit4 installed, I use Apache Axis 1.4 and JUnit
 ``JAVA_DIR`` to the directory containing Java libraries. In my case it is
 ``/usr/share/java``.
 
-Download WSDL file and build Java classes::
+To run Java tests, again, just run::
 
-    cd [pyws_dir]/tests/java/axis
-    ./build.sh
-
-Run the tests::
-
-    ./run.sh
-
-To clean generated Java classes and WSDL file::
-
-    ./clean.sh
+    make
 
 
 Python (suds)
@@ -77,20 +58,9 @@ Base directory is ``[pyws_dir]/tests/python/suds``.
 
 We need to have suds and unittest2 installed.
 
-Download WSDL file::
+You might have guessed::
 
-    cd [pyws_dir]/tests/python/suds
-    ./build.sh
-
-Run the tests::
-
-    ./run.sh
-
-To clean generated WSDL file::
-
-    ./clean.sh
-
-suds does not generate any classes, so we don't need do worry about it.
+    make
 
 
 WS-I Basic Profile 1.2
@@ -105,22 +75,26 @@ Requirements are the same as for Axis integration tests, except that we don't
 need JUnit, but we do need an XSLT 2.0 processor. I use Saxon B 0.9, if you
 use another one, you should specify it in ``xslt.sh`` in variable ``SAXON``.
 
-Download WS-I test tools::
-
-    cd [pyws_dir]/tests/java/ws-i
-    ./build.sh
-
 Run the test::
 
-    ./run.sh
+    make
 
-This script will generate ``report.xml`` file. All we have to do is to open
-it (for example, with Mozilla Firefox Web browser) and check if there are any
-"failed" assertions. If there ain't any, then it's OK. Otherwise, you can find
-further in the document the causes of the failure and report it to me :). But I
-find it unlikely, I usually run this test too.
+It will download WS-I Test Tools (about 6MB) and generate ``report.xml`` file.
+All we have to do is to open it (for example, with Mozilla Firefox Web browser)
+and check if there are any "failed" assertions. If there ain't any, then it's
+OK. Otherwise, you can find further in the document the causes of the failure
+and report them to me :). But I find it unlikely, I usually run this test too.
 
-To clean generated files and WSDL file::
+To clean generated report files::
 
-    ./clean.sh
+    make clean_report
+
+
+Known problems
+--------------
+
+In rare cases, a pyws server is not halted after the tests (have figured why so
+far), so you'll have to kill it yourself, this command might help::
+
+    ps ax | grep 'python __init__.py' | grep -v grep
 
