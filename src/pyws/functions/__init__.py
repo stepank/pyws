@@ -68,8 +68,68 @@ class NativeFunctionAdapter(Function):
         * a tuple, first element is a type, second is a value representing an
           empty one.
 
-        If ``args`` is not specified all arguments will be treated as strings.
-        Argument names are infered from ``origin.func_code.co_varnames``.
+        If ``args`` is not specified all arguments will be treated as strings,
+        the same thing with ``return_type``. Argument names are infered from
+        ``origin.func_code.co_varnames``.
+
+        >>> from pyws.functions import NativeFunctionAdapter
+        >>> from pyws.functions.args import String
+        >>> from pyws.functions.args import Dict, Field
+
+        >>> def nothing():
+        ...     pass
+
+        >>> a = NativeFunctionAdapter(nothing)
+        >>> a.origin == nothing
+        True
+        >>> a.name
+        'nothing'
+        >>> a.return_type
+        <class 'pyws.functions.args.types.simple.String'>
+        >>> issubclass(a.args, Dict)
+        True
+        >>> a.args.fields
+        []
+        >>> a(context=None)
+
+        >>> def add(a, b):
+        ...     return a + b
+
+        >>> a = NativeFunctionAdapter(add, name='concat')
+        >>> a.name
+        'concat'
+        >>> len(a.args.fields)
+        2
+        >>> f = a.args.fields[0]
+        >>> type(f)
+        <class 'pyws.functions.args.field.Field'>
+        >>> f.name
+        'a'
+        >>> f.type
+        <class 'pyws.functions.args.types.simple.String'>
+        >>> a.return_type
+        <class 'pyws.functions.args.types.simple.String'>
+
+        >>> a = NativeFunctionAdapter(
+        ...     add,
+        ...     name='sum',
+        ...     return_type=int,
+        ...     args=(int,),
+        ... )
+        >>> a.name
+        'sum'
+        >>> f = a.args.fields[0]
+        >>> f.type
+        <class 'pyws.functions.args.types.simple.Integer'>
+        >>> a.return_type
+        <class 'pyws.functions.args.types.simple.Integer'>
+
+        >>> def empty_value(a):
+        ...     return 'hello ' + a
+
+        >>> a = NativeFunctionAdapter(empty_value, args=((str, 'world'), ))
+        >>> a(context=None, a=None) # note that 'world' is used instead of None
+        'hello world'
         """
 
         self.origin = origin
