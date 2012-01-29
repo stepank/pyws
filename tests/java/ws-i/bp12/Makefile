@@ -1,4 +1,4 @@
-ROOT_DIR=$(shell pwd)/../../..
+ROOT_DIR=$(shell pwd)/../../../..
 
 include $(ROOT_DIR)/Makefile.common
 include $(TEST_DIR)/Makefile.common
@@ -13,7 +13,8 @@ build_local:
 	mkdir -p $(BP12_DIR)
 	unzip wsi-test-tools.zip -d $(TEMP_DIR)
 	unzip $(TEMP_DIR)/BPAnalyzer-1.2-Final.zip -d $(BP12_DIR)
-	rm -f wsi-test-tools.zip $(TEMP_DIR)/BPAnalyzer-1.2-Final.zip
+	rm -f wsi-test-tools.zip
+	rm -f $(TEMP_DIR)/BPAnalyzer-1.2-Final.zip
 	./xslt.sh $(JLIB_DIR) \
 		$(BP12_DIR)/make-plugins.xsl \
 		$(BP12_DIR)/BasicProfile-1.2.xml \
@@ -38,4 +39,4 @@ clean_local:
 	rm -rf testlog.xml $(TEMP_DIR)
 
 clean_report:
-	rm -rf report.xml report.xsl common.xsl
+	rm -r report.xml report.xsl common.xsl

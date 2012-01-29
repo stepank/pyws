@@ -1,19 +1,1 @@
 JLIB_DIR?=/usr/share/java
-
-JARS=wsdl4j.jar \
-    jaxrpc.jar \
-    commons-discovery.jar \
-    commons-logging-adapters.jar \
-    commons-logging-api.jar \
-    commons-logging.jar \
-    axis.jar \
-    junit4.jar \
-    hamcrest-core.jar \
-    activation.jar \
-    gnumail.jar
-
-CP=$(shell for j in $(JARS); do \
-    echo -n "$(JLIB_DIR)/$$j:"; \
-done)
-
-JAVA_CP=$(CP)

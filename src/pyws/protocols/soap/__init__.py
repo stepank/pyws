@@ -197,7 +197,7 @@ class SoapProtocol(Protocol):
     def get_function(self, request):
 
         if request.tail == 'wsdl':
-            return self.get_wsdl
+            return partial(self.get_wsdl, rpc=bool(request.GET.get('rpc')))
 
         return self.parse_request(request).func_name
 
@@ -243,9 +243,9 @@ class SoapProtocol(Protocol):
             xml, encoding=ENCODING, pretty_print=True, xml_declaration=True))
 
     #noinspection PyUnusedLocal
-    def get_wsdl(self, server, request, context):
+    def get_wsdl(self, server, request, context, rpc=False):
         return create_response(
             WsdlGenerator(
                 server, context,
                 self.service_name, self.tns, self.location,
-                self.headers_schema,ENCODING).get_wsdl())
+                self.headers_schema, ENCODING, rpc=rpc).get_wsdl())

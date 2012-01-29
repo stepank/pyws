@@ -1,4 +1,6 @@
+#noinspection PyUnresolvedReferences
 from pyws.functions.args import DictOf, TypeFactory
+from pyws.utils import cached_property
 
 __all__ = ('Function', 'NativeFunctionAdapter', )
 
@@ -35,6 +37,15 @@ class Function(object):
                 raise context
             args[CONTEXT_ARG_NAME] = context
         return self.call(**args)
+
+    @cached_property
+    def type_name(self):
+        return self.name
+
+    @cached_property
+    def wrapped_return_type(self):
+        return args.DictOf(
+            self.type_name + '_result', args.Field('result', self.return_type))
 
     def validate(self, args):
         return self.args.validate(args)
@@ -149,7 +160,7 @@ class NativeFunctionAdapter(Function):
             map(lambda arg: isinstance(arg, tuple) and arg or (arg,), args)))
 
         # Build arguments specification
-        self.args = DictOf(self.name.capitalize() + 'Function', *args_)
+        self.args = DictOf(self.type_name, *args_)
 
     def call(self, **args):
         """
