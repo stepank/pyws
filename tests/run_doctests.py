@@ -8,6 +8,7 @@ modules = [
     'pyws.functions.register',
     'pyws.functions.args.types',
     'pyws.functions.args.types.complex',
+    'pyws.protocols.soap',
 ]
 
 if __name__ == '__main__':

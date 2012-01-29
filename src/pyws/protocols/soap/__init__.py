@@ -32,14 +32,11 @@ def xml2obj(xml, schema):
     children = xml.getchildren()
     if not children:
         if xml.text is None:
-            result = None
-        else:
-            result = unicode(xml.text)
-    elif issubclass(schema, List):
-        result = []
-        for child in children:
-            result.append(xml2obj(child, schema.element_type))
-    elif issubclass(schema, Dict):
+            return None
+        return unicode(xml.text)
+    if issubclass(schema, List):
+        return [xml2obj(child, schema.element_type) for child in children]
+    if issubclass(schema, Dict):
         result = {}
         schema = dict((field.name, field.type) for field in schema.fields)
         for child in children:
@@ -51,9 +48,8 @@ def xml2obj(xml, schema):
                 if not isinstance(result[name], list):
                     result[name] = [result[name]]
                 result[name].append(obj)
-    else:
-        raise BadRequest('Couldn\'t decode XML')
-    return result
+        return result
+    raise BadRequest('Couldn\'t decode XML')
 
 def obj2xml(root, contents, schema=None, namespace=None):
     kwargs = namespace and {'namespace': namespace} or {}
@@ -92,29 +88,44 @@ def get_axis_package_name(ns):
         lambda s: re.sub('[^\w]', '_', s), res + mo.group(2).split('/'))))
 
 
-class HeadersContextDataGetter(object):
+def get_context_data_from_headers(request, headers_schema):
     """
     Extracts context data from request headers according to specified schema.
+
+    >>> from lxml import etree as et
+    >>> from datetime import date
+    >>> from pyws.functions.args import TypeFactory
+    >>> Fake = type('Fake', (object, ), {})
+    >>> request = Fake()
+    >>> request.parsed_data = Fake()
+    >>> request.parsed_data.xml = et.fromstring(
+    ...     '<s:Envelope xmlns:s="http://schemas.xmlsoap.org/soap/envelope/">'
+    ...       '<s:Header>'
+    ...         '<headers>'
+    ...           '<string>hello</string>'
+    ...           '<number>100</number>'
+    ...           '<date>2011-08-12</date>'
+    ...         '</headers>'
+    ...       '</s:Header>'
+    ...     '</s:Envelope>')
+    >>> data = get_context_data_from_headers(request, TypeFactory(
+    ...     {0: 'Headers', 'string': str, 'number': int, 'date': date}))
+    >>> data == {'string': 'hello', 'number': 100, 'date': date(2011, 8, 12)}
+    True
     """
 
-    def __init__(self, headers_schema):
-        self.headers_schema = headers_schema
+    if not headers_schema:
+        return None
 
-    def __call__(self, request):
+    env = request.parsed_data.xml.xpath(
+        '/se:Envelope', namespaces=SoapProtocol.namespaces)[0]
 
-        if not self.headers_schema:
-            return None
+    header = env.xpath(
+        './se:Header/*', namespaces=SoapProtocol.namespaces)
+    if len(header) < 1:
+        return None
 
-        env = request.parsed_data.xml.\
-            xpath('/se:Envelope', namespaces=SoapProtocol.namespaces)[0]
-
-        header = env.xpath(
-            './se:Header/*', namespaces=SoapProtocol.namespaces)
-        if len(header) != 1:
-            return None
-        header = header[0]
-
-        return xml2obj(header, self.headers_schema)
+    return headers_schema.validate(xml2obj(header[0], headers_schema))
 
 
 class ParsedData(object):
@@ -140,11 +151,11 @@ class SoapProtocol(Protocol):
         """
 
         headers_schema = headers_schema and TypeFactory(headers_schema)
+        context_data_getter = headers_schema and partial(
+            get_context_data_from_headers, headers_schema=headers_schema)
 
-        super(SoapProtocol, self).__init__(
-            headers_schema and
-                HeadersContextDataGetter(headers_schema) or None,
-            *args, **kwargs)
+        super(SoapProtocol, self).\
+            __init__(context_data_getter, *args, **kwargs)
 
         self.service_name = service_name
         self.tns = tns
@@ -242,7 +253,6 @@ class SoapProtocol(Protocol):
         return create_error_response(et.tostring(
             xml, encoding=ENCODING, pretty_print=True, xml_declaration=True))
 
-    #noinspection PyUnusedLocal
     def get_wsdl(self, server, request, context, rpc=False):
         return create_response(
             WsdlGenerator(
