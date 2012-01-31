@@ -167,7 +167,7 @@ and all arguments and return values will be treated as strings.</p>
 <div class="section" id="context-example">
 <h3>Context example<a class="headerlink" href="#context-example" title="Permalink to this headline">¶</a></h3>
 <div class="highlight-python"><div class="highlight"><pre><span class="nd">@register</span><span class="p">(</span><span class="s">&#39;say_hello&#39;</span><span class="p">,</span> <span class="n">needs_context</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
-<span class="k">def</span> <span class="nf">add_simple</span><span class="p">(</span><span class="n">context</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+<span class="k">def</span> <span class="nf">say_hello</span><span class="p">(</span><span class="n">context</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
     <span class="k">return</span> <span class="s">&#39;hello &#39;</span> <span class="o">+</span> <span class="n">context</span>
 </pre></div>
 </div>
@@ -285,6 +285,9 @@ represent field names and their types.</p>
 
 <span class="nd">@register</span><span class="p">()</span>
 <span class="k">def</span> <span class="nf">raises_exception</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    this function will always fail</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">raise</span> <span class="n">HelloError</span>
 </pre></div>
 </div>
