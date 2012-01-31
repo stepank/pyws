@@ -187,6 +187,6 @@ Exception raising example
 ^^^^^^^^^^^^^^^^^^^^^^^^^
 
 .. literalinclude:: ../examples/functions.py
-    :lines: 133-139
+    :lines: 133-142
 
 It's easy, just raise any exception you want.

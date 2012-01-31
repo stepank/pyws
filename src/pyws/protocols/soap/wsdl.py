@@ -66,6 +66,9 @@ class WsdlGenerator(object):
 
             operation = et.SubElement(
                 self.port_type, wsdl_name('operation'), name=function.name)
+            if function.documentation:
+                doc = et.SubElement(operation, wsdl_name('documentation'))
+                doc.text = function.documentation
             et.SubElement(
                 operation, wsdl_name('input'), message='tns:%s' % input_name,
                 **(self.rpc and dict(name=input_name) or dict()))

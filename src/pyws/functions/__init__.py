@@ -15,6 +15,8 @@ class Function(object):
 
     #: the name of the function;
     name = None
+    #: the documentation of the function
+    documentation = None
     #: the type of values returning by the function (standard form only), see
     #: :ref:`type_specification`;
     return_type = None
@@ -146,6 +148,7 @@ class NativeFunctionAdapter(Function):
         self.origin = origin
 
         self.name = name or origin.__name__
+        self.documentation = origin.__doc__
         self.return_type = TypeFactory(return_type or str)
         self.needs_context = needs_context
 

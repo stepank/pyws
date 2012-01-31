@@ -8,6 +8,6 @@ CLASS_FILE=TestService.php
 build_local:
 
 test:
-	unit2 discover -s testcases/ -p *.py
+	unit2 discover -t . -s testcases -p '*.py'
 
 clean_local:

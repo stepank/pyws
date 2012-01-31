@@ -13,10 +13,10 @@ def add_simple(a, b):
     return a + b
 
 
-# = add simple ================================================================
+# = say hello ================================================================
 
 @register('say_hello', needs_context=True)
-def add_simple(context=None):
+def say_hello(context=None):
     return 'hello ' + context
 
 
@@ -136,4 +136,7 @@ class HelloError(Exception):
 
 @register()
 def raises_exception():
+    """
+    this function will always fail
+    """
     raise HelloError
