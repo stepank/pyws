@@ -1,4 +1,8 @@
-import json
+try:
+    import json
+except ImportError:
+    #noinspection PyUnresolvedReferences
+    import simplejson as json
 
 from functools import partial
 

@@ -1,4 +1,7 @@
-from urlparse import parse_qs
+try:
+    from urlparse import parse_qs
+except ImportError:
+    from cgi import parse_qs
 
 from wsgiref import util
 

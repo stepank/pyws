@@ -18,6 +18,13 @@ long_description = \
     make creating of APIs fast and painless.
     '''
 
+extra_requires = []
+minor_version = sys.version_info[1]
+if minor_version < 5:
+    raise Exception('pyws works only on python >= 2.5')
+elif minor_version == 5:
+    extra_requires = ['simplejson']
+
 setup(
     name='pyws',
     version=pyws.VERSION,
@@ -31,5 +38,5 @@ setup(
     url='https://github.com/stepank/pyws',
     license='MIT',
     platforms=['Any'],
-    install_requires=['lxml'],
+    install_requires=['lxml'] + extra_requires,
 )

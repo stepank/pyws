@@ -8,7 +8,8 @@ Development version
 * implemented WSDL wrapped document/literal style along with rpc/literal, the former is default, issue #12,
 * WS-I BP 1.1 WSDL validation is back again (BP 1.2 validation is preserved),
 * added headers validation, issue #15
-* function docstrings are propagated to WSDL, issue #8.
+* function docstrings are propagated to WSDL, issue #8,
+* added python 2.5 support, issue #9.
 
 
 Version 1.0

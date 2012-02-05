@@ -1,3 +1,5 @@
+from __future__ import with_statement
+
 import logging
 import traceback
 
@@ -115,9 +117,11 @@ class Server(object):
         """
         Registers the function to the server's default fixed function manager.
         """
+        #noinspection PyTypeChecker
         if not len(self.settings.FUNCTION_MANAGERS):
             raise ConfigurationError(
                 'Where have default function manager gone?!')
+        #noinspection PyUnresolvedReferences
         self.settings.FUNCTION_MANAGERS[0].add_function(function)
 
     def get_function(self, context, name):
