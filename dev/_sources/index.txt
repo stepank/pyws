@@ -15,7 +15,8 @@ Requirements
 ============
 
 pyws itself depends only on python standard library and lxml. I've tested pyws
-on python 2.6 and python 2.7.
+on all versions of python from 2.5 to 2.7. On python 2.5 pyws also requires
+simplejson.
 
 pyws is written the way that it might be integrated with any web server and
 python framework; it is achieved by using different adapters:
