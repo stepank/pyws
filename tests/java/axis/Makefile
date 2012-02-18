@@ -4,6 +4,8 @@ include $(ROOT_DIR)/Makefile.common
 include $(TEST_DIR)/Makefile.common
 include $(TEST_DIR)/java/Makefile.common
 
+CLASS_FILE=com
+
 JARS=wsdl4j.jar \
 	jaxrpc.jar \
 	commons-discovery.jar \
@@ -25,12 +27,14 @@ TESTCASES=$(shell for f in `ls -1 testcases/*.java | grep -v TestService`; do \
 	echo -n "testcases.$${f/.java/} "; \
 done)
 
-build_local:
+$(CLASS_FILE):
 	java -cp $(JAVA_CP) org.apache.axis.wsdl.WSDL2Java -a -o . $(WSDL_FILE)
+
+build_local: $(CLASS_FILE)
 	javac -cp $(JAVA_CP) -d . testcases/*TestCase.java
 
 test:
 	java -cp $(JAVA_CP) org.junit.runner.JUnitCore $(TESTCASES)
 
 clean_local:
-	rm -rf com testcases/*.class
+	rm -rf $(CLASS_FILE) testcases/*.class

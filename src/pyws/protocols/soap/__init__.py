@@ -118,10 +118,10 @@ def get_context_data_from_headers(request, headers_schema):
         return None
 
     env = request.parsed_data.xml.xpath(
-        '/se:Envelope', namespaces=SoapProtocol.namespaces)[0]
+        '/soap:Envelope', namespaces=SoapProtocol.namespaces)[0]
 
     header = env.xpath(
-        './se:Header/*', namespaces=SoapProtocol.namespaces)
+        './soap:Header/*', namespaces=SoapProtocol.namespaces)
     if len(header) < 1:
         return None
 
@@ -135,7 +135,7 @@ class ParsedData(object):
 class SoapProtocol(Protocol):
 
     name = 'soap'
-    namespaces = {'se': SOAP_ENV_NS}
+    namespaces = {'soap': SOAP_ENV_NS}
 
     def __init__(
             self, service_name, tns, location,
@@ -171,13 +171,13 @@ class SoapProtocol(Protocol):
 
         xml = et.fromstring(request.text.encode(ENCODING))
 
-        env = xml.xpath('/se:Envelope', namespaces=self.namespaces)
+        env = xml.xpath('/soap:Envelope', namespaces=self.namespaces)
 
         if not len(env):
             raise BadRequest('No {%s}Envelope element.' % SOAP_ENV_NS)
         env = env[0]
 
-        body = env.xpath('./se:Body', namespaces=self.namespaces)
+        body = env.xpath('./soap:Body', namespaces=self.namespaces)
 
         if not len(body):
             raise BadRequest('No {%s}Body element.' % SOAP_ENV_NS)
@@ -218,7 +218,7 @@ class SoapProtocol(Protocol):
     def get_response(self, result, name, return_type):
 
         result = obj2xml(
-            et.Element(name + '_response', namespace=self.tns),
+            et.Element(name + '_result', xmlns=types_ns(self.tns)),
             {'result': result},
             TypeFactory({DICT_NAME_KEY: 'fake', 'result': return_type}))
 
@@ -237,7 +237,7 @@ class SoapProtocol(Protocol):
 
         fault = et.Element(soap_env_name('Fault'), nsmap=self.namespaces)
         faultcode = et.SubElement(fault, 'faultcode')
-        faultcode.text = 'se:%s' % error['type']
+        faultcode.text = 'soap:%s' % error['type']
         faultstring = et.SubElement(fault, 'faultstring')
         faultstring.text = error['message']
         error['exceptionName'] = \

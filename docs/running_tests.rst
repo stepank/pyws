@@ -54,6 +54,19 @@ To run Java tests, again, just run::
     make
 
 
+C# (Mono)
+---------
+
+Base directory is ``[pyws_dir]/tests/mono``.
+
+Of course, we need to have Mono SDK installed, I use 2.10.5. We also need NUnit
+installed, I use 2.5.10.
+
+To run Mono tests, again, just run::
+
+    make
+
+
 Python (suds)
 -------------
 

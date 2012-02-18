@@ -4,8 +4,10 @@ PID_FILE=_wsgi.pid
 run:
 	$(RUN_CMD)
 
-runbg:
+$(PID_FILE):
 	$(RUN_CMD) > /dev/null 2>&1 & echo $$! > $(PID_FILE)
+
+runbg: $(PID_FILE)
 
 stop:
 	if [ -e $(PID_FILE) ]; then \
@@ -13,3 +15,4 @@ stop:
 		rm $(PID_FILE); \
 	fi
 
+.PHONY: run runbg stop

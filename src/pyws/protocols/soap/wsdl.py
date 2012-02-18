@@ -47,19 +47,19 @@ class WsdlGenerator(object):
                 self.definitions, wsdl_name('message'), name=input_name)
 
             if not self.rpc:
-                self._add_part(input, input_name, function.args)
+                self._add_part(input, 'parameters', function.args)
             else:
                 for arg in function.args.fields:
                     self._add_part(
                         input, arg.name, arg.type, use_element=False)
 
-            output_name = function.name + '_response'
+            output_name = function.name + '_result'
             output = et.SubElement(
                 self.definitions, wsdl_name('message'), name=output_name)
 
             if not self.rpc:
                 self._add_part(
-                    output, output_name, function.wrapped_return_type)
+                    output, 'parameters', function.wrapped_return_type)
             else:
                 self._add_part(
                     output, 'result', function.return_type, use_element=False)
@@ -105,7 +105,6 @@ class WsdlGenerator(object):
         self.wsdl = None
 
         tns = self.tns
-        #noinspection PyUnboundLocalVariable
         self.types_ns = types_ns(tns)
 
         self.namespaces = {

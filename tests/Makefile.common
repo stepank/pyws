@@ -13,8 +13,10 @@ run_server:
 stop_server:
 	make -C $(SERVER_DIR) stop
 
-get_wsdl:
+$(WSDL_FILE):
 	wget -O $(WSDL_FILE) http://localhost:8000/api/soap/wsdl$(WSDL_SUFFIX)
+
+get_wsdl: $(WSDL_FILE)
 
 clean_wsdl:
 	rm -f $(WSDL_FILE)
