@@ -8,19 +8,18 @@ namespace TestCases {
 
         [Test()]
         public void test_null() {
-            Assert.AreEqual(service.add_simple(null, null), "");
+            Assert.AreEqual("", service.add_simple(null, null));
         }
 
         [Test()]
         public void test_empty() {
-            Assert.AreEqual(service.add_simple("", ""), "");
+            Assert.AreEqual("", service.add_simple("", ""));
         }
 
         [Test()]
         public void test() {
             Assert.AreEqual(
-                service.add_simple("hello ", "world"), "hello world");
+                "hello world", service.add_simple("hello ", "world"));
         }
     }
 }
-

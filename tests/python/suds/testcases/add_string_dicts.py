@@ -28,9 +28,7 @@ class AddStringDictsTestCase(BaseTestCaseMixin, unittest.TestCase):
         q = self.factory.create('types:ABStringDict')
         q.a = ''
         q.b = ''
-        # This one does not work, unfortunately
-        # suds sends neither first argument nor second
-        #res = self.service.add_string_dicts(p, q)
+        res = self.service.add_string_dicts(p, q)
 
     def test(self):
         p = self.factory.create('types:ABStringDict')

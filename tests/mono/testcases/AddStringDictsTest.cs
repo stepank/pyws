@@ -9,16 +9,16 @@ namespace TestCases {
         [Test()]
         public void test_null_args() {
             ABStringDict r = service.add_string_dicts(null, null);
-            Assert.AreEqual(r.a, "");
-            Assert.AreEqual(r.b, "");
+            Assert.AreEqual("", r.a);
+            Assert.AreEqual("", r.b);
         }
 
         [Test()]
         public void test_notset() {
             ABStringDict r = service.add_string_dicts(
                 new ABStringDict(), new ABStringDict());
-            Assert.AreEqual(r.a, "");
-            Assert.AreEqual(r.b, "");
+            Assert.AreEqual("", r.a);
+            Assert.AreEqual("", r.b);
         }
 
         [Test()]
@@ -30,8 +30,8 @@ namespace TestCases {
             q.a = null;
             q.b = null;
             ABStringDict r = service.add_string_dicts(p, q);
-            Assert.AreEqual(r.a, "");
-            Assert.AreEqual(r.b, "");
+            Assert.AreEqual("", r.a);
+            Assert.AreEqual("", r.b);
         }
 
         [Test()]
@@ -43,8 +43,8 @@ namespace TestCases {
             q.a = "";
             q.b = "";
             ABStringDict r = service.add_string_dicts(p, q);
-            Assert.AreEqual(r.a, "");
-            Assert.AreEqual(r.b, "");
+            Assert.AreEqual("", r.a);
+            Assert.AreEqual("", r.b);
         }
 
         [Test()]
@@ -56,8 +56,8 @@ namespace TestCases {
             q.a = "world";
             q.b = "hello";
             ABStringDict r = service.add_string_dicts(p, q);
-            Assert.AreEqual(r.a, "hello world");
-            Assert.AreEqual(r.b, "say hello");
+            Assert.AreEqual("hello world", r.a);
+            Assert.AreEqual("say hello", r.b);
         }
     }
 }

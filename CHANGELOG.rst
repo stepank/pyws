@@ -12,7 +12,8 @@ Development version
 * function docstrings are propagated to WSDL, issue #8,
 * added python 2.5 support, issue #9,
 * added basic logging config to WSGI adapter example,
-* added C# (Mono) integration tests, issue #13.
+* added C# (Mono) integration tests, issue #13,
+* fixed some python suds tests.
 
 
 Version 1.0

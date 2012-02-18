@@ -8,17 +8,17 @@ namespace TestCases {
 
         [Test()]
         public void test_null() {
-            Assert.AreEqual(service.add_integers(null, null), 0);
+            Assert.AreEqual(0, service.add_integers(null, null));
         }
 
         [Test()]
         public void test_empty() {
-            Assert.AreEqual(service.add_integers(0, 0), 0);
+            Assert.AreEqual(0, service.add_integers(0, 0));
         }
 
         [Test()]
         public void test() {
-            Assert.AreEqual(service.add_integers(100, 50), 150);
+            Assert.AreEqual(150, service.add_integers(100, 50));
         }
     }
 }

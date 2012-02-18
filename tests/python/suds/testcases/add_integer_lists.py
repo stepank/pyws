@@ -9,9 +9,7 @@ class AddIntegerListsTestCase(BaseTestCaseMixin, unittest.TestCase):
         p.item = []
         q = self.factory.create('types:IntegerList')
         q.item = []
-        # This one does not work, unfortunatelly,
-        # suds sends neither first argument nor second
-        #res = self.service.add_integer_lists(p, q)
+        res = self.service.add_integer_lists(p, q)
 
     def test(self):
         p = self.factory.create('types:IntegerList')

@@ -9,7 +9,7 @@ namespace TestCases {
         [Test()]
         public void test_null_args() {
             int[] r = service.add_integer_lists(null, null);
-            Assert.AreEqual(r.Length, 0);
+            Assert.AreEqual(0, r.Length);
         }
 
         [Test()]
@@ -17,7 +17,7 @@ namespace TestCases {
             int[] a1 = {};
             int[] a2 = {};
             int[] r = service.add_integer_lists(a1, a2);
-            Assert.AreEqual(r.Length, 0);
+            Assert.AreEqual(0, r.Length);
         }
 
         [Test()]
@@ -25,8 +25,8 @@ namespace TestCases {
             int[] a1 = {0};
             int[] a2 = {0};
             int[] r = service.add_integer_lists(a1, a2);
-            Assert.AreEqual(r.Length, 1);
-            Assert.AreEqual(r[0], 0);
+            Assert.AreEqual(1, r.Length);
+            Assert.AreEqual(0, r[0]);
         }
 
         [Test()]
@@ -35,9 +35,9 @@ namespace TestCases {
             int[] a2 = {3, -5, 0};
             int[] r = service.add_integer_lists(a1, a2);
             Assert.AreEqual(r.Length, 3);
-            Assert.AreEqual(r[0], 4);
-            Assert.AreEqual(r[1], -3);
-            Assert.AreEqual(r[2], 3);
+            Assert.AreEqual(4, r[0]);
+            Assert.AreEqual(-3, r[1]);
+            Assert.AreEqual(3, r[2]);
         }
 
         [Test()]
@@ -45,12 +45,12 @@ namespace TestCases {
             int[] a1 = {1, 2, 3};
             int[] a2 = {3, -5, 0, 11, -5};
             int[] r = service.add_integer_lists(a1, a2);
-            Assert.AreEqual(r.Length, 5);
-            Assert.AreEqual(r[0], 4);
-            Assert.AreEqual(r[1], -3);
-            Assert.AreEqual(r[2], 3);
-            Assert.AreEqual(r[3], 11);
-            Assert.AreEqual(r[4], -5);
+            Assert.AreEqual(5, r.Length);
+            Assert.AreEqual(4, r[0]);
+            Assert.AreEqual(-3, r[1]);
+            Assert.AreEqual(3, r[2]);
+            Assert.AreEqual(11, r[3]);
+            Assert.AreEqual(-5, r[4]);
         }
     }
 }
