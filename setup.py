@@ -32,7 +32,7 @@ setup(
     packages=find_packages('src'),
     description=short_description,
     long_description=long_description,
-    keywords=['soap', 'wsdl', 'server', 'xml', 'json'],
+    keywords=['soap', 'wsdl', 'server', 'xml', 'json', 'web services'],
     author='Stepan N. Kornyakov',
     author_email='stepankk@gmail.com',
     url='https://github.com/stepank/pyws',
