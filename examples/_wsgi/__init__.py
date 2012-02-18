@@ -1,5 +1,9 @@
 #!/usr/bin/env python
 
+import logging
+
+logging.basicConfig(level=logging.DEBUG)
+
 from wsgiref.simple_server import make_server
 
 import os, sys
