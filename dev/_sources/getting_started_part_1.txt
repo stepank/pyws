@@ -109,9 +109,9 @@ The result would be::
     <?xml version='1.0' encoding='utf-8'?>
     <se:Envelope xmlns:se="http://schemas.xmlsoap.org/soap/envelope/">
       <se:Body>
-        <add_simple_response namespace="http://example.com/">
+        <add_simple_result namespace="http://example.com/types/">
           <result>hello world</result>
-        </add_simple_response>
+        </add_simple_result>
       </se:Body>
     </se:Envelope>
 
