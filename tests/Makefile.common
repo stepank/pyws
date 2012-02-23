@@ -1,0 +1,26 @@
+WSDL_FILE=test.wsdl
+WSDL_SUFFIX=
+SERVER_DIR=$(ROOT_DIR)/examples/_wsgi
+
+all: build test clean
+
+build: run_server get_wsdl build_local
+
+run_server:
+	make -C $(SERVER_DIR) runbg
+	sleep 1
+
+stop_server:
+	make -C $(SERVER_DIR) stop
+
+$(WSDL_FILE):
+	wget -O $(WSDL_FILE) http://localhost:8000/api/soap/wsdl$(WSDL_SUFFIX)
+
+get_wsdl: $(WSDL_FILE)
+
+clean_wsdl:
+	rm -f $(WSDL_FILE)
+
+clean: clean_local clean_wsdl stop_server
+
+.PHONY: all build run_server stop_server get_wsdl clean_wsdl clean

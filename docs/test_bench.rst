@@ -11,9 +11,10 @@ all the tests. All of this can also be considered examples of pyws usage since
 much of pyws's functionality is used here.
 
 To proceed with the tests, first, ensure that pyws is installed, read more
-about :ref:`requirements` and :ref:`installation`. However, you should note
-that tests and examples can be found in source distribution archive or in your
-on clone of the repo.
+about :ref:`requirements` and :ref:`installation`, this tutorial is based on
+WSGI adapter, so check up its requirements too. You should also note that tests
+and examples can be found only in a source distribution archive or in your own
+clone of the GIT repo.
 
 
 Directory structure
@@ -23,35 +24,17 @@ In pyws distribution, there is a directory called ``examples``, let's have a
 look at its contents::
 
     examples/
-        _django/                # a simple django project for testing
-            templates/
-                test_form.html
-            __init__.py
-            manage.py
-            settings.py
-            urls.py
+        _django/                # not for now ...
+        _twisted/               # not for now either ...
+        _wsgi/
+            __init__.py         # a simple WSGI application for testing
+            Makefile            # a make file to automate running and stopping
+                                # a server
         __init__.py
         api_settings.py         # common pyws server settings
         authenticate.py         # authentication related stuff
         functions.py            # example functions
         server.py               # server definition
-
-
-Attaching a server to an URL
-----------------------------
-
-Take a look at ``urls.py``:
-
-.. literalinclude:: ../examples/_django/urls.py
-    :lines: 3-4,8-11
-
-In the last line, we attached the server ``server`` to an URL using Django
-adapter ``serve``, the adapter will pass everything left after ``api/`` to
-pyws request object as its first argument ``tail``. Also the adapter will
-create a ``django.http.HttpResponse`` object.
-
-Read more in chapters :ref:`adapter`, :ref:`server`, :ref:`request`,
-:ref:`response`.
 
 
 Server & settings
@@ -204,6 +187,6 @@ Exception raising example
 ^^^^^^^^^^^^^^^^^^^^^^^^^
 
 .. literalinclude:: ../examples/functions.py
-    :lines: 133-139
+    :lines: 133-142
 
 It's easy, just raise any exception you want.

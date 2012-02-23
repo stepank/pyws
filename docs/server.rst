@@ -1,30 +1,3 @@
-.. _adapter:
-
-Adapter
-=======
-
-Basically, an adapter does the following things:
-
-#. accepts some context of your application and a pyws server object,
-#. builds a pyws request object out of the context,
-#. feeds the request to the server and gets a response
-   (``pyws.server.Server.process_request`` method),
-#. transforms the response into something that matters in the context of your
-   application.
-
-For instance, Django adapter is a simple function
-``pyws.adapters._django.serve``. It has three arguments:
-
-#. a Django request object,
-#. a tail, i.e. everything that's left from an URL, which adapter is attached
-   to,
-#. a pyws server object.
-
-First two are the context of фт application, function ``serve`` transforms them
-into a pyws request object. Then it feeds the request to the server, gets a
-response and transforms it into a Django response object.
-
-
 .. _server:
 
 Server

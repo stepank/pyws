@@ -1,6 +1,7 @@
 import itertools as it
 import re
 
+from functools import partial
 from lxml import etree as et
 
 from pyws.errors import BadRequest, ConfigurationError
@@ -13,6 +14,10 @@ from wsdl import WsdlGenerator
 
 TAG_NAME_RE = re.compile('{(.*?)}(.*)')
 ENCODING = 'utf-8'
+
+create_response = partial(Response, content_type='text/xml')
+create_error_response = partial(create_response, status=Response.STATUS_ERROR)
+
 
 def get_element_name(el):
     name = el.tag
@@ -27,14 +32,11 @@ def xml2obj(xml, schema):
     children = xml.getchildren()
     if not children:
         if xml.text is None:
-            result = None
-        else:
-            result = unicode(xml.text)
-    elif issubclass(schema, List):
-        result = []
-        for child in children:
-            result.append(xml2obj(child, schema.element_type))
-    elif issubclass(schema, Dict):
+            return None
+        return unicode(xml.text)
+    if issubclass(schema, List):
+        return [xml2obj(child, schema.element_type) for child in children]
+    if issubclass(schema, Dict):
         result = {}
         schema = dict((field.name, field.type) for field in schema.fields)
         for child in children:
@@ -46,9 +48,8 @@ def xml2obj(xml, schema):
                 if not isinstance(result[name], list):
                     result[name] = [result[name]]
                 result[name].append(obj)
-    else:
-        raise BadRequest('Couldn\'t decode XML')
-    return result
+        return result
+    raise BadRequest('Couldn\'t decode XML')
 
 def obj2xml(root, contents, schema=None, namespace=None):
     kwargs = namespace and {'namespace': namespace} or {}
@@ -87,29 +88,44 @@ def get_axis_package_name(ns):
         lambda s: re.sub('[^\w]', '_', s), res + mo.group(2).split('/'))))
 
 
-class HeadersContextDataGetter(object):
+def get_context_data_from_headers(request, headers_schema):
     """
     Extracts context data from request headers according to specified schema.
+
+    >>> from lxml import etree as et
+    >>> from datetime import date
+    >>> from pyws.functions.args import TypeFactory
+    >>> Fake = type('Fake', (object, ), {})
+    >>> request = Fake()
+    >>> request.parsed_data = Fake()
+    >>> request.parsed_data.xml = et.fromstring(
+    ...     '<s:Envelope xmlns:s="http://schemas.xmlsoap.org/soap/envelope/">'
+    ...       '<s:Header>'
+    ...         '<headers>'
+    ...           '<string>hello</string>'
+    ...           '<number>100</number>'
+    ...           '<date>2011-08-12</date>'
+    ...         '</headers>'
+    ...       '</s:Header>'
+    ...     '</s:Envelope>')
+    >>> data = get_context_data_from_headers(request, TypeFactory(
+    ...     {0: 'Headers', 'string': str, 'number': int, 'date': date}))
+    >>> data == {'string': 'hello', 'number': 100, 'date': date(2011, 8, 12)}
+    True
     """
 
-    def __init__(self, headers_schema):
-        self.headers_schema = headers_schema
+    if not headers_schema:
+        return None
 
-    def __call__(self, request):
+    env = request.parsed_data.xml.xpath(
+        '/soap:Envelope', namespaces=SoapProtocol.namespaces)[0]
 
-        if not self.headers_schema:
-            return None
+    header = env.xpath(
+        './soap:Header/*', namespaces=SoapProtocol.namespaces)
+    if len(header) < 1:
+        return None
 
-        env = request.parsed_data.xml. \
-            xpath('/se:Envelope', namespaces=SoapProtocol.namespaces)[0]
-
-        header = env.xpath(
-            './se:Header/*', namespaces=SoapProtocol.namespaces)
-        if len(header) != 1:
-            return None
-        header = header[0]
-
-        return xml2obj(header, self.headers_schema)
+    return headers_schema.validate(xml2obj(header[0], headers_schema))
 
 
 class ParsedData(object):
@@ -119,7 +135,7 @@ class ParsedData(object):
 class SoapProtocol(Protocol):
 
     name = 'soap'
-    namespaces = {'se': SOAP_ENV_NS}
+    namespaces = {'soap': SOAP_ENV_NS}
 
     def __init__(
             self, service_name, tns, location,
@@ -135,11 +151,11 @@ class SoapProtocol(Protocol):
         """
 
         headers_schema = headers_schema and TypeFactory(headers_schema)
+        context_data_getter = headers_schema and partial(
+            get_context_data_from_headers, headers_schema=headers_schema)
 
-        super(SoapProtocol, self).__init__(
-            headers_schema and
-                HeadersContextDataGetter(headers_schema) or None,
-            *args, **kwargs)
+        super(SoapProtocol, self).\
+            __init__(context_data_getter, *args, **kwargs)
 
         self.service_name = service_name
         self.tns = tns
@@ -155,13 +171,13 @@ class SoapProtocol(Protocol):
 
         xml = et.fromstring(request.text.encode(ENCODING))
 
-        env = xml.xpath('/se:Envelope', namespaces=self.namespaces)
+        env = xml.xpath('/soap:Envelope', namespaces=self.namespaces)
 
         if not len(env):
             raise BadRequest('No {%s}Envelope element.' % SOAP_ENV_NS)
         env = env[0]
 
-        body = env.xpath('./se:Body', namespaces=self.namespaces)
+        body = env.xpath('./soap:Body', namespaces=self.namespaces)
 
         if not len(body):
             raise BadRequest('No {%s}Body element.' % SOAP_ENV_NS)
@@ -192,7 +208,7 @@ class SoapProtocol(Protocol):
     def get_function(self, request):
 
         if request.tail == 'wsdl':
-            return self.get_wsdl
+            return partial(self.get_wsdl, rpc=bool(request.GET.get('rpc')))
 
         return self.parse_request(request).func_name
 
@@ -202,7 +218,7 @@ class SoapProtocol(Protocol):
     def get_response(self, result, name, return_type):
 
         result = obj2xml(
-            et.Element(name + '_response', namespace=self.tns),
+            et.Element(name + '_result', xmlns=types_ns(self.tns)),
             {'result': result},
             TypeFactory({DICT_NAME_KEY: 'fake', 'result': return_type}))
 
@@ -212,8 +228,8 @@ class SoapProtocol(Protocol):
         xml = et.Element(soap_env_name('Envelope'), nsmap=self.namespaces)
         xml.append(body)
 
-        return Response(et.tostring(xml,
-            encoding=ENCODING, pretty_print=True, xml_declaration=True))
+        return create_response(et.tostring(
+            xml, encoding=ENCODING, pretty_print=True, xml_declaration=True))
 
     def get_error_response(self, error):
 
@@ -221,7 +237,7 @@ class SoapProtocol(Protocol):
 
         fault = et.Element(soap_env_name('Fault'), nsmap=self.namespaces)
         faultcode = et.SubElement(fault, 'faultcode')
-        faultcode.text = 'se:%s' % error['type']
+        faultcode.text = 'soap:%s' % error['type']
         faultstring = et.SubElement(fault, 'faultstring')
         faultstring.text = error['message']
         error['exceptionName'] = \
@@ -234,13 +250,12 @@ class SoapProtocol(Protocol):
         xml = et.Element(soap_env_name('Envelope'), nsmap=self.namespaces)
         xml.append(body)
 
-        return Response(et.tostring(xml,
-            encoding=ENCODING, pretty_print=True, xml_declaration=True))
+        return create_error_response(et.tostring(
+            xml, encoding=ENCODING, pretty_print=True, xml_declaration=True))
 
-    #noinspection PyUnusedLocal
-    def get_wsdl(self, server, request, context):
-        return Response(
+    def get_wsdl(self, server, request, context, rpc=False):
+        return create_response(
             WsdlGenerator(
                 server, context,
                 self.service_name, self.tns, self.location,
-                self.headers_schema, ENCODING).get_wsdl())
+                self.headers_schema, ENCODING, rpc=rpc).get_wsdl())

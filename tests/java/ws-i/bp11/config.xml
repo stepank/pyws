@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsi-analyzerConfig:configuration name="Sample Basic Profile Analyzer Configuration"
+                                  xmlns:wsi-analyzerConfig="http://www.ws-i.org/testing/2004/07/analyzerConfig/">
+    <wsi-analyzerConfig:description>TestService</wsi-analyzerConfig:description>
+
+    <wsi-analyzerConfig:verbose>false</wsi-analyzerConfig:verbose>
+    <wsi-analyzerConfig:assertionResults type="all" messageEntry="true" failureMessage="true"/>
+    <wsi-analyzerConfig:reportFile replace="true" location="report.xml">
+        <wsi-analyzerConfig:addStyleSheet href="./report.xsl" type="text/xsl"/>
+    </wsi-analyzerConfig:reportFile>
+    <wsi-analyzerConfig:testAssertionsFile>
+        ./tmp/bp11/wsi-test-tools/common/profiles/SSBP10_BP11_TAD.xml
+    </wsi-analyzerConfig:testAssertionsFile>
+    <wsi-analyzerConfig:wsdlReference>
+        <wsi-analyzerConfig:wsdlElement
+                type="port" parentElementName="TestService" namespace="http://example.com/">TestPort</wsi-analyzerConfig:wsdlElement>
+        <wsi-analyzerConfig:wsdlURI>./test.wsdl</wsi-analyzerConfig:wsdlURI>
+    </wsi-analyzerConfig:wsdlReference>
+</wsi-analyzerConfig:configuration>

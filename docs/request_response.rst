@@ -13,4 +13,4 @@ Response
 ========
 
 .. autoclass:: pyws.response.Response
-    :members: text,content_type
+    :members: text,content_type,status,STATUS_SUCCESS, STATUS_ERROR
