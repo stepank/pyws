@@ -39,4 +39,4 @@ clean_local:
 	rm -rf testlog.xml $(TEMP_DIR)
 
 clean_report:
-	rm -r report.xml report.xsl common.xsl
+	rm -f report.xml report.xsl common.xsl
