@@ -7,7 +7,7 @@ include $(TEST_DIR)/java/Makefile.common
 TEMP_DIR=tmp
 BP12_DIR=$(TEMP_DIR)/bp12
 
-build_local:
+$(BP12_DIR):
 	wget http://ws-i.org/Profiles/BPTestToolsProcess-1.2-2.0-Final.zip
 	mv BPTestToolsProcess-1.2-2.0-Final.zip wsi-test-tools.zip
 	mkdir -p $(BP12_DIR)
@@ -19,8 +19,14 @@ build_local:
 		$(BP12_DIR)/make-plugins.xsl \
 		$(BP12_DIR)/BasicProfile-1.2.xml \
 		$(BP12_DIR)/taplugins.xsl
-	cp $(BP12_DIR)/report.xsl report.xsl
+
+common.xsl:
 	cp $(BP12_DIR)/common.xsl common.xsl
+
+report.xsl:
+	cp $(BP12_DIR)/report.xsl report.xsl
+
+build_local: $(BP12_DIR) common.xsl report.xsl
 
 test:
 	cat testlogtpl.xml | \
