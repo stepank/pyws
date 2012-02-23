@@ -1,0 +1,377 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Test bench &mdash; pyws 1.1 documentation</title>
+    
+    <link rel="stylesheet" href="_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '',
+        VERSION:     '1.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="top" title="pyws 1.1 documentation" href="index.html" />
+    <link rel="up" title="Integration tests &amp; examples" href="integration_tests.html" />
+    <link rel="next" title="Running tests" href="running_tests.html" />
+    <link rel="prev" title="Integration tests &amp; examples" href="integration_tests.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="running_tests.html" title="Running tests"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="integration_tests.html" title="Integration tests &amp; examples"
+             accesskey="P">previous</a> |</li>
+        <li><a href="index.html">pyws 1.1 documentation</a> &raquo;</li>
+          <li><a href="integration_tests.html" accesskey="U">Integration tests &amp; examples</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="test-bench">
+<span id="id1"></span><h1>Test bench<a class="headerlink" href="#test-bench" title="Permalink to this headline">¶</a></h1>
+<p>SOAP server can not be considered a good one if SOAP clients don&#8217;t work with
+it. Therefore we need a lot of tests proving interoperability. This chapter
+describes a test bench used by numerous tests proving interoperability included
+in pyws. The next chapter <a class="reference internal" href="running_tests.html#running-tests"><em>Running tests</em></a> explains how to run a server and
+all the tests. All of this can also be considered examples of pyws usage since
+much of pyws&#8217;s functionality is used here.</p>
+<p>To proceed with the tests, first, ensure that pyws is installed, read more
+about <a class="reference internal" href="index.html#requirements"><em>Requirements</em></a> and <a class="reference internal" href="index.html#installation"><em>Installation</em></a>, this tutorial is based on
+WSGI adapter, so check up its requirements too. You should also note that tests
+and examples can be found only in a source distribution archive or in your own
+clone of the GIT repo.</p>
+<div class="section" id="directory-structure">
+<h2>Directory structure<a class="headerlink" href="#directory-structure" title="Permalink to this headline">¶</a></h2>
+<p>In pyws distribution, there is a directory called <tt class="docutils literal"><span class="pre">examples</span></tt>, let&#8217;s have a
+look at its contents:</p>
+<div class="highlight-python"><pre>examples/
+    _django/                # not for now ...
+    _twisted/               # not for now either ...
+    _wsgi/
+        __init__.py         # a simple WSGI application for testing
+        Makefile            # a make file to automate running and stopping
+                            # a server
+    __init__.py
+    api_settings.py         # common pyws server settings
+    authenticate.py         # authentication related stuff
+    functions.py            # example functions
+    server.py               # server definition</pre>
+</div>
+</div>
+<div class="section" id="server-settings">
+<h2>Server &amp; settings<a class="headerlink" href="#server-settings" title="Permalink to this headline">¶</a></h2>
+<p>First, let&#8217;s consider <tt class="docutils literal"><span class="pre">server.py</span></tt>:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">api_settings</span>
+
+<span class="n">server</span> <span class="o">=</span> <span class="n">SoapServer</span><span class="p">(</span><span class="n">api_settings</span><span class="p">,</span> <span class="o">*</span><span class="n">api_settings</span><span class="o">.</span><span class="n">SOAP_PROTOCOL_PARAMS</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Here we create a server using class <tt class="docutils literal"><span class="pre">SoapServer</span></tt> with module object
+<tt class="docutils literal"><span class="pre">api_settings</span></tt> as settings and with <tt class="docutils literal"><span class="pre">api_settings.SOAP_PROTOCOL_PARAMS</span></tt>
+as SOAP protocol parameters.</p>
+<p>Now, let&#8217;s turn to <tt class="docutils literal"><span class="pre">api_settings.py</span></tt>:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">DEBUG</span> <span class="o">=</span> <span class="bp">True</span>
+</pre></div>
+</div>
+<p>That&#8217;s easy, turns debug mode on, read more in <a class="reference internal" href="server.html#settings-debug"><em>DEBUG</em></a>.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">PROTOCOLS</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="n">RestProtocol</span><span class="p">(),</span>
+    <span class="n">JsonProtocol</span><span class="p">(),</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p>Additional protocols for the server, read more in <a class="reference internal" href="server.html#settings-protocols"><em>PROTOCOLS</em></a>.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">SOAP_PROTOCOL_PARAMS</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="s">&#39;Test&#39;</span><span class="p">,</span>
+    <span class="s">&#39;http://example.com/&#39;</span><span class="p">,</span>
+    <span class="s">&#39;http://localhost:8000/api/soap&#39;</span><span class="p">,</span>
+    <span class="n">soap_headers_schema</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p>These parameters are passed directly to SOAP protocol constructor, read more in
+<a class="reference internal" href="protocol.html#soap-protocol"><em>Concerning SOAP protocol</em></a>.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">CREATE_CONTEXT</span> <span class="o">=</span> <span class="n">authenticate</span>
+</pre></div>
+</div>
+<p>The function creating a context , read more in <a class="reference internal" href="server.html#settings-create-context"><em>CREATE_CONTEXT</em></a>.</p>
+</div>
+<div class="section" id="authentication">
+<h2>Authentication<a class="headerlink" href="#authentication" title="Permalink to this headline">¶</a></h2>
+<p>In the previous paragraph, there were mentioned two variables:
+<tt class="docutils literal"><span class="pre">soap_headers_schema</span></tt> and <tt class="docutils literal"><span class="pre">authenticate</span></tt>, they are defined in
+<tt class="docutils literal"><span class="pre">authenticate.py</span></tt>, read more in <a class="reference internal" href="context.html#authentication"><em>Authentcation</em></a>.</p>
+</div>
+<div class="section" id="functions">
+<h2>Functions<a class="headerlink" href="#functions" title="Permalink to this headline">¶</a></h2>
+<p>All the functions used in tests are defined in file <tt class="docutils literal"><span class="pre">functions.py</span></tt>. They
+are an example of how functions can be registered to a server and how their
+parameters are described, so you might want to cast a glance at it. Most use
+cases are described in this paragraph, but the file contains a little bit more
+examples.</p>
+<div class="section" id="simple-examples">
+<h3>Simple examples<a class="headerlink" href="#simple-examples" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">pyws.functions.register</span> <span class="kn">import</span> <span class="n">register</span>
+
+<span class="nd">@register</span><span class="p">()</span>
+<span class="nd">@register</span><span class="p">(</span><span class="s">&#39;add_integers&#39;</span><span class="p">,</span> <span class="n">return_type</span><span class="o">=</span><span class="nb">int</span><span class="p">,</span> <span class="n">args</span><span class="o">=</span><span class="p">((</span><span class="nb">int</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="p">(</span><span class="nb">int</span><span class="p">,</span> <span class="mi">0</span><span class="p">)))</span>
+<span class="nd">@register</span><span class="p">(</span><span class="s">&#39;add_floats&#39;</span><span class="p">,</span> <span class="n">return_type</span><span class="o">=</span><span class="nb">float</span><span class="p">,</span> <span class="n">args</span><span class="o">=</span><span class="p">((</span><span class="nb">float</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="p">(</span><span class="nb">float</span><span class="p">,</span> <span class="mi">0</span><span class="p">)))</span>
+<span class="k">def</span> <span class="nf">add_simple</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">a</span> <span class="o">+</span> <span class="n">b</span>
+</pre></div>
+</div>
+<p>Decorators created by function <tt class="docutils literal"><span class="pre">register</span></tt> only register a function to a
+server without changing it at all, so we can safely use several decorators at
+once. As one function can work with different types of variables we can
+register one function with different names and argument specification.</p>
+<p><tt class="docutils literal"><span class="pre">args</span></tt> describes function arguments, each element of the tuple represents
+one argument, argument names are infered from the function. <tt class="docutils literal"><span class="pre">(int,</span> <span class="pre">0)</span></tt> means
+that an argument has type <tt class="docutils literal"><span class="pre">int</span></tt> and that instead of <tt class="docutils literal"><span class="pre">None</span></tt> you&#8217;ll get
+<tt class="docutils literal"><span class="pre">0</span></tt>. We could have just use <tt class="docutils literal"><span class="pre">int</span></tt> instead, but then we had to check
+argument values on not being <tt class="docutils literal"><span class="pre">None</span></tt> in function itself, which might not be
+convenient.</p>
+<p>The first decorator <tt class="docutils literal"><span class="pre">register()</span></tt> will register a function with its own name
+and all arguments and return values will be treated as strings.</p>
+<p>Read more in chapters <a class="reference internal" href="function_manager.html#registering-function"><em>Registering a function</em></a>,
+<a class="reference internal" href="function.html#arguments-specification"><em>Arguments &amp; fields specification</em></a>, <a class="reference internal" href="function.html#type-specification"><em>Type specification</em></a>.</p>
+</div>
+<div class="section" id="context-example">
+<h3>Context example<a class="headerlink" href="#context-example" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-python"><div class="highlight"><pre><span class="nd">@register</span><span class="p">(</span><span class="s">&#39;say_hello&#39;</span><span class="p">,</span> <span class="n">needs_context</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">say_hello</span><span class="p">(</span><span class="n">context</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+    <span class="k">return</span> <span class="s">&#39;hello &#39;</span> <span class="o">+</span> <span class="n">context</span>
+</pre></div>
+</div>
+<p>This function requires a context, so we register it specifying
+<tt class="docutils literal"><span class="pre">needs_context</span></tt> as <tt class="docutils literal"><span class="pre">True</span></tt>. If a server fails to create a context, then this
+function is not called and an exception is raised instead. The context created
+by a server is passed to the function as keyword argument <tt class="docutils literal"><span class="pre">context</span></tt>.</p>
+<p>Read more in chapter <a class="reference internal" href="context.html#context"><em>Context</em></a>.</p>
+</div>
+<div class="section" id="date-and-datetime-example">
+<h3>Date and datetime example<a class="headerlink" href="#date-and-datetime-example" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-python"><div class="highlight"><pre><span class="nd">@register</span><span class="p">(</span><span class="n">return_type</span><span class="o">=</span><span class="n">date</span><span class="p">,</span> <span class="n">args</span><span class="o">=</span><span class="p">(</span><span class="n">date</span><span class="p">,</span> <span class="p">))</span>
+<span class="nd">@register</span><span class="p">(</span><span class="s">&#39;next_month_dt&#39;</span><span class="p">,</span> <span class="n">return_type</span><span class="o">=</span><span class="n">datetime</span><span class="p">,</span> <span class="n">args</span><span class="o">=</span><span class="p">(</span><span class="n">datetime</span><span class="p">,</span> <span class="p">))</span>
+<span class="k">def</span> <span class="nf">next_month</span><span class="p">(</span><span class="n">d</span><span class="p">):</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">d</span><span class="p">:</span>
+        <span class="k">return</span> <span class="bp">None</span>
+    <span class="n">month</span> <span class="o">=</span> <span class="n">d</span><span class="o">.</span><span class="n">month</span> <span class="o">+</span> <span class="mi">1</span>
+    <span class="n">year</span> <span class="o">=</span> <span class="n">d</span><span class="o">.</span><span class="n">year</span>
+    <span class="k">if</span> <span class="n">month</span> <span class="o">&gt;</span> <span class="mi">12</span><span class="p">:</span>
+        <span class="n">month</span> <span class="o">=</span> <span class="p">(</span><span class="n">d</span><span class="o">.</span><span class="n">month</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">%</span> <span class="mi">12</span> <span class="o">+</span> <span class="mi">1</span>
+        <span class="n">year</span> <span class="o">+=</span> <span class="mi">1</span>
+    <span class="k">return</span> <span class="n">d</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">year</span><span class="o">=</span><span class="n">year</span><span class="p">,</span> <span class="n">month</span><span class="o">=</span><span class="n">month</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Well, it looks pretty straight forward.</p>
+<p>Read more in chapters <a class="reference internal" href="function.html#arguments-specification"><em>Arguments &amp; fields specification</em></a>,
+<a class="reference internal" href="function.html#type-specification"><em>Type specification</em></a>.</p>
+</div>
+<div class="section" id="dict-example">
+<h3>Dict example<a class="headerlink" href="#dict-example" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">ABIntegerDict</span> <span class="o">=</span> <span class="p">{</span><span class="mi">0</span><span class="p">:</span> <span class="s">&#39;ABIntegerDict&#39;</span><span class="p">,</span> <span class="s">&#39;a&#39;</span><span class="p">:</span> <span class="p">(</span><span class="nb">int</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="s">&#39;b&#39;</span><span class="p">:</span> <span class="p">(</span><span class="nb">int</span><span class="p">,</span> <span class="mi">0</span><span class="p">)}</span>
+</pre></div>
+</div>
+<p>Value with key <tt class="docutils literal"><span class="pre">0</span></tt> is the name of a dictionary type, other keys and values
+represent field names and their types.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">ab_integer_dict_none</span> <span class="o">=</span> <span class="k">lambda</span><span class="p">:</span> <span class="p">{</span><span class="s">&#39;a&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s">&#39;b&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">}</span>
+</pre></div>
+</div>
+<p>Callables can be used as none values.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="nd">@register</span><span class="p">(</span>
+    <span class="s">&#39;add_integer_dicts&#39;</span><span class="p">,</span>
+    <span class="n">return_type</span><span class="o">=</span><span class="n">ABIntegerDict</span><span class="p">,</span>
+    <span class="n">args</span><span class="o">=</span><span class="p">(</span>
+        <span class="p">(</span><span class="n">ABIntegerDict</span><span class="p">,</span> <span class="n">ab_integer_dict_none</span><span class="p">),</span>
+        <span class="p">(</span><span class="n">ABIntegerDict</span><span class="p">,</span> <span class="n">ab_integer_dict_none</span><span class="p">),</span>
+    <span class="p">),</span>
+<span class="p">)</span>
+<span class="k">def</span> <span class="nf">add_dicts</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="n">q</span><span class="p">):</span>
+    <span class="k">return</span> <span class="p">{</span>
+        <span class="s">&#39;a&#39;</span><span class="p">:</span> <span class="n">p</span><span class="p">[</span><span class="s">&#39;a&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="n">q</span><span class="p">[</span><span class="s">&#39;a&#39;</span><span class="p">],</span>
+        <span class="s">&#39;b&#39;</span><span class="p">:</span> <span class="n">p</span><span class="p">[</span><span class="s">&#39;b&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="n">q</span><span class="p">[</span><span class="s">&#39;b&#39;</span><span class="p">],</span>
+    <span class="p">}</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="list-examples">
+<h3>List examples<a class="headerlink" href="#list-examples" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">StringList</span> <span class="o">=</span> <span class="p">[</span><span class="nb">str</span><span class="p">]</span>
+
+<span class="nd">@register</span><span class="p">(</span>
+    <span class="s">&#39;add_string_lists&#39;</span><span class="p">,</span>
+    <span class="n">return_type</span><span class="o">=</span><span class="n">StringList</span><span class="p">,</span>
+    <span class="n">args</span><span class="o">=</span><span class="p">(</span><span class="n">StringList</span><span class="p">,</span> <span class="n">StringList</span><span class="p">),</span>
+<span class="p">)</span>
+<span class="k">def</span> <span class="nf">add_string_lists</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="n">q</span><span class="p">):</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">p</span><span class="p">)</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">q</span><span class="p">):</span>
+        <span class="n">p</span><span class="o">.</span><span class="n">extend</span><span class="p">([</span><span class="s">&#39;&#39;</span><span class="p">]</span> <span class="o">*</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">q</span><span class="p">)</span> <span class="o">-</span> <span class="nb">len</span><span class="p">(</span><span class="n">p</span><span class="p">)))</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">q</span><span class="p">)</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">p</span><span class="p">):</span>
+        <span class="n">q</span><span class="o">.</span><span class="n">extend</span><span class="p">([</span><span class="s">&#39;&#39;</span><span class="p">]</span> <span class="o">*</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">p</span><span class="p">)</span> <span class="o">-</span> <span class="nb">len</span><span class="p">(</span><span class="n">q</span><span class="p">)))</span>
+    <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="n">p</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">+</span> <span class="n">q</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">xrange</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">p</span><span class="p">)))</span>
+</pre></div>
+</div>
+<p>List type definition is pretty simple, isn&#8217;t it?</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">IntegerList</span> <span class="o">=</span> <span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span>
+
+<span class="nd">@register</span><span class="p">(</span>
+    <span class="s">&#39;add_integer_lists&#39;</span><span class="p">,</span>
+    <span class="n">return_type</span><span class="o">=</span><span class="n">IntegerList</span><span class="p">,</span>
+    <span class="n">args</span><span class="o">=</span><span class="p">(</span><span class="n">IntegerList</span><span class="p">,</span> <span class="n">IntegerList</span><span class="p">),</span>
+<span class="p">)</span>
+<span class="k">def</span> <span class="nf">add_integer_lists</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="n">q</span><span class="p">):</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">p</span><span class="p">)</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">q</span><span class="p">):</span>
+        <span class="n">p</span><span class="o">.</span><span class="n">extend</span><span class="p">([</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">q</span><span class="p">)</span> <span class="o">-</span> <span class="nb">len</span><span class="p">(</span><span class="n">p</span><span class="p">)))</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">q</span><span class="p">)</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">p</span><span class="p">):</span>
+        <span class="n">q</span><span class="o">.</span><span class="n">extend</span><span class="p">([</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">p</span><span class="p">)</span> <span class="o">-</span> <span class="nb">len</span><span class="p">(</span><span class="n">q</span><span class="p">)))</span>
+    <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="n">p</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">+</span> <span class="n">q</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">xrange</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">p</span><span class="p">)))</span>
+</pre></div>
+</div>
+<p><tt class="docutils literal"><span class="pre">IntegerList</span></tt>&#8216;s second element is an element none value.</p>
+</div>
+<div class="section" id="recursive-type-example">
+<h3>Recursive type example<a class="headerlink" href="#recursive-type-example" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">Tree</span> <span class="o">=</span> <span class="n">DictOf</span><span class="p">(</span><span class="s">&#39;Tree&#39;</span><span class="p">,</span>
+    <span class="p">(</span><span class="s">&#39;value&#39;</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span>
+<span class="p">)</span>
+<span class="n">Tree</span><span class="o">.</span><span class="n">add_fields</span><span class="p">(</span>
+    <span class="p">(</span><span class="s">&#39;left&#39;</span><span class="p">,</span> <span class="n">Tree</span><span class="p">),</span>
+    <span class="p">(</span><span class="s">&#39;right&#39;</span><span class="p">,</span> <span class="n">Tree</span><span class="p">),</span>
+<span class="p">)</span>
+
+<span class="nd">@register</span><span class="p">(</span><span class="n">return_type</span><span class="o">=</span><span class="nb">int</span><span class="p">,</span> <span class="n">args</span><span class="o">=</span><span class="p">(</span><span class="n">Tree</span><span class="p">,))</span>
+<span class="k">def</span> <span class="nf">sum_tree</span><span class="p">(</span><span class="n">p</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">p</span> <span class="ow">and</span> <span class="p">(</span><span class="n">p</span><span class="p">[</span><span class="s">&#39;value&#39;</span><span class="p">]</span> <span class="o">+</span>
+        <span class="p">(</span><span class="n">p</span><span class="p">[</span><span class="s">&#39;left&#39;</span><span class="p">]</span> <span class="ow">and</span> <span class="n">sum_tree</span><span class="p">(</span><span class="n">p</span><span class="p">[</span><span class="s">&#39;left&#39;</span><span class="p">])</span> <span class="ow">or</span> <span class="mi">0</span><span class="p">)</span> <span class="o">+</span>
+        <span class="p">(</span><span class="n">p</span><span class="p">[</span><span class="s">&#39;right&#39;</span><span class="p">]</span> <span class="ow">and</span> <span class="n">sum_tree</span><span class="p">(</span><span class="n">p</span><span class="p">[</span><span class="s">&#39;right&#39;</span><span class="p">])</span> <span class="ow">or</span> <span class="mi">0</span><span class="p">))</span> <span class="ow">or</span> <span class="mi">0</span>
+</pre></div>
+</div>
+<p>So far, the only way to create a recursive type is monkey pathcing.</p>
+</div>
+<div class="section" id="exception-raising-example">
+<h3>Exception raising example<a class="headerlink" href="#exception-raising-example" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-python"><div class="highlight"><pre><span class="k">class</span> <span class="nc">HelloError</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">HelloError</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="s">&#39;hello error&#39;</span><span class="p">)</span>
+
+<span class="nd">@register</span><span class="p">()</span>
+<span class="k">def</span> <span class="nf">raises_exception</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    this function will always fail</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">raise</span> <span class="n">HelloError</span>
+</pre></div>
+</div>
+<p>It&#8217;s easy, just raise any exception you want.</p>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Test bench</a><ul>
+<li><a class="reference internal" href="#directory-structure">Directory structure</a></li>
+<li><a class="reference internal" href="#server-settings">Server &amp; settings</a></li>
+<li><a class="reference internal" href="#authentication">Authentication</a></li>
+<li><a class="reference internal" href="#functions">Functions</a><ul>
+<li><a class="reference internal" href="#simple-examples">Simple examples</a></li>
+<li><a class="reference internal" href="#context-example">Context example</a></li>
+<li><a class="reference internal" href="#date-and-datetime-example">Date and datetime example</a></li>
+<li><a class="reference internal" href="#dict-example">Dict example</a></li>
+<li><a class="reference internal" href="#list-examples">List examples</a></li>
+<li><a class="reference internal" href="#recursive-type-example">Recursive type example</a></li>
+<li><a class="reference internal" href="#exception-raising-example">Exception raising example</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="integration_tests.html"
+                        title="previous chapter">Integration tests &amp; examples</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="running_tests.html"
+                        title="next chapter">Running tests</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="_sources/test_bench.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="running_tests.html" title="Running tests"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="integration_tests.html" title="Integration tests &amp; examples"
+             >previous</a> |</li>
+        <li><a href="index.html">pyws 1.1 documentation</a> &raquo;</li>
+          <li><a href="integration_tests.html" >Integration tests &amp; examples</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2011, stepank.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.2.
+    </div>
+  </body>
+</html>
