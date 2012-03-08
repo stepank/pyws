@@ -40,7 +40,14 @@ def xml2obj(xml, schema):
         result = {}
         schema = dict((field.name, field.type) for field in schema.fields)
         for child in children:
-            name = get_element_name(child)[1]
+            ns, name = get_element_name(child)
+            if name not in schema:
+                raise BadRequest(
+                    'XML doesn\'t match the required schema. '
+                    '{%s}%s is unexpected under %s, '
+                    'must be one of: %s' % (
+                        ns, name, xml.tag, ', '.join(schema.iterkeys())
+                    ))
             obj = xml2obj(child, schema[name])
             if name not in result:
                 result[name] = obj
