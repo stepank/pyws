@@ -96,6 +96,13 @@ Changelog
 =========
 
 
+Development version
+-------------------
+
+* fixed pyws crashing if SOAP request body does not match the required schema,
+  issue #16.
+
+
 Version 1.1
 -----------
 
