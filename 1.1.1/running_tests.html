@@ -1,0 +1,231 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Running tests &mdash; pyws 1.1.1 documentation</title>
+    
+    <link rel="stylesheet" href="_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '',
+        VERSION:     '1.1.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="top" title="pyws 1.1.1 documentation" href="index.html" />
+    <link rel="up" title="Integration tests &amp; examples" href="integration_tests.html" />
+    <link rel="prev" title="Test bench" href="test_bench.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="test_bench.html" title="Test bench"
+             accesskey="P">previous</a> |</li>
+        <li><a href="index.html">pyws 1.1.1 documentation</a> &raquo;</li>
+          <li><a href="integration_tests.html" accesskey="U">Integration tests &amp; examples</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="running-tests">
+<span id="id1"></span><h1>Running tests<a class="headerlink" href="#running-tests" title="Permalink to this headline">¶</a></h1>
+<p>This chapter explains how to run pyws interoperability tests, for detailed
+description of the test bench, refer to <a class="reference internal" href="test_bench.html#test-bench"><em>Test bench</em></a>. These tests can also
+be treated as examples of how different clients work with pyws.</p>
+<p>You can run all the tests (except WS-I Basic Profile ones, about which read
+below) using one single command:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">make</span>
+</pre></div>
+</div>
+<p>However, each set of tests has it own requirements, which you can learn below.</p>
+<p>In any case we need a pyws server running, but all tests deal with it
+themselves, so don&#8217;t bother yourself with it and just keep reading.</p>
+<div class="section" id="php">
+<h2>PHP<a class="headerlink" href="#php" title="Permalink to this headline">¶</a></h2>
+<p>Base directory is <tt class="docutils literal"><span class="pre">[pyws_dir]/tests/php</span></tt>.</p>
+<p>Surely, we need to have PHP installed, I use PHP 5.3.6. We need to have
+PHPUnit installed as well, I use PHPUnit 3.6.9. To generate PHP classes from
+a WSDL file, I use my fork of wsdl2php project (
+<a class="reference external" href="https://github.com/stepank/wsdl2php">https://github.com/stepank/wsdl2php</a>).</p>
+<p>Running PHP tests is easy:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">make</span>
+</pre></div>
+</div>
+<p>Note: I could not make native PHP SOAP client work with WSDL that is suitable
+for other clients, so a special version is generated (<tt class="docutils literal"><span class="pre">rpc=1</span></tt> param is added
+to WSDL URL).</p>
+</div>
+<div class="section" id="java-axis">
+<h2>Java (Axis)<a class="headerlink" href="#java-axis" title="Permalink to this headline">¶</a></h2>
+<p>Base directory is <tt class="docutils literal"><span class="pre">[pyws_dir]/tests/java/axis</span></tt>.</p>
+<p>Of course, we need to have Java installed, I use Java 1.6.0_23. We also need
+to have Apache Axis and JUnit4 installed, I use Apache Axis 1.4 and JUnit
+4.8.2. Probably, you may also need to edit <tt class="docutils literal"><span class="pre">common.sh</span></tt> and change
+<tt class="docutils literal"><span class="pre">JAVA_DIR</span></tt> to the directory containing Java libraries. In my case it is
+<tt class="docutils literal"><span class="pre">/usr/share/java</span></tt>.</p>
+<p>To run Java tests, again, just run:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">make</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="c-mono">
+<h2>C# (Mono)<a class="headerlink" href="#c-mono" title="Permalink to this headline">¶</a></h2>
+<p>Base directory is <tt class="docutils literal"><span class="pre">[pyws_dir]/tests/mono</span></tt>.</p>
+<p>Of course, we need to have Mono SDK installed, I use 2.10.5. We also need NUnit
+installed, I use 2.5.10.</p>
+<p>To run Mono tests, again, just run:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">make</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="python-suds">
+<h2>Python (suds)<a class="headerlink" href="#python-suds" title="Permalink to this headline">¶</a></h2>
+<p>Base directory is <tt class="docutils literal"><span class="pre">[pyws_dir]/tests/python/suds</span></tt>.</p>
+<p>We need to have suds and unittest2 installed.</p>
+<p>You might have guessed:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">make</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="ws-i-basic-profile-1-1">
+<h2>WS-I Basic Profile 1.1<a class="headerlink" href="#ws-i-basic-profile-1-1" title="Permalink to this headline">¶</a></h2>
+<p>This test checks if WSDL file generated by pyws is compliant with <a class="reference external" href="http://www.ws-i.org/profiles/basicprofile-1.1-2004-08-24.html">WS-I Basic
+Profile 1.1</a>.</p>
+<p>Base directory is <tt class="docutils literal"><span class="pre">[pyws_dir]/tests/java/ws-i/bp11</span></tt>.</p>
+<p>Requirements are the same as for Axis integration tests, except that we don&#8217;t
+need JUnit.</p>
+<p>Run the test:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">make</span>
+</pre></div>
+</div>
+<p>It will download WS-I Test Tools (about 4MB) and generate <tt class="docutils literal"><span class="pre">report.xml</span></tt> file.
+All we have to do is to open it (for example, with Mozilla Firefox Web browser)
+and check the status in summary section. If there you see green <tt class="docutils literal"><span class="pre">passed</span></tt>,
+then it&#8217;s OK. In the case of problems, you can find further in the document
+some details about them, it would be great if you report them to me.</p>
+<p>To clean generated report files:</p>
+<div class="highlight-python"><pre>make clean_report</pre>
+</div>
+</div>
+<div class="section" id="ws-i-basic-profile-1-2">
+<h2>WS-I Basic Profile 1.2<a class="headerlink" href="#ws-i-basic-profile-1-2" title="Permalink to this headline">¶</a></h2>
+<p>This test checks if WSDL file generated by pyws is compliant with <a class="reference external" href="http://www.ws-i.org/Profiles/BasicProfile-1.2-2010-11-09.html">WS-I Basic
+Profile 1.2</a>.</p>
+<p>Base directory is <tt class="docutils literal"><span class="pre">[pyws_dir]/tests/java/ws-i/bp12</span></tt>.</p>
+<p>Requirements are the same as for Axis integration tests, except that we don&#8217;t
+need JUnit, but we do need an XSLT 2.0 processor. I use Saxon B 0.9, if you
+use another one, you should specify it in <tt class="docutils literal"><span class="pre">xslt.sh</span></tt> in variable <tt class="docutils literal"><span class="pre">SAXON</span></tt>.</p>
+<p>Run the test:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">make</span>
+</pre></div>
+</div>
+<p>It will download WS-I Test Tools (about 6MB) and generate <tt class="docutils literal"><span class="pre">report.xml</span></tt> file.
+All we have to do is to open it (for example, with Mozilla Firefox Web browser)
+and check if there are any &#8220;failed&#8221; assertions. If there ain&#8217;t any, then it&#8217;s
+OK. Otherwise, you can find further in the document the causes of the failure
+and report them to me :). But I find it unlikely, I usually run this test too.</p>
+<p>To clean generated report files:</p>
+<div class="highlight-python"><pre>make clean_report</pre>
+</div>
+</div>
+<div class="section" id="known-problems">
+<h2>Known problems<a class="headerlink" href="#known-problems" title="Permalink to this headline">¶</a></h2>
+<p>In rare cases, a pyws server is not halted after the tests (have not figured
+why so far), so you&#8217;ll have to kill it yourself, this command might help:</p>
+<div class="highlight-python"><pre>ps ax | grep 'python __init__.py' | grep -v grep</pre>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Running tests</a><ul>
+<li><a class="reference internal" href="#php">PHP</a></li>
+<li><a class="reference internal" href="#java-axis">Java (Axis)</a></li>
+<li><a class="reference internal" href="#c-mono">C# (Mono)</a></li>
+<li><a class="reference internal" href="#python-suds">Python (suds)</a></li>
+<li><a class="reference internal" href="#ws-i-basic-profile-1-1">WS-I Basic Profile 1.1</a></li>
+<li><a class="reference internal" href="#ws-i-basic-profile-1-2">WS-I Basic Profile 1.2</a></li>
+<li><a class="reference internal" href="#known-problems">Known problems</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="test_bench.html"
+                        title="previous chapter">Test bench</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="_sources/running_tests.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="test_bench.html" title="Test bench"
+             >previous</a> |</li>
+        <li><a href="index.html">pyws 1.1.1 documentation</a> &raquo;</li>
+          <li><a href="integration_tests.html" >Integration tests &amp; examples</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2011, stepank.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.2.
+    </div>
+  </body>
+</html>
