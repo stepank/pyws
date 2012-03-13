@@ -12,6 +12,11 @@ modules = [
 ]
 
 if __name__ == '__main__':
+    failed = False
     for module in modules:
         __import__(module)
-        doctest.testmod(sys.modules[module])
+        if doctest.testmod(sys.modules[module])[0]:
+            failed = True
+
+    if failed:
+        sys.exit(1)
