@@ -1,4 +1,5 @@
-#noinspection PyUnresolvedReferences
+from inspect import getargspec
+
 from pyws.functions.args import DictOf, TypeFactory
 from pyws.utils import cached_property
 
@@ -106,7 +107,8 @@ class NativeFunctionAdapter(Function):
         >>> a(context=None)
 
         >>> def add(a, b):
-        ...     return a + b
+        ...     c = a + b
+        ...     return c
 
         >>> a = NativeFunctionAdapter(add, name='concat')
         >>> a.name
@@ -153,7 +155,7 @@ class NativeFunctionAdapter(Function):
         self.needs_context = needs_context
 
         # Get argument names from origin
-        arg_names = [(x, ) for x in self.origin.func_code.co_varnames
+        arg_names = [(x, ) for x in getargspec(origin)[0]
             if not needs_context or x != CONTEXT_ARG_NAME]
 
         # Get argument types
