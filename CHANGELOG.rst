@@ -1,3 +1,13 @@
+Version 1.1.1
+-------------
+
+* fixed pyws crashing if SOAP request body does not match the required schema,
+issue #16,
+* function arguments are inferred correctly, if they are not specified, issue
+  #17,
+* running doctests returns exit code 1 in the case of failure, issue #18.
+
+
 Version 1.1
 -----------
 
