@@ -131,12 +131,12 @@ def get_tree(p):
 # = raises exception ==========================================================
 
 class HelloError(Exception):
-    def __init__(self):
-        super(HelloError, self).__init__('hello error')
+    def __init__(self, name):
+        super(HelloError, self).__init__(u'%s error' % name)
 
 @register()
-def raises_exception():
+def raises_exception(name):
     """
     this function will always fail
     """
-    raise HelloError
+    raise HelloError(name)

@@ -1,6 +1,9 @@
 from functools import wraps
 
 
+ENCODING = 'utf-8'
+
+
 def cache_method_result(attr):
     def decorator(func):
         @wraps(func)
@@ -18,3 +21,9 @@ def cache_method_result(attr):
 
 def cached_property(func):
     return property(cache_method_result(func))
+
+
+class DefaultStrImplemntationMixin(object):
+
+    def __str__(self):
+        return unicode(self).encode('utf-8')

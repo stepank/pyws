@@ -2,11 +2,12 @@ import unittest2 as unittest
 
 from datetime import date, datetime
 
-from base import BaseTestCaseMixin
+from testcases.base import BaseTestCaseMixin
+
 
 class NextMonthTestCase(BaseTestCaseMixin, unittest.TestCase):
 
-    def test(self):
+    def test_simple(self):
         self.assertEqual(
             self.service.next_month(date(2011, 8, 20)), date(2011, 9, 20))
 

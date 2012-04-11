@@ -1,4 +1,7 @@
-class Response(object):
+from pyws.utils import DefaultStrImplemntationMixin, ENCODING
+
+
+class Response(DefaultStrImplemntationMixin):
     """
     Response objects are created by protocols and contain response information,
     adapters have to transform it into the form suitable for the application
@@ -22,15 +25,12 @@ class Response(object):
         self.content_type = content_type
         self.status = status
 
-    def __str__(self):
-        return """<pyws.response.Response
+    def __unicode__(self):
+        return u"""<pyws.response.Response
     content_type: %s
     text:
 %s
 >""" % (
             self.content_type,
-            self.text.strip()
+            self.text.strip().decode(ENCODING)
         )
-
-    def __unicode__(self):
-        return unicode(self.__str__())

@@ -1,6 +1,7 @@
 import unittest2 as unittest
 
-from base import BaseTestCaseMixin
+from testcases.base import BaseTestCaseMixin
+
 
 class AddIntegerListsTestCase(BaseTestCaseMixin, unittest.TestCase):
 
@@ -11,7 +12,7 @@ class AddIntegerListsTestCase(BaseTestCaseMixin, unittest.TestCase):
         q.item = []
         res = self.service.add_integer_lists(p, q)
 
-    def test(self):
+    def test_simple(self):
         p = self.factory.create('types:IntegerList')
         p.item = [1, 2, 3]
         q = self.factory.create('types:IntegerList')

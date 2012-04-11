@@ -8,12 +8,12 @@ from pyws.errors import BadRequest, ConfigurationError
 from pyws.functions.args import List, Dict, TypeFactory, Type, DICT_NAME_KEY
 from pyws.response import Response
 from pyws.protocols.base import Protocol
+from pyws.utils import ENCODING
 
 from utils import *
 from wsdl import WsdlGenerator
 
 TAG_NAME_RE = re.compile('{(.*?)}(.*)')
-ENCODING = 'utf-8'
 
 create_response = partial(Response, content_type='text/xml')
 create_error_response = partial(create_response, status=Response.STATUS_ERROR)
@@ -136,7 +136,10 @@ def get_context_data_from_headers(request, headers_schema):
 
 
 class ParsedData(object):
-    pass
+
+    xml = None
+    func_xml = None
+    func_name = None
 
 
 class SoapProtocol(Protocol):
@@ -176,7 +179,7 @@ class SoapProtocol(Protocol):
 
         request.parsed_data = ParsedData()
 
-        xml = et.fromstring(request.text.encode(ENCODING))
+        xml = et.fromstring(request.text)
 
         env = xml.xpath('/soap:Envelope', namespaces=self.namespaces)
 

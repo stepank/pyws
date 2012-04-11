@@ -1,6 +1,7 @@
 import unittest2 as unittest
 
-from base import BaseTestCaseMixin
+from testcases.base import BaseTestCaseMixin
+
 
 class SumTreeTestCase(BaseTestCaseMixin, unittest.TestCase):
 
@@ -11,7 +12,7 @@ class SumTreeTestCase(BaseTestCaseMixin, unittest.TestCase):
         p.right = None
         self.assertEqual(self.service.sum_tree(p), 10)
 
-    def test(self):
+    def test_simple(self):
         p = self.factory.create('types:Tree')
         p.value = 10
         p.left = self.factory.create('types:Tree')

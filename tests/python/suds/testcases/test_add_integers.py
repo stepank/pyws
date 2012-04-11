@@ -2,7 +2,8 @@ import unittest2 as unittest
 
 from suds import null
 
-from base import BaseTestCaseMixin
+from testcases.base import BaseTestCaseMixin
+
 
 class AddIntegersTestCase(BaseTestCaseMixin, unittest.TestCase):
 
@@ -14,5 +15,5 @@ class AddIntegersTestCase(BaseTestCaseMixin, unittest.TestCase):
         self.assertEqual(
             self.service.add_integers(0, 0), 0)
 
-    def test(self):
+    def test_simple(self):
         self.assertEqual(self.service.add_integers(100, 50), 150)

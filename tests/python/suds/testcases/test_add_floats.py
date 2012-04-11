@@ -1,7 +1,8 @@
 from suds import null
 import unittest2 as unittest
 
-from base import BaseTestCaseMixin
+from testcases.base import BaseTestCaseMixin
+
 
 class AddFloatsTestCase(BaseTestCaseMixin, unittest.TestCase):
 
@@ -13,5 +14,5 @@ class AddFloatsTestCase(BaseTestCaseMixin, unittest.TestCase):
         self.assertEqual(
             self.service.add_floats(0, 0), 0)
 
-    def test(self):
+    def test_simple(self):
         self.assertEqual(self.service.add_floats(10.5, 5.3), 15.8)

@@ -10,6 +10,7 @@ from pyws.functions.managers import FixedFunctionManager
 from pyws.protocols import Protocol, SoapProtocol
 from pyws.response import Response
 from pyws.settings import Settings
+from pyws.utils import ENCODING
 
 logger = logging.getLogger('pyws')
 
@@ -121,7 +122,6 @@ class Server(object):
         if not len(self.settings.FUNCTION_MANAGERS):
             raise ConfigurationError(
                 'Where have default function manager gone?!')
-        #noinspection PyUnresolvedReferences
         self.settings.FUNCTION_MANAGERS[0].add_function(function)
 
     def get_function(self, context, name):
@@ -153,7 +153,7 @@ class Server(object):
         try:
             protocol = self.get_protocol(request)
         except ProtocolError, e:
-            return Response(unicode(e))
+            return Response(unicode(e).encode(ENCODING))
 
         try:
 

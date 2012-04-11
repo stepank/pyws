@@ -30,4 +30,7 @@ class Type(object):
 
     @classmethod
     def serialize(cls, value):
-        return unicode(value)
+        try:
+            return unicode(value)
+        except UnicodeDecodeError:
+            return unicode(value, 'utf-8')

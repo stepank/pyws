@@ -1,50 +1,49 @@
+from pyws.utils import DefaultStrImplemntationMixin
+
 ET_CLIENT = 1
 ET_SERVER = 2
 
 
-class ConfigurationError(Exception):
+class ConfigurationError(DefaultStrImplemntationMixin, Exception):
     pass
 
 
 class ServerAlreadyRegistered(ConfigurationError):
-    def __str__(self):
-        return 'Server %s has already been registered' % self.args[0]
+    def __unicode__(self):
+        return u'Server %s has already been registered' % self.args[0]
 
 
 class DefaultServerAlreadyRegistered(ConfigurationError):
-    def __str__(self):
-        return 'Default server has already been registered'
+    def __unicode__(self):
+        return u'Default server has already been registered'
 
 
 class SettingNotDefined(ConfigurationError):
-    def __str__(self):
-        return 'Setting %s is not defined' % self.args[0]
+    def __unicode__(self):
+        return u'Setting %s is not defined' % self.args[0]
 
 
 class NoProtocolsRegistered(ConfigurationError):
-    def __str__(self):
-        return 'Server has no protocols'
+    def __unicode__(self):
+        return u'Server has no protocols'
 
 
 class BadProtocol(ConfigurationError):
-
-    def __str__(self):
-        return 'Bad protocol: %s' % self.args[0]
+    def __unicode__(self):
+        return u'Bad protocol: %s' % self.args[0]
 
 
 class FunctionAlreadyRegistered(ConfigurationError):
-
-    def __str__(self):
-        return 'Function %s is already registered' % self.args[0]
+    def __unicode__(self):
+        return u'Function %s is already registered' % self.args[0]
 
 
 class BadFunction(ConfigurationError):
+    def __unicode__(self):
+        return u'Bad function: %s' % self.args[0]
 
-    def __str__(self):
-        return 'Bad function: %s' % self.args[0]
 
-
-class Error(Exception):
+class Error(DefaultStrImplemntationMixin, Exception):
     error_type = ET_SERVER
 
 
@@ -57,25 +56,22 @@ class ProtocolError(Error):
 
 
 class ProtocolNotFound(ClientErrorTypeMixin, ProtocolError):
-
-    def __str__(self):
-        return 'A protocol cannot be found: %s' % self.args[0]
+    def __unicode__(self):
+        return u'Protocol %s cannot be found' % self.args[0]
 
 
 class BadRequest(ClientErrorTypeMixin, ProtocolError):
-
-    def __str__(self):
+    def __unicode__(self):
         if not self.args:
-            return 'Bad request'
-        return 'Bad request: %s' % self.args[0]
+            return u'Bad request'
+        return u'Bad request: %s' % self.args[0]
 
 
 class AccessDenied(ClientErrorTypeMixin, ProtocolError):
-
-    def __str__(self):
+    def __unicode__(self):
         if not self.args or not self.args[0]:
-            return 'Access denied'
-        return 'Access denied for user %s' % self.args[0]
+            return u'Access denied'
+        return u'Access denied for user %s' % self.args[0]
 
 
 class FunctionError(Error):
@@ -83,9 +79,8 @@ class FunctionError(Error):
 
 
 class FunctionNotFound(ClientErrorTypeMixin, FunctionError):
-
-    def __str__(self):
-        return 'A function cannot be found: %s' % self.args[0]
+    def __unicode__(self):
+        return u'Function %s cannot be found' % self.args[0]
 
 
 class FieldError(ClientErrorTypeMixin, Error):
@@ -93,12 +88,10 @@ class FieldError(ClientErrorTypeMixin, Error):
 
 
 class MissingFieldValue(FieldError):
-
-    def __str__(self):
-        return 'The value of \'%s\' field is missing.' % self.args[0]
+    def __unicode__(self):
+        return u'The value of field \'%s\' is missing.' % self.args[0]
 
 
 class WrongFieldValueType(FieldError):
-
-    def __str__(self):
-        return 'The value of \'%s\' field is of wrong type.' % self.args[0]
+    def __unicode__(self):
+        return u'The value of field \'%s\' is of wrong type.' % self.args[0]
