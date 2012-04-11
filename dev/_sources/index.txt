@@ -96,6 +96,12 @@ Changelog
 =========
 
 
+Development version
+-------------------
+
+* Unicode support, issue #19.
+
+
 Version 1.1.1
 -------------
 

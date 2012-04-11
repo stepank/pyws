@@ -280,15 +280,15 @@ represent field names and their types.</p>
 <div class="section" id="exception-raising-example">
 <h3>Exception raising example<a class="headerlink" href="#exception-raising-example" title="Permalink to this headline">¶</a></h3>
 <div class="highlight-python"><div class="highlight"><pre><span class="k">class</span> <span class="nc">HelloError</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="nb">super</span><span class="p">(</span><span class="n">HelloError</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="s">&#39;hello error&#39;</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">HelloError</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="s">u&#39;</span><span class="si">%s</span><span class="s"> error&#39;</span> <span class="o">%</span> <span class="n">name</span><span class="p">)</span>
 
 <span class="nd">@register</span><span class="p">()</span>
-<span class="k">def</span> <span class="nf">raises_exception</span><span class="p">():</span>
+<span class="k">def</span> <span class="nf">raises_exception</span><span class="p">(</span><span class="n">name</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    this function will always fail</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">raise</span> <span class="n">HelloError</span>
+    <span class="k">raise</span> <span class="n">HelloError</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>It&#8217;s easy, just raise any exception you want.</p>
