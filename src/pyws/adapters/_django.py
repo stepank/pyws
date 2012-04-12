@@ -3,6 +3,8 @@ from django.views.decorators.csrf import csrf_exempt
 
 from pyws.adapters import get_http_response_code_num
 from pyws.request import Request
+from pyws.utils import parse_qs
+
 
 @csrf_exempt
 def serve(request, tail, server):
@@ -21,7 +23,10 @@ def serve(request, tail, server):
 
     request = Request(tail,
         request.raw_post_data if not request.GET else '',
-        request.GET, request.POST, request.COOKIES)
+        parse_qs(request.META['QUERY_STRING']),
+        parse_qs(request.raw_post_data),
+        request.COOKIES,
+    )
 
     response = server.process_request(request)
 

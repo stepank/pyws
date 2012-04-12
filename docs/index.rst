@@ -101,7 +101,8 @@ Development version
 
 * Unicode support, issue #19,
 * REST protocol retrieves arguments from request according to the
-  specification, issue #21.
+  specification, issue #21,
+* Django adapter uses parse_qs to parse GET and POST arguments, issue #22.
 
 
 Version 1.1.1

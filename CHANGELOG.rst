@@ -3,14 +3,15 @@ Development version
 
 * Unicode support, issue #19,
 * REST protocol retrieves arguments from request according to the
-specification, issue #21.
+  specification, issue #21,
+* Django adapter uses parse_qs to parse GET and POST arguments, issue #22.
 
 
 Version 1.1.1
 -------------
 
 * fixed pyws crashing if SOAP request body does not match the required schema,
-issue #16,
+  issue #16,
 * function arguments are inferred correctly, if they are not specified, issue
   #17,
 * running doctests returns exit code 1 in the case of failure, issue #18.
