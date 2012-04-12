@@ -1,15 +1,11 @@
-try:
-    import json
-except ImportError:
-    #noinspection PyUnresolvedReferences
-    import simplejson as json
-
 from functools import partial
 
 from pyws.errors import BadRequest
+from pyws.functions.args.types.complex import List
 from pyws.response import Response
+from pyws.utils import json
 
-from base import Protocol
+from pyws.protocols.base import Protocol
 
 __all__ = ('RestProtocol', 'JsonProtocol', )
 
@@ -25,8 +21,14 @@ class RestProtocol(Protocol):
         return request.tail
 
     def get_arguments(self, request, arguments):
-        return dict((k, len(v) > 1 and v or v[0])
-            for k, v in request.GET.iteritems())
+        result = {}
+        for field in arguments.fields:
+            value = request.GET.get(field.name)
+            if issubclass(field.type, List):
+                result[field.name] = value
+            elif field.name in request.GET:
+                result[field.name] = value[0]
+        return result
 
     def get_response(self, result, name, return_type):
         return create_response(json.dumps({'result': result}))

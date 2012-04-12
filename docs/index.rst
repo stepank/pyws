@@ -99,7 +99,9 @@ Changelog
 Development version
 -------------------
 
-* Unicode support, issue #19.
+* Unicode support, issue #19,
+* REST protocol retrieves arguments from request according to the
+  specification, issue #21.
 
 
 Version 1.1.1

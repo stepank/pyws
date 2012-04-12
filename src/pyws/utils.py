@@ -1,5 +1,15 @@
 from functools import wraps
 
+try:
+    from cgi import parse_qs
+except ImportError:
+    from urlparse import parse_qs
+
+try:
+    import json
+except ImportError:
+    import simplejson as json
+
 
 ENCODING = 'utf-8'
 

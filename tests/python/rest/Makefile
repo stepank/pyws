@@ -1,5 +1,7 @@
 ROOT_DIR=$(shell pwd)/../../..
 
+NEED_WSDL=0
+
 include $(ROOT_DIR)/Makefile.common
 include $(TEST_DIR)/Makefile.common
 
