@@ -4,51 +4,67 @@ ET_CLIENT = 1
 ET_SERVER = 2
 
 
-class ConfigurationError(DefaultStrImplemntationMixin, Exception):
-    pass
-
-
-class ServerAlreadyRegistered(ConfigurationError):
-    def __unicode__(self):
-        return u'Server %s has already been registered' % self.args[0]
-
-
-class DefaultServerAlreadyRegistered(ConfigurationError):
-    def __unicode__(self):
-        return u'Default server has already been registered'
-
-
-class SettingNotDefined(ConfigurationError):
-    def __unicode__(self):
-        return u'Setting %s is not defined' % self.args[0]
-
-
-class NoProtocolsRegistered(ConfigurationError):
-    def __unicode__(self):
-        return u'Server has no protocols'
-
-
-class BadProtocol(ConfigurationError):
-    def __unicode__(self):
-        return u'Bad protocol: %s' % self.args[0]
-
-
-class FunctionAlreadyRegistered(ConfigurationError):
-    def __unicode__(self):
-        return u'Function %s is already registered' % self.args[0]
-
-
-class BadFunction(ConfigurationError):
-    def __unicode__(self):
-        return u'Bad function: %s' % self.args[0]
-
-
 class Error(DefaultStrImplemntationMixin, Exception):
+
     error_type = ET_SERVER
+
+    def __unicode__(self):
+        if self.__doc__:
+            return unicode(self.__doc__ % self.args)
+        if self.args:
+            return self.args[0]
+        return 'unknown error'
 
 
 class ClientErrorTypeMixin(Exception):
     error_type = ET_CLIENT
+
+
+class ConfigurationError(Error):
+    def __unicode__(self):
+        return unicode(self.args[0])
+
+
+class ServerAlreadyRegistered(ConfigurationError):
+    """
+    Server '%s' has already been registered
+    """
+
+
+class DefaultServerAlreadyRegistered(ConfigurationError):
+    """
+    Default server has already been registered
+    """
+
+
+class SettingNotDefined(ConfigurationError):
+    """
+    Setting '%s' is not defined
+    """
+
+
+class NoProtocolsRegistered(ConfigurationError):
+    """
+    Server has no protocols
+    """
+
+
+class BadProtocol(ConfigurationError):
+    """
+    Bad protocol: %s
+    """
+
+
+class FunctionAlreadyRegistered(ConfigurationError):
+    """
+    Function '%s' is already registered
+    """
+
+
+class BadFunction(ConfigurationError):
+    """
+    Bad function: %s
+    """
 
 
 class ProtocolError(Error):
@@ -56,8 +72,9 @@ class ProtocolError(Error):
 
 
 class ProtocolNotFound(ClientErrorTypeMixin, ProtocolError):
-    def __unicode__(self):
-        return u'Protocol %s cannot be found' % self.args[0]
+    """
+    Protocol '%s' cannot be found
+    """
 
 
 class BadRequest(ClientErrorTypeMixin, ProtocolError):
@@ -79,8 +96,9 @@ class FunctionError(Error):
 
 
 class FunctionNotFound(ClientErrorTypeMixin, FunctionError):
-    def __unicode__(self):
-        return u'Function %s cannot be found' % self.args[0]
+    """
+    Function '%s' cannot be found
+    """
 
 
 class FieldError(ClientErrorTypeMixin, Error):
@@ -88,10 +106,12 @@ class FieldError(ClientErrorTypeMixin, Error):
 
 
 class MissingFieldValue(FieldError):
-    def __unicode__(self):
-        return u'The value of field \'%s\' is missing.' % self.args[0]
+    """
+    The value of field '%s' is missing.
+    """
 
 
 class WrongFieldValueType(FieldError):
-    def __unicode__(self):
-        return u'The value of field \'%s\' is of wrong type.' % self.args[0]
+    """
+    The value of field '%s' is of wrong type.
+    """

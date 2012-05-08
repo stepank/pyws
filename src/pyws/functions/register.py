@@ -34,8 +34,8 @@ def register(*args, **kwargs):
     """
     if args and callable(args[0]):
         raise ConfigurationError(
-            'You must have tried to wrap a function directly with '
-            '\'register\', function call, i.e. register(...), is necessary')
+            'You might have tried to decorate a function directly with '
+            '@register which is not supported, use @register(...) instead')
     def registrator(origin):
         try:
             server = SERVERS[kwargs.pop('to')]

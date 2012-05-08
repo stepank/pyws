@@ -1,7 +1,7 @@
 import json
 
 from urllib import urlencode
-from urllib2 import urlopen, HTTPError
+from urllib2 import urlopen, HTTPError, Request
 
 
 def encode_arg((name, value)):
@@ -14,10 +14,12 @@ def encode_args(args):
     return '&'.join(map(encode_arg, args.iteritems()))
 
 
-def make_rest_call(func, **args):
+def make_rest_call(func, headers=None, **args):
+    request = Request(
+        'http://127.0.0.1:8000/api/rest/%s?%s' % (func, encode_args(args)),
+        headers=headers or {},
+    )
     try:
-        return json.loads(urlopen(
-            'http://127.0.0.1:8000/api/rest/%s?%s' % (func, encode_args(args))
-        ).read())['result']
+        return json.loads(urlopen(request).read())['result']
     except HTTPError, e:
         raise Exception(json.loads(e.read())['error']['message'])

@@ -121,7 +121,7 @@ class Server(object):
         #noinspection PyTypeChecker
         if not len(self.settings.FUNCTION_MANAGERS):
             raise ConfigurationError(
-                'Where have default function manager gone?!')
+                'Where have the default function manager gone?!')
         self.settings.FUNCTION_MANAGERS[0].add_function(function)
 
     def get_function(self, context, name):
@@ -178,6 +178,10 @@ class Server(object):
             response = protocol.get_response(
                 result, function.name, function.return_type)
 
+        except ConfigurationError:
+            logger.error(traceback.format_exc())
+            response = protocol.get_error_response(
+                Error('Internal server error occured'))
         except Error, e:
             logger.error(traceback.format_exc())
             response = protocol.get_error_response(e)
