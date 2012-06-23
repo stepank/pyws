@@ -10,7 +10,7 @@ class Error(DefaultStrImplemntationMixin, Exception):
 
     def __unicode__(self):
         if self.__doc__:
-            return unicode(self.__doc__ % self.args)
+            return unicode(self.__doc__.strip() % self.args)
         if self.args:
             return self.args[0]
         return 'unknown error'
