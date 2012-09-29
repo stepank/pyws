@@ -100,6 +100,8 @@ Development version
 -------------------
 
 * Unicode support, issue #19,
+* WSDL generator complains if some functions require context, but SOAP protocol
+  does not have SOAP headers schema specified, issue #20,
 * REST protocol retrieves arguments from request according to the
   specification, issue #21,
 * Django adapter uses parse_qs to parse GET and POST arguments, issue #22.
