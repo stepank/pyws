@@ -1,5 +1,7 @@
 # coding=utf-8
 
+import sys
+
 import suds
 import unittest2 as unittest
 
@@ -16,6 +18,9 @@ class RaisesExceptionTestCase(BaseTestCaseMixin, unittest.TestCase):
             return
         self.assertTrue(False, 'Exception hasn\'t been thrown')
 
+    @unittest.skipIf(
+        sys.version_info[1] == 5,
+        'suds does not handle unicode in faultstrings properly on python 2.5')
     def test_unicode(self):
         try:
             self.service.raises_exception(u'лопата')

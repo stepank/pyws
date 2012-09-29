@@ -1,4 +1,4 @@
-import json
+from pyws.utils import json
 
 from urllib import urlencode
 from urllib2 import urlopen, HTTPError, Request
