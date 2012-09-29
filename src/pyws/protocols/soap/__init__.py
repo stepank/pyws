@@ -264,7 +264,7 @@ class SoapProtocol(Protocol):
             xml, encoding=ENCODING, pretty_print=True, xml_declaration=True))
 
     def get_wsdl(self, server, request, context, rpc=False):
-        return create_response(
+        return Response(*
             WsdlGenerator(
                 server, context,
                 self.service_name, self.tns, self.location,

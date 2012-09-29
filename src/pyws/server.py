@@ -180,6 +180,8 @@ class Server(object):
 
         except ConfigurationError:
             logger.error(traceback.format_exc())
+            if self.settings.DEBUG:
+                raise
             response = protocol.get_error_response(
                 Error('Internal server error occured'))
         except Error, e:
