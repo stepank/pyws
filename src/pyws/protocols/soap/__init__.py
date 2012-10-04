@@ -71,11 +71,13 @@ def obj2xml(root, contents, schema=None, namespace=None):
             )
     elif isinstance(contents, dict):
         fields = schema and dict((f.name, f.type) for f in schema.fields) or {}
-        for name, item in contents.iteritems():
+        # Return the fields of the dict in schema order, or arbitrary python dict order if no schema
+        field_order = schema and [f.name for f in schema.fields] or contents.keys() 
+        for name in field_order: 
             element = et.SubElement(root, name, **kwargs)
             obj2xml(
                 element,
-                item,
+                contents.get(name),
                 fields.get(name),
                 namespace
             )
