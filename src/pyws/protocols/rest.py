@@ -5,6 +5,13 @@ from pyws.functions.args.types.complex import List
 from pyws.response import Response
 from pyws.utils import json
 
+class encoder( json.JSONEncoder ):
+    # JSON Serializer with datetime support
+    def default(self,obj):
+        if isinstance(obj, datetime.datetime):
+            return obj.isoformat()
+        return json.JSONEncoder.default( self,obj)
+        
 from pyws.protocols.base import Protocol
 
 __all__ = ('RestProtocol', 'JsonProtocol', )
@@ -31,7 +38,7 @@ class RestProtocol(Protocol):
         return result
 
     def get_response(self, result, name, return_type):
-        return create_response(json.dumps({'result': result}))
+        return create_response(json.dumps({'result': result},cls=encoder))
 
     def get_error_response(self, error):
         return create_error_response(
