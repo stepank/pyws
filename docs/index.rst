@@ -104,7 +104,8 @@ Development version
   does not have SOAP headers schema specified, issue #20,
 * REST protocol retrieves arguments from request according to the
   specification, issue #21,
-* Django adapter uses parse_qs to parse GET and POST arguments, issue #22.
+* Django adapter uses parse_qs to parse GET and POST arguments, issue #22,
+* SOAP protocol returns dicts with fields ordered according to schema.
 
 
 Version 1.1.1
