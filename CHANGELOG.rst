@@ -7,7 +7,8 @@ Development version
 * REST protocol retrieves arguments from request according to the
   specification, issue #21,
 * Django adapter uses parse_qs to parse GET and POST arguments, issue #22,
-* SOAP protocol returns dicts with fields ordered according to schema.
+* SOAP protocol returns dicts with fields ordered according to schema,
+* JSON based protocols return date/datetime in ISO 8601 format.
 
 
 
