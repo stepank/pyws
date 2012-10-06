@@ -1,4 +1,7 @@
-class Request(object):
+from pyws.utils import DefaultStrImplemntationMixin, ENCODING
+
+
+class Request(DefaultStrImplemntationMixin):
     """
     Request objects contain request, this information is provided by adapters
     in the way that pyws could handle it.
@@ -17,8 +20,8 @@ class Request(object):
         self.POST = POST
         self.COOKIES = COOKIES
 
-    def __str__(self):
-        return """<pyws.request.Request
+    def __unicode__(self):
+        return u"""<pyws.request.Request
     tail: %s
     GET: %s
     POST: %s
@@ -30,8 +33,6 @@ class Request(object):
             self.GET,
             self.POST,
             self.COOKIES,
-            self.text.strip(),
+            self.text.strip().decode(ENCODING),
         )
 
-    def __unicode__(self):
-        return unicode(self.__str__())

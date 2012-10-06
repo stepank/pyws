@@ -1,7 +1,8 @@
 from suds import null
 import unittest2 as unittest
 
-from base import BaseTestCaseMixin
+from testcases.base import BaseTestCaseMixin
+
 
 class AddIntegerDictsTestCase(BaseTestCaseMixin, unittest.TestCase):
 
@@ -32,7 +33,7 @@ class AddIntegerDictsTestCase(BaseTestCaseMixin, unittest.TestCase):
         self.assertEqual(res.a, 0)
         self.assertEqual(res.b, 0)
 
-    def test(self):
+    def test_simple(self):
         p = self.factory.create('types:ABIntegerDict')
         p.a = 100
         p.b = 50

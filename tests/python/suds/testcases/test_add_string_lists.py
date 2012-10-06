@@ -1,6 +1,7 @@
 import unittest2 as unittest
 
-from base import BaseTestCaseMixin
+from testcases.base import BaseTestCaseMixin
+
 
 class AddStringListsTestCase(BaseTestCaseMixin, unittest.TestCase):
 
@@ -11,7 +12,7 @@ class AddStringListsTestCase(BaseTestCaseMixin, unittest.TestCase):
         q.item = []
         res = self.service.add_string_lists(p, q)
 
-    def test(self):
+    def test_simple(self):
         p = self.factory.create('types:StringList')
         p.item = ['a', 'b', 'c']
         q = self.factory.create('types:StringList')

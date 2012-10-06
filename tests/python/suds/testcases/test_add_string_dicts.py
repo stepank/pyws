@@ -1,7 +1,8 @@
 from suds import null
 import unittest2 as unittest
 
-from base import BaseTestCaseMixin
+from testcases.base import BaseTestCaseMixin
+
 
 class AddStringDictsTestCase(BaseTestCaseMixin, unittest.TestCase):
 
@@ -30,7 +31,7 @@ class AddStringDictsTestCase(BaseTestCaseMixin, unittest.TestCase):
         q.b = ''
         res = self.service.add_string_dicts(p, q)
 
-    def test(self):
+    def test_simple(self):
         p = self.factory.create('types:ABStringDict')
         p.a = 'hello'
         p.b = 'say'

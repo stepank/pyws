@@ -1,8 +1,14 @@
+import logging
+import traceback
+
 from lxml import etree as et
+from pyws.errors import ConfigurationError
 
 from pyws.functions import args
 from pyws.protocols.soap import xsd
 from pyws.protocols.soap.utils import *
+
+logger = logging.getLogger('pyws')
 
 
 class WsdlGenerator(object):
@@ -11,6 +17,7 @@ class WsdlGenerator(object):
             server, context,
             service_name, tns, location, headers_schema, encoding, rpc):
 
+        self.content_type = 'text/xml'
         self.server = server
         self.context = context
         self.service_name = service_name
@@ -20,7 +27,14 @@ class WsdlGenerator(object):
         self.encoding = encoding
         self.rpc = rpc
 
-        self.build_wsdl()
+        try:
+            self.build_wsdl()
+        except ConfigurationError:
+            logger.error(traceback.format_exc())
+            if self.server.settings.DEBUG:
+                raise
+            self.wsdl = 'an error occured'
+            self.content_type = 'text/plain'
 
     def _add_part(self, element, part_name, arg_type, use_element=True):
         part_type = xsd.TypeFactory(arg_type, self.types_ns, self.namespaces)
@@ -87,6 +101,10 @@ class WsdlGenerator(object):
                 soapAction=self.tns + function.name)
             input = et.SubElement(operation, wsdl_name('input'))
             if function.needs_context:
+                if not self.headers_schema:
+                    raise ConfigurationError(
+                        'function \'%s\' requires context, but SOAP headers ' \
+                        'schema is not provided' % function.name)
                 et.SubElement(
                     input, soap_name('header'),
                     message='tns:headers', part='headers', **use_kwargs)
@@ -166,4 +184,4 @@ class WsdlGenerator(object):
             pretty_print=True, xml_declaration=True)
 
     def get_wsdl(self):
-        return self.wsdl
+        return self.wsdl, self.content_type

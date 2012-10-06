@@ -8,12 +8,12 @@ from pyws.errors import BadRequest, ConfigurationError
 from pyws.functions.args import List, Dict, TypeFactory, Type, DICT_NAME_KEY
 from pyws.response import Response
 from pyws.protocols.base import Protocol
+from pyws.utils import ENCODING
 
 from utils import *
 from wsdl import WsdlGenerator
 
 TAG_NAME_RE = re.compile('{(.*?)}(.*)')
-ENCODING = 'utf-8'
 
 create_response = partial(Response, content_type='text/xml')
 create_error_response = partial(create_response, status=Response.STATUS_ERROR)
@@ -27,6 +27,7 @@ def get_element_name(el):
     return None, name
 
 NIL = '{http://www.w3.org/2001/XMLSchema-instance}nil'
+
 
 def xml2obj(xml, schema):
     children = xml.getchildren()
@@ -58,27 +59,22 @@ def xml2obj(xml, schema):
         return result
     raise BadRequest('Couldn\'t decode XML')
 
+
 def obj2xml(root, contents, schema=None, namespace=None):
     kwargs = namespace and {'namespace': namespace} or {}
     if isinstance(contents, (list, tuple)):
         for item in contents:
             element = et.SubElement(root, 'item', **kwargs)
-            obj2xml(
-                element,
-                item,
-                schema and schema.element_type,
-                namespace
-            )
+            obj2xml(element, item, schema and schema.element_type, namespace)
     elif isinstance(contents, dict):
         fields = schema and dict((f.name, f.type) for f in schema.fields) or {}
-        for name, item in contents.iteritems():
+        # Return the fields of the dict in schema order,
+        # or arbitrary python dict order if no schema
+        field_order = \
+            schema and [f.name for f in schema.fields] or contents.keys()
+        for name in field_order:
             element = et.SubElement(root, name, **kwargs)
-            obj2xml(
-                element,
-                item,
-                fields.get(name),
-                namespace
-            )
+            obj2xml(element, contents.get(name), fields.get(name), namespace)
     elif contents is not None:
         root.text = \
             schema and schema.serialize(contents) or Type.serialize(contents)
@@ -136,7 +132,10 @@ def get_context_data_from_headers(request, headers_schema):
 
 
 class ParsedData(object):
-    pass
+
+    xml = None
+    func_xml = None
+    func_name = None
 
 
 class SoapProtocol(Protocol):
@@ -176,7 +175,7 @@ class SoapProtocol(Protocol):
 
         request.parsed_data = ParsedData()
 
-        xml = et.fromstring(request.text.encode(ENCODING))
+        xml = et.fromstring(request.text)
 
         env = xml.xpath('/soap:Envelope', namespaces=self.namespaces)
 
@@ -261,7 +260,7 @@ class SoapProtocol(Protocol):
             xml, encoding=ENCODING, pretty_print=True, xml_declaration=True))
 
     def get_wsdl(self, server, request, context, rpc=False):
-        return create_response(
+        return Response(*
             WsdlGenerator(
                 server, context,
                 self.service_name, self.tns, self.location,

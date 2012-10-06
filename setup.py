@@ -23,7 +23,10 @@ minor_version = sys.version_info[1]
 if minor_version < 5:
     raise Exception('pyws works only on python >= 2.5')
 elif minor_version == 5:
-    extra_requires = ['simplejson']
+    extra_requires += ['simplejson']
+
+if 'develop' in sys.argv:
+    extra_requires += ['unittest2', 'suds']
 
 setup(
     name='pyws',

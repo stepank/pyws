@@ -1,11 +1,12 @@
 import suds
 import unittest2 as unittest
 
-from base import BaseTestCaseMixin
+from testcases.base import BaseTestCaseMixin
+
 
 class RaisesExceptionTestCase(BaseTestCaseMixin, unittest.TestCase):
 
-    def test(self):
+    def test_simple(self):
         headers = self.factory.create('types:Headers')
         headers.username = 'user'
         headers.password = 'pass'

@@ -1,12 +1,9 @@
-try:
-    from urlparse import parse_qs
-except ImportError:
-    from cgi import parse_qs
-
 from wsgiref import util
 
 from pyws.adapters import get_http_response_code
 from pyws.request import Request
+from pyws.utils import parse_qs
+
 
 def create_application(server, root_url):
     """

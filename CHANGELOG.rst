@@ -1,8 +1,22 @@
+Version 1.1.2
+-------------
+
+* Unicode support, issue #19,
+* WSDL generator complains if some functions require context, but SOAP protocol
+  does not have SOAP headers schema specified, issue #20,
+* REST protocol retrieves arguments from request according to the
+  specification, issue #21,
+* Django adapter uses parse_qs to parse GET and POST arguments, issue #22,
+* SOAP protocol returns dicts with fields ordered according to schema,
+* JSON based protocols return date/datetime in ISO 8601 format.
+
+
+
 Version 1.1.1
 -------------
 
 * fixed pyws crashing if SOAP request body does not match the required schema,
-issue #16,
+  issue #16,
 * function arguments are inferred correctly, if they are not specified, issue
   #17,
 * running doctests returns exit code 1 in the case of failure, issue #18.

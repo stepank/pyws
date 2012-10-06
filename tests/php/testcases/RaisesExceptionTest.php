@@ -5,7 +5,7 @@ class RaisesExceptionTestCase extends TestServiceTestCase {
 
     public function test() {
         try {
-            $this->service->raises_exception();
+            $this->service->raises_exception('hello');
         } catch (SoapFault $e) {
             $this->assertEquals($e->getMessage(), 'hello error');
             return;

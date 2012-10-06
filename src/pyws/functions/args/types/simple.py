@@ -22,7 +22,10 @@ class String(Type):
     def _validate(cls, value):
         if not isinstance(value, basestring):
             raise ValueError(value)
-        return unicode(value)
+        try:
+            return unicode(value)
+        except UnicodeDecodeError:
+            return unicode(value, 'utf-8')
 
 
 class Integer(Type):

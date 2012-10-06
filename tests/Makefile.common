@@ -1,10 +1,11 @@
+NEED_WSDL?=1
 WSDL_FILE=test.wsdl
 WSDL_SUFFIX=
 SERVER_DIR=$(ROOT_DIR)/examples/_wsgi
 
 all: build test clean
 
-build: run_server get_wsdl build_local
+build: run_server $(shell if [ "$(NEED_WSDL)" == "1" ]; then echo get_wsdl; fi) build_local
 
 run_server:
 	make -C $(SERVER_DIR) runbg
@@ -21,6 +22,6 @@ get_wsdl: $(WSDL_FILE)
 clean_wsdl:
 	rm -f $(WSDL_FILE)
 
-clean: clean_local clean_wsdl stop_server
+clean: clean_local $(shell if [ "$(NEED_WSDL)" == "1" ]; then echo clean_wsdl; fi) stop_server
 
 .PHONY: all build run_server stop_server get_wsdl clean_wsdl clean

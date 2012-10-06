@@ -57,7 +57,7 @@ Requirements
 
 pyws itself depends only on python standard library and lxml. I've tested pyws
 on all versions of python from 2.5 to 2.7. On python 2.5 pyws also requires
-simplejson.
+simplejson. For development pyws also requires unittest2 and suds.
 
 pyws is written the way that it might be integrated with any web server and
 python framework; it is achieved by using different adapters:
@@ -94,6 +94,19 @@ To install pyws in development mode (read more about `development mode
 
 Changelog
 =========
+
+
+Version 1.1.2
+-------------
+
+* Unicode support, issue #19,
+* WSDL generator complains if some functions require context, but SOAP protocol
+  does not have SOAP headers schema specified, issue #20,
+* REST protocol retrieves arguments from request according to the
+  specification, issue #21,
+* Django adapter uses parse_qs to parse GET and POST arguments, issue #22,
+* SOAP protocol returns dicts with fields ordered according to schema,
+* JSON based protocols return date/datetime in ISO 8601 format.
 
 
 Version 1.1.1

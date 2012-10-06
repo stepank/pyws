@@ -1,6 +1,7 @@
 import unittest2 as unittest
 
-from base import BaseTestCaseMixin
+from testcases.base import BaseTestCaseMixin
+
 
 class GetTreeTestCase(BaseTestCaseMixin, unittest.TestCase):
 
@@ -10,8 +11,8 @@ class GetTreeTestCase(BaseTestCaseMixin, unittest.TestCase):
     def test_notset(self):
         res = self.service.get_tree(1)
         self.assertEqual(res.value, 1)
-        self.assertFalse(hasattr(res, 'left'))
-        self.assertFalse(hasattr(res, 'right'))
+        self.assertEqual(res.left, None)
+        self.assertEqual(res.right, None)
 
     def test_none(self):
         res = self.service.get_tree(2)
@@ -19,7 +20,7 @@ class GetTreeTestCase(BaseTestCaseMixin, unittest.TestCase):
         self.assertEqual(res.left, None)
         self.assertEqual(res.right, None)
 
-    def test_none(self):
+    def test_none_2(self):
         res = self.service.get_tree(3)
         self.assertEqual(res.value, 3)
         self.assertEqual(res.left.value, 4)

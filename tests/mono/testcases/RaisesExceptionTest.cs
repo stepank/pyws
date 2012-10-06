@@ -9,7 +9,7 @@ namespace TestCases {
         [Test()]
         public void test_null() {
             try {
-                service.raises_exception();
+                service.raises_exception("hello");
             } catch(Exception e) {
                 Assert.AreEqual("hello error", e.Message);
                 return;
