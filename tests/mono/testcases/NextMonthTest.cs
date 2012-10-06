@@ -38,9 +38,10 @@ namespace TestCases {
 
         [Test()]
         public void test_dt() {
-            DateTime d = from_timestamp(1313826085L);
             Assert.AreEqual(
-                1316504485L, to_timestamp(service.next_month_dt(d).Value));
+                new DateTime(2011, 9, 20, 7, 41, 25),
+                service.next_month_dt(
+                    new DateTime(2011, 8, 20, 7, 41, 25)).Value);
         }
     }
 }
