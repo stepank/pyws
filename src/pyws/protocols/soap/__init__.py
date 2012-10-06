@@ -28,6 +28,7 @@ def get_element_name(el):
 
 NIL = '{http://www.w3.org/2001/XMLSchema-instance}nil'
 
+
 def xml2obj(xml, schema):
     children = xml.getchildren()
     if not children:
@@ -58,29 +59,22 @@ def xml2obj(xml, schema):
         return result
     raise BadRequest('Couldn\'t decode XML')
 
+
 def obj2xml(root, contents, schema=None, namespace=None):
     kwargs = namespace and {'namespace': namespace} or {}
     if isinstance(contents, (list, tuple)):
         for item in contents:
             element = et.SubElement(root, 'item', **kwargs)
-            obj2xml(
-                element,
-                item,
-                schema and schema.element_type,
-                namespace
-            )
+            obj2xml(element, item, schema and schema.element_type, namespace)
     elif isinstance(contents, dict):
         fields = schema and dict((f.name, f.type) for f in schema.fields) or {}
-        # Return the fields of the dict in schema order, or arbitrary python dict order if no schema
-        field_order = schema and [f.name for f in schema.fields] or contents.keys() 
-        for name in field_order: 
+        # Return the fields of the dict in schema order,
+        # or arbitrary python dict order if no schema
+        field_order = \
+            schema and [f.name for f in schema.fields] or contents.keys()
+        for name in field_order:
             element = et.SubElement(root, name, **kwargs)
-            obj2xml(
-                element,
-                contents.get(name),
-                fields.get(name),
-                namespace
-            )
+            obj2xml(element, contents.get(name), fields.get(name), namespace)
     elif contents is not None:
         root.text = \
             schema and schema.serialize(contents) or Type.serialize(contents)
