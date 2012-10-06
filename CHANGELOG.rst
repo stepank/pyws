@@ -1,5 +1,5 @@
-Development version
--------------------
+Version 1.1.2
+-------------
 
 * Unicode support, issue #19,
 * WSDL generator complains if some functions require context, but SOAP protocol
