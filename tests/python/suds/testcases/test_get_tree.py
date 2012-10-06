@@ -11,8 +11,8 @@ class GetTreeTestCase(BaseTestCaseMixin, unittest.TestCase):
     def test_notset(self):
         res = self.service.get_tree(1)
         self.assertEqual(res.value, 1)
-        self.assertFalse(hasattr(res, 'left'))
-        self.assertFalse(hasattr(res, 'right'))
+        self.assertEqual(res.left, None)
+        self.assertEqual(res.right, None)
 
     def test_none(self):
         res = self.service.get_tree(2)
