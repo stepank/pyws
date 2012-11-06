@@ -15,7 +15,7 @@ class UnknownType(Exception):
 
 # The order matters: DateTime should be placed before Date.
 # date is a superclass of datetime, thus Date will catch all DateTime fields.
-__types__ = (String, Integer, Float, DateTime, Date, Dict, List)
+__types__ = (String, Boolean, Integer, Float, DateTime, Date, Dict, List)
 
 
 def TypeFactory(type_):
