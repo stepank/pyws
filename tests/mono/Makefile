@@ -14,7 +14,7 @@ $(CLASS_FILE):
 	wsdl $(WSDL_FILE)
 
 build_local: $(CLASS_FILE)
-	gmcs -pkg:nunit -r:System.Web.Services -t:library TestService.cs testcases/*Test.cs
+	dmcs -pkg:nunit -r:System.Web.Services -t:library TestService.cs testcases/*Test.cs
 
 test:
 	nunit-console -trace=Verbose TestService.dll
