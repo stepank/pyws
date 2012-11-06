@@ -1,3 +1,9 @@
+Development version
+-------------------
+
+* Added boolean support, issue #25.
+
+
 Version 1.1.2
 -------------
 
