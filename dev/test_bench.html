@@ -73,18 +73,19 @@ clone of the GIT repo.</p>
 <h2>Directory structure<a class="headerlink" href="#directory-structure" title="Permalink to this headline">¶</a></h2>
 <p>In pyws distribution, there is a directory called <tt class="docutils literal"><span class="pre">examples</span></tt>, let&#8217;s have a
 look at its contents:</p>
-<div class="highlight-python"><pre>examples/
-    _django/                # not for now ...
-    _twisted/               # not for now either ...
-    _wsgi/
-        __init__.py         # a simple WSGI application for testing
-        Makefile            # a make file to automate running and stopping
-                            # a server
-    __init__.py
-    api_settings.py         # common pyws server settings
-    authenticate.py         # authentication related stuff
-    functions.py            # example functions
-    server.py               # server definition</pre>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">examples</span><span class="o">/</span>
+    <span class="n">_django</span><span class="o">/</span>                <span class="c"># not for now ...</span>
+    <span class="n">_twisted</span><span class="o">/</span>               <span class="c"># not for now either ...</span>
+    <span class="n">_wsgi</span><span class="o">/</span>
+        <span class="n">__init__</span><span class="o">.</span><span class="n">py</span>         <span class="c"># a simple WSGI application for testing</span>
+        <span class="n">Makefile</span>            <span class="c"># a make file to automate running and stopping</span>
+                            <span class="c"># a server</span>
+    <span class="n">__init__</span><span class="o">.</span><span class="n">py</span>
+    <span class="n">api_settings</span><span class="o">.</span><span class="n">py</span>         <span class="c"># common pyws server settings</span>
+    <span class="n">authenticate</span><span class="o">.</span><span class="n">py</span>         <span class="c"># authentication related stuff</span>
+    <span class="n">functions</span><span class="o">.</span><span class="n">py</span>            <span class="c"># example functions</span>
+    <span class="n">server</span><span class="o">.</span><span class="n">py</span>               <span class="c"># server definition</span>
+</pre></div>
 </div>
 </div>
 <div class="section" id="server-settings">
@@ -166,9 +167,8 @@ and all arguments and return values will be treated as strings.</p>
 </div>
 <div class="section" id="context-example">
 <h3>Context example<a class="headerlink" href="#context-example" title="Permalink to this headline">¶</a></h3>
-<div class="highlight-python"><div class="highlight"><pre><span class="nd">@register</span><span class="p">(</span><span class="s">&#39;say_hello&#39;</span><span class="p">,</span> <span class="n">needs_context</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
-<span class="k">def</span> <span class="nf">say_hello</span><span class="p">(</span><span class="n">context</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
-    <span class="k">return</span> <span class="s">&#39;hello &#39;</span> <span class="o">+</span> <span class="n">context</span>
+<div class="highlight-python"><div class="highlight"><pre><span class="k">def</span> <span class="nf">flip_boolean</span><span class="p">(</span><span class="n">b</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">b</span> <span class="o">^</span> <span class="bp">True</span>
 </pre></div>
 </div>
 <p>This function requires a context, so we register it specifying
@@ -179,17 +179,17 @@ by a server is passed to the function as keyword argument <tt class="docutils li
 </div>
 <div class="section" id="date-and-datetime-example">
 <h3>Date and datetime example<a class="headerlink" href="#date-and-datetime-example" title="Permalink to this headline">¶</a></h3>
-<div class="highlight-python"><div class="highlight"><pre><span class="nd">@register</span><span class="p">(</span><span class="n">return_type</span><span class="o">=</span><span class="n">date</span><span class="p">,</span> <span class="n">args</span><span class="o">=</span><span class="p">(</span><span class="n">date</span><span class="p">,</span> <span class="p">))</span>
+<div class="highlight-python"><div class="highlight"><pre>    <span class="k">return</span> <span class="s">&#39;hello &#39;</span> <span class="o">+</span> <span class="n">context</span>
+
+
+<span class="c"># = next month ================================================================</span>
+
+<span class="nd">@register</span><span class="p">(</span><span class="n">return_type</span><span class="o">=</span><span class="n">date</span><span class="p">,</span> <span class="n">args</span><span class="o">=</span><span class="p">(</span><span class="n">date</span><span class="p">,</span> <span class="p">))</span>
 <span class="nd">@register</span><span class="p">(</span><span class="s">&#39;next_month_dt&#39;</span><span class="p">,</span> <span class="n">return_type</span><span class="o">=</span><span class="n">datetime</span><span class="p">,</span> <span class="n">args</span><span class="o">=</span><span class="p">(</span><span class="n">datetime</span><span class="p">,</span> <span class="p">))</span>
 <span class="k">def</span> <span class="nf">next_month</span><span class="p">(</span><span class="n">d</span><span class="p">):</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="n">d</span><span class="p">:</span>
         <span class="k">return</span> <span class="bp">None</span>
     <span class="n">month</span> <span class="o">=</span> <span class="n">d</span><span class="o">.</span><span class="n">month</span> <span class="o">+</span> <span class="mi">1</span>
-    <span class="n">year</span> <span class="o">=</span> <span class="n">d</span><span class="o">.</span><span class="n">year</span>
-    <span class="k">if</span> <span class="n">month</span> <span class="o">&gt;</span> <span class="mi">12</span><span class="p">:</span>
-        <span class="n">month</span> <span class="o">=</span> <span class="p">(</span><span class="n">d</span><span class="o">.</span><span class="n">month</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">%</span> <span class="mi">12</span> <span class="o">+</span> <span class="mi">1</span>
-        <span class="n">year</span> <span class="o">+=</span> <span class="mi">1</span>
-    <span class="k">return</span> <span class="n">d</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">year</span><span class="o">=</span><span class="n">year</span><span class="p">,</span> <span class="n">month</span><span class="o">=</span><span class="n">month</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>Well, it looks pretty straight forward.</p>
@@ -198,16 +198,21 @@ by a server is passed to the function as keyword argument <tt class="docutils li
 </div>
 <div class="section" id="dict-example">
 <h3>Dict example<a class="headerlink" href="#dict-example" title="Permalink to this headline">¶</a></h3>
-<div class="highlight-python"><div class="highlight"><pre><span class="n">ABIntegerDict</span> <span class="o">=</span> <span class="p">{</span><span class="mi">0</span><span class="p">:</span> <span class="s">&#39;ABIntegerDict&#39;</span><span class="p">,</span> <span class="s">&#39;a&#39;</span><span class="p">:</span> <span class="p">(</span><span class="nb">int</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="s">&#39;b&#39;</span><span class="p">:</span> <span class="p">(</span><span class="nb">int</span><span class="p">,</span> <span class="mi">0</span><span class="p">)}</span>
+<div class="highlight-python"><div class="highlight"><pre>
 </pre></div>
 </div>
 <p>Value with key <tt class="docutils literal"><span class="pre">0</span></tt> is the name of a dictionary type, other keys and values
 represent field names and their types.</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="n">ab_integer_dict_none</span> <span class="o">=</span> <span class="k">lambda</span><span class="p">:</span> <span class="p">{</span><span class="s">&#39;a&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s">&#39;b&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">}</span>
+<div class="highlight-python"><div class="highlight"><pre>
 </pre></div>
 </div>
 <p>Callables can be used as none values.</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="nd">@register</span><span class="p">(</span>
+<div class="highlight-python"><div class="highlight"><pre>    <span class="n">args</span><span class="o">=</span><span class="p">(</span>
+        <span class="p">(</span><span class="n">ABStringDict</span><span class="p">,</span> <span class="n">ab_string_dict_none</span><span class="p">),</span>
+        <span class="p">(</span><span class="n">ABStringDict</span><span class="p">,</span> <span class="n">ab_string_dict_none</span><span class="p">),</span>
+    <span class="p">),</span>
+<span class="p">)</span>
+<span class="nd">@register</span><span class="p">(</span>
     <span class="s">&#39;add_integer_dicts&#39;</span><span class="p">,</span>
     <span class="n">return_type</span><span class="o">=</span><span class="n">ABIntegerDict</span><span class="p">,</span>
     <span class="n">args</span><span class="o">=</span><span class="p">(</span>
@@ -215,17 +220,17 @@ represent field names and their types.</p>
         <span class="p">(</span><span class="n">ABIntegerDict</span><span class="p">,</span> <span class="n">ab_integer_dict_none</span><span class="p">),</span>
     <span class="p">),</span>
 <span class="p">)</span>
-<span class="k">def</span> <span class="nf">add_dicts</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="n">q</span><span class="p">):</span>
-    <span class="k">return</span> <span class="p">{</span>
-        <span class="s">&#39;a&#39;</span><span class="p">:</span> <span class="n">p</span><span class="p">[</span><span class="s">&#39;a&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="n">q</span><span class="p">[</span><span class="s">&#39;a&#39;</span><span class="p">],</span>
-        <span class="s">&#39;b&#39;</span><span class="p">:</span> <span class="n">p</span><span class="p">[</span><span class="s">&#39;b&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="n">q</span><span class="p">[</span><span class="s">&#39;b&#39;</span><span class="p">],</span>
-    <span class="p">}</span>
 </pre></div>
 </div>
 </div>
 <div class="section" id="list-examples">
 <h3>List examples<a class="headerlink" href="#list-examples" title="Permalink to this headline">¶</a></h3>
-<div class="highlight-python"><div class="highlight"><pre><span class="n">StringList</span> <span class="o">=</span> <span class="p">[</span><span class="nb">str</span><span class="p">]</span>
+<div class="highlight-python"><div class="highlight"><pre>    <span class="p">}</span>
+
+
+<span class="c"># = add lists =================================================================</span>
+
+<span class="n">StringList</span> <span class="o">=</span> <span class="p">[</span><span class="nb">str</span><span class="p">]</span>
 
 <span class="nd">@register</span><span class="p">(</span>
     <span class="s">&#39;add_string_lists&#39;</span><span class="p">,</span>
@@ -233,15 +238,15 @@ represent field names and their types.</p>
     <span class="n">args</span><span class="o">=</span><span class="p">(</span><span class="n">StringList</span><span class="p">,</span> <span class="n">StringList</span><span class="p">),</span>
 <span class="p">)</span>
 <span class="k">def</span> <span class="nf">add_string_lists</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="n">q</span><span class="p">):</span>
-    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">p</span><span class="p">)</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">q</span><span class="p">):</span>
-        <span class="n">p</span><span class="o">.</span><span class="n">extend</span><span class="p">([</span><span class="s">&#39;&#39;</span><span class="p">]</span> <span class="o">*</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">q</span><span class="p">)</span> <span class="o">-</span> <span class="nb">len</span><span class="p">(</span><span class="n">p</span><span class="p">)))</span>
-    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">q</span><span class="p">)</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">p</span><span class="p">):</span>
-        <span class="n">q</span><span class="o">.</span><span class="n">extend</span><span class="p">([</span><span class="s">&#39;&#39;</span><span class="p">]</span> <span class="o">*</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">p</span><span class="p">)</span> <span class="o">-</span> <span class="nb">len</span><span class="p">(</span><span class="n">q</span><span class="p">)))</span>
-    <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="n">p</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">+</span> <span class="n">q</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">xrange</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">p</span><span class="p">)))</span>
 </pre></div>
 </div>
 <p>List type definition is pretty simple, isn&#8217;t it?</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="n">IntegerList</span> <span class="o">=</span> <span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span>
+<div class="highlight-python"><div class="highlight"><pre>        <span class="n">p</span><span class="o">.</span><span class="n">extend</span><span class="p">([</span><span class="s">&#39;&#39;</span><span class="p">]</span> <span class="o">*</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">q</span><span class="p">)</span> <span class="o">-</span> <span class="nb">len</span><span class="p">(</span><span class="n">p</span><span class="p">)))</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">q</span><span class="p">)</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">p</span><span class="p">):</span>
+        <span class="n">q</span><span class="o">.</span><span class="n">extend</span><span class="p">([</span><span class="s">&#39;&#39;</span><span class="p">]</span> <span class="o">*</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">p</span><span class="p">)</span> <span class="o">-</span> <span class="nb">len</span><span class="p">(</span><span class="n">q</span><span class="p">)))</span>
+    <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="n">p</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">+</span> <span class="n">q</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">xrange</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">p</span><span class="p">)))</span>
+
+<span class="n">IntegerList</span> <span class="o">=</span> <span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span>
 
 <span class="nd">@register</span><span class="p">(</span>
     <span class="s">&#39;add_integer_lists&#39;</span><span class="p">,</span>
@@ -249,46 +254,40 @@ represent field names and their types.</p>
     <span class="n">args</span><span class="o">=</span><span class="p">(</span><span class="n">IntegerList</span><span class="p">,</span> <span class="n">IntegerList</span><span class="p">),</span>
 <span class="p">)</span>
 <span class="k">def</span> <span class="nf">add_integer_lists</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="n">q</span><span class="p">):</span>
-    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">p</span><span class="p">)</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">q</span><span class="p">):</span>
-        <span class="n">p</span><span class="o">.</span><span class="n">extend</span><span class="p">([</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">q</span><span class="p">)</span> <span class="o">-</span> <span class="nb">len</span><span class="p">(</span><span class="n">p</span><span class="p">)))</span>
-    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">q</span><span class="p">)</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">p</span><span class="p">):</span>
-        <span class="n">q</span><span class="o">.</span><span class="n">extend</span><span class="p">([</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">p</span><span class="p">)</span> <span class="o">-</span> <span class="nb">len</span><span class="p">(</span><span class="n">q</span><span class="p">)))</span>
-    <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="n">p</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">+</span> <span class="n">q</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">xrange</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">p</span><span class="p">)))</span>
 </pre></div>
 </div>
 <p><tt class="docutils literal"><span class="pre">IntegerList</span></tt>&#8216;s second element is an element none value.</p>
 </div>
 <div class="section" id="recursive-type-example">
 <h3>Recursive type example<a class="headerlink" href="#recursive-type-example" title="Permalink to this headline">¶</a></h3>
-<div class="highlight-python"><div class="highlight"><pre><span class="n">Tree</span> <span class="o">=</span> <span class="n">DictOf</span><span class="p">(</span><span class="s">&#39;Tree&#39;</span><span class="p">,</span>
+<div class="highlight-python"><div class="highlight"><pre>    <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="n">p</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">+</span> <span class="n">q</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">xrange</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">p</span><span class="p">)))</span>
+
+
+<span class="c"># = trees =====================================================================</span>
+
+<span class="n">Tree</span> <span class="o">=</span> <span class="n">DictOf</span><span class="p">(</span><span class="s">&#39;Tree&#39;</span><span class="p">,</span>
     <span class="p">(</span><span class="s">&#39;value&#39;</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span>
 <span class="p">)</span>
 <span class="n">Tree</span><span class="o">.</span><span class="n">add_fields</span><span class="p">(</span>
     <span class="p">(</span><span class="s">&#39;left&#39;</span><span class="p">,</span> <span class="n">Tree</span><span class="p">),</span>
     <span class="p">(</span><span class="s">&#39;right&#39;</span><span class="p">,</span> <span class="n">Tree</span><span class="p">),</span>
 <span class="p">)</span>
-
-<span class="nd">@register</span><span class="p">(</span><span class="n">return_type</span><span class="o">=</span><span class="nb">int</span><span class="p">,</span> <span class="n">args</span><span class="o">=</span><span class="p">(</span><span class="n">Tree</span><span class="p">,))</span>
-<span class="k">def</span> <span class="nf">sum_tree</span><span class="p">(</span><span class="n">p</span><span class="p">):</span>
-    <span class="k">return</span> <span class="n">p</span> <span class="ow">and</span> <span class="p">(</span><span class="n">p</span><span class="p">[</span><span class="s">&#39;value&#39;</span><span class="p">]</span> <span class="o">+</span>
-        <span class="p">(</span><span class="n">p</span><span class="p">[</span><span class="s">&#39;left&#39;</span><span class="p">]</span> <span class="ow">and</span> <span class="n">sum_tree</span><span class="p">(</span><span class="n">p</span><span class="p">[</span><span class="s">&#39;left&#39;</span><span class="p">])</span> <span class="ow">or</span> <span class="mi">0</span><span class="p">)</span> <span class="o">+</span>
-        <span class="p">(</span><span class="n">p</span><span class="p">[</span><span class="s">&#39;right&#39;</span><span class="p">]</span> <span class="ow">and</span> <span class="n">sum_tree</span><span class="p">(</span><span class="n">p</span><span class="p">[</span><span class="s">&#39;right&#39;</span><span class="p">])</span> <span class="ow">or</span> <span class="mi">0</span><span class="p">))</span> <span class="ow">or</span> <span class="mi">0</span>
 </pre></div>
 </div>
 <p>So far, the only way to create a recursive type is monkey pathcing.</p>
 </div>
 <div class="section" id="exception-raising-example">
 <h3>Exception raising example<a class="headerlink" href="#exception-raising-example" title="Permalink to this headline">¶</a></h3>
-<div class="highlight-python"><div class="highlight"><pre><span class="k">class</span> <span class="nc">HelloError</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
+<div class="highlight-python"><div class="highlight"><pre>    <span class="p">}</span>
+
+
+<span class="c"># = raises exception ==========================================================</span>
+
+<span class="k">class</span> <span class="nc">HelloError</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">HelloError</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="s">u&#39;</span><span class="si">%s</span><span class="s"> error&#39;</span> <span class="o">%</span> <span class="n">name</span><span class="p">)</span>
 
 <span class="nd">@register</span><span class="p">()</span>
-<span class="k">def</span> <span class="nf">raises_exception</span><span class="p">(</span><span class="n">name</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    this function will always fail</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">raise</span> <span class="n">HelloError</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>It&#8217;s easy, just raise any exception you want.</p>

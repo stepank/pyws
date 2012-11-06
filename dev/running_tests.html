@@ -129,7 +129,8 @@ and check the status in summary section. If there you see green <tt class="docut
 then it&#8217;s OK. In the case of problems, you can find further in the document
 some details about them, it would be great if you report them to me.</p>
 <p>To clean generated report files:</p>
-<div class="highlight-python"><pre>make clean_report</pre>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">make</span> <span class="n">clean_report</span>
+</pre></div>
 </div>
 </div>
 <div class="section" id="ws-i-basic-profile-1-2">
@@ -150,14 +151,16 @@ and check if there are any &#8220;failed&#8221; assertions. If there ain&#8217;t
 OK. Otherwise, you can find further in the document the causes of the failure
 and report them to me :). But I find it unlikely, I usually run this test too.</p>
 <p>To clean generated report files:</p>
-<div class="highlight-python"><pre>make clean_report</pre>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">make</span> <span class="n">clean_report</span>
+</pre></div>
 </div>
 </div>
 <div class="section" id="known-problems">
 <h2>Known problems<a class="headerlink" href="#known-problems" title="Permalink to this headline">¶</a></h2>
 <p>In rare cases, a pyws server is not halted after the tests (have not figured
 why so far), so you&#8217;ll have to kill it yourself, this command might help:</p>
-<div class="highlight-python"><pre>ps ax | grep 'python __init__.py' | grep -v grep</pre>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">ps</span> <span class="n">ax</span> <span class="o">|</span> <span class="n">grep</span> <span class="s">&#39;python __init__.py&#39;</span> <span class="o">|</span> <span class="n">grep</span> <span class="o">-</span><span class="n">v</span> <span class="n">grep</span>
+</pre></div>
 </div>
 </div>
 </div>
