@@ -7,7 +7,7 @@ class Request(DefaultStrImplemntationMixin):
     in the way that pyws could handle it.
     """
 
-    def __init__(self, tail, text, GET, POST, COOKIES):
+    def __init__(self, tail, text, GET, POST, COOKIES, method='get'):
         """
         ``tail`` is everything left from URL to which pyws server is attached.
         ``text`` is request text, ``GET``, ``POST`` and ``COOKIES`` are dicts
@@ -19,6 +19,7 @@ class Request(DefaultStrImplemntationMixin):
         self.GET = GET
         self.POST = POST
         self.COOKIES = COOKIES
+        self.method = method
 
     def __unicode__(self):
         return u"""<pyws.request.Request
@@ -26,6 +27,7 @@ class Request(DefaultStrImplemntationMixin):
     GET: %s
     POST: %s
     COOKIES: %s
+    method: %s
     text:
 %s
 >""" % (
@@ -33,6 +35,7 @@ class Request(DefaultStrImplemntationMixin):
             self.GET,
             self.POST,
             self.COOKIES,
+            self.method,
             self.text.strip().decode(ENCODING),
         )
 

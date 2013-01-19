@@ -36,14 +36,13 @@ def create_application(server, root_url):
             get = parse_qs(get)
             method = environ['REQUEST_METHOD']
 
-            text, post = '', {}
-            if method == 'POST':
-                text = environ['wsgi.input'].\
-                    read(int(environ.get('CONTENT_LENGTH', 0)))
+            text, post, length = '', {}, environ.get('CONTENT_LENGTH', '')
+            if length:
+                text = environ['wsgi.input'].read(int(length))
                 post = parse_qs(text)
 
             response = server.process_request(
-                Request(tail, text, get, post, {}))
+                Request(tail, text, get, post, {}, method.lower()))
 
             content_type = response.content_type
             status = get_http_response_code(response)

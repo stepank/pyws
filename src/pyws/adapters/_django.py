@@ -22,10 +22,11 @@ def serve(request, tail, server):
     """
 
     request = Request(tail,
-        request.raw_post_data if not request.GET else '',
+        request.raw_post_data,
         parse_qs(request.META['QUERY_STRING']),
         parse_qs(request.raw_post_data),
         request.COOKIES,
+        request.method.lower(),
     )
 
     response = server.process_request(request)

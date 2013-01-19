@@ -14,8 +14,8 @@ def serve(request, server):
     """
 
     request_ = Request('/'.join(request.postpath),
-        request.content.read() if not request.method == 'GET' else '',
-        request.args, request.args, {})
+        request.content.read(),
+        request.args, request.args, {}, request.method.lower())
 
     response = server.process_request(request_)
 
