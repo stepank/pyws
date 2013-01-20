@@ -54,7 +54,9 @@ class WsdlGenerator(object):
             self.definitions, wsdl_name('message'), name='error')
         self._add_part(input, 'fault', args.DictOf('Error'))
 
-        for function in self.server.get_functions(self.context):
+        from pyws.protocols.soap import SoapProtocol
+
+        for function in self.server.get_functions(self.context, SoapProtocol):
 
             input_name = function.name
             input = et.SubElement(

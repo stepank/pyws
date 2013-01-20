@@ -1,6 +1,8 @@
 from inspect import getargspec
 
+from pyws.errors import ConfigurationError
 from pyws.functions.args import DictOf, TypeFactory
+from pyws.protocols import NameRoute, Route
 from pyws.utils import cached_property
 
 __all__ = ('Function', 'NativeFunctionAdapter', )
@@ -14,8 +16,8 @@ class Function(object):
     values validation.
     """
 
-    #: the name of the function;
-    name = None
+    #: the route of the function;
+    route = None
     #: the documentation of the function
     documentation = None
     #: the type of values returning by the function (standard form only), see
@@ -27,6 +29,8 @@ class Function(object):
     args = None
     #: shows whether the function requires a context to run.
     needs_context = False
+    #: shows which protocols may use the function
+    protocols = None
 
     def __call__(self, context, **args):
         """
@@ -42,6 +46,10 @@ class Function(object):
         return self.call(**args)
 
     @cached_property
+    def name(self):
+        return self.route.name
+
+    @property
     def type_name(self):
         return self.name
 
@@ -70,7 +78,7 @@ class NativeFunctionAdapter(Function):
 
     def __init__(
             self, origin,
-            name=None, return_type=str, args=None, needs_context=False):
+            route=None, return_type=str, args=None, needs_context=False, protocols=None):
         """
         ``origin`` is a native Python function to be wrapped.
         ``name`` is the name of the function, if it is not specified,
@@ -96,7 +104,7 @@ class NativeFunctionAdapter(Function):
         >>> a = NativeFunctionAdapter(nothing)
         >>> a.origin == nothing
         True
-        >>> a.name
+        >>> a.route.name
         'nothing'
         >>> a.return_type
         <class 'pyws.functions.args.types.simple.String'>
@@ -110,7 +118,7 @@ class NativeFunctionAdapter(Function):
         ...     c = a + b
         ...     return c
 
-        >>> a = NativeFunctionAdapter(add, name='concat')
+        >>> a = NativeFunctionAdapter(add, route='concat')
         >>> a.name
         'concat'
         >>> len(a.args.fields)
@@ -127,7 +135,7 @@ class NativeFunctionAdapter(Function):
 
         >>> a = NativeFunctionAdapter(
         ...     add,
-        ...     name='sum',
+        ...     route='sum',
         ...     return_type=int,
         ...     args=(int,),
         ... )
@@ -149,14 +157,24 @@ class NativeFunctionAdapter(Function):
 
         self.origin = origin
 
-        self.name = name or origin.__name__
+        if not route:
+            self.route = NameRoute(origin.__name__)
+        elif isinstance(route, basestring):
+            self.route = NameRoute(route)
+        elif isinstance(route, Route):
+            self.route = route
+        else:
+            raise ConfigurationError(
+                'route must be either a string or a Route instance')
         self.documentation = origin.__doc__
         self.return_type = TypeFactory(return_type or str)
         self.needs_context = needs_context
+        self.protocols = protocols
 
         # Get argument names from origin
-        arg_names = [(x, ) for x in getargspec(origin)[0]
-            if not needs_context or x != CONTEXT_ARG_NAME]
+        arg_names = [
+            (x, ) for x in getargspec(origin)[0]
+                if not needs_context or x != CONTEXT_ARG_NAME]
 
         # Get argument types
         if not args:

@@ -1,6 +1,47 @@
 from pyws.errors import ET_CLIENT
 
-__all__ = ('Protocol', )
+__all__ = ('Protocol', 'Route', 'NameRoute')
+
+
+class Route(object):
+
+    protocols = None
+
+    @property
+    def name(self):
+        raise NotImplementedError('Route.name')
+
+    def __eq__(self, other):
+        raise NotImplementedError('Route.__eq__')
+
+    def match(self, other):
+        raise NotImplementedError('Route.match')
+
+    def __ne__(self, other):
+        return not self.__eq__(other)
+
+    def check_protocol(self, protocol):
+        return self.protocols is None or \
+            protocol in self.protocols or type(protocol) in self.protocols
+
+
+class NameRoute(Route):
+
+    def __init__(self, name):
+        self._name = name
+
+    def __str__(self):
+        return '<NameRoute(%s)>' % self.name
+
+    @property
+    def name(self):
+        return self._name
+
+    def __eq__(self, other):
+        return type(self) == type(other) and self.name == other.name
+
+    def match(self, other):
+        return (self == other or self.name == other), {}
 
 
 class Protocol(object):

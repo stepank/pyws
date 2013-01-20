@@ -6,7 +6,8 @@ from pyws.errors import ConfigurationError
 from pyws.functions import NativeFunctionAdapter
 from pyws.server import SERVERS
 
-def register(*args, **kwargs):
+
+def register(route=None, *args, **kwargs):
     """
     Creates a registrator that, being called with a function as the only
     argument, wraps a function with ``pyws.functions.NativeFunctionAdapter``
@@ -21,14 +22,14 @@ def register(*args, **kwargs):
     >>> @register()
     ... def say_hello(name):
     ...     return 'Hello, %s' % name
-    >>> server.get_functions(context=None)[0].name
+    >>> server.get_functions(context=None, protocol=None)[0].name
     'say_hello'
 
     >>> another_server = Server(dict(NAME='another_server'))
     >>> @register(to='another_server', return_type=int, args=(int, 0))
     ... def gimme_more(x):
     ...     return x * 2
-    >>> another_server.get_functions(context=None)[0].name
+    >>> another_server.get_functions(context=None, protocol=None)[0].name
     'gimme_more'
 
     """
@@ -41,7 +42,9 @@ def register(*args, **kwargs):
             server = SERVERS[kwargs.pop('to')]
         except KeyError:
             server = SERVERS.default
-        server.add_function(
-            NativeFunctionAdapter(origin, *args, **kwargs))
+        routes = route if isinstance(route, (list, tuple)) else [route]
+        for r in routes:
+            server.add_function(
+                NativeFunctionAdapter(origin, r, *args, **kwargs))
         return origin
     return registrator

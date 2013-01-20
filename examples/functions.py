@@ -2,6 +2,7 @@ from datetime import date, datetime
 
 from pyws.functions.args import DictOf
 from pyws.functions.register import register
+from pyws.protocols import url
 
 
 # = add simple ================================================================
@@ -18,7 +19,7 @@ def add_simple(a, b):
 def flip_boolean(b):
     return b ^ True
 
-# = say hello ================================================================
+# = say hello =================================================================
 
 @register('say_hello', needs_context=True)
 def say_hello(context=None):
@@ -145,3 +146,36 @@ def raises_exception(name):
     this function will always fail
     """
     raise HelloError(name)
+
+
+# = REST protocol related =====================================================
+
+@register(
+    ['create_item', url('put', 'some/item')],
+    return_type=int, args=((str, 0), ))
+def create_item(name):
+    return int(name[4:])
+
+@register(
+    ['get_item', url('get', 'some/item/(?P<id>[\d]+)')],
+    return_type=str, args=((int, 0), ))
+def get_item(id):
+    return 'item%s' % id
+
+@register(
+    ['get_items', url('get', 'some/item')],
+    return_type=[str])
+def get_items():
+    return ['item%s' % i for i in range(10)]
+
+@register(
+    ['update_item', url('post', 'some/item/(?P<id>[\d]+)')],
+    return_type=str, args=((int, 0), (str, '')))
+def update_item(id, name):
+    return name
+
+@register(
+    ['delete_item', url('delete', 'some/item/(?P<id>[\d]+)')],
+    return_type=bool, args=((int, 0), ))
+def delete_item(id):
+    return True

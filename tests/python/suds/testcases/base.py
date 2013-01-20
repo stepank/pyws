@@ -1,4 +1,5 @@
 from factory import build_client
+from rest_client import RestClient
 
 
 class BaseTestCaseMixin(object):
@@ -8,3 +9,4 @@ class BaseTestCaseMixin(object):
         self.client = client
         self.service = client.service
         self.factory = client.factory
+        self.rest_client = RestClient()

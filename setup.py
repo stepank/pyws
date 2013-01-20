@@ -26,7 +26,7 @@ elif minor_version == 5:
     extra_requires += ['simplejson']
 
 if 'develop' in sys.argv:
-    extra_requires += ['unittest2', 'suds']
+    extra_requires += ['unittest2', 'suds', 'requests']
 
 setup(
     name='pyws',
