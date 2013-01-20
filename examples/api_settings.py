@@ -1,11 +1,11 @@
-from pyws.protocols import RestProtocol, JsonProtocol
+from pyws.protocols import GetProtocol, JsonProtocol
 
 from authenticate import authenticate, soap_headers_schema
 
 DEBUG = True
 
 PROTOCOLS = (
-    RestProtocol(),
+    GetProtocol(),
     JsonProtocol(),
 )
 

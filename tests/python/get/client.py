@@ -14,9 +14,9 @@ def encode_args(args):
     return '&'.join(map(encode_arg, args.iteritems()))
 
 
-def make_rest_call(func, headers=None, **args):
+def make_get_call(func, headers=None, **args):
     request = Request(
-        'http://127.0.0.1:8000/api/rest/%s?%s' % (func, encode_args(args)),
+        'http://127.0.0.1:8000/api/get/%s?%s' % (func, encode_args(args)),
         headers=headers or {},
     )
     try:

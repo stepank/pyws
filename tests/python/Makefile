@@ -1,7 +1,7 @@
 all:
-	make -C rest
+	make -C get
 	make -C suds
 
 clean:
-	make -C rest clean
+	make -C get clean
 	make -C suds clean

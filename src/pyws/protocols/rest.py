@@ -1,5 +1,4 @@
 from datetime import date, datetime
-
 from functools import partial
 
 from pyws.errors import BadRequest
@@ -8,7 +7,7 @@ from pyws.response import Response
 from pyws.utils import json
 from pyws.protocols.base import Protocol
 
-__all__ = ('RestProtocol', 'JsonProtocol', )
+__all__ = ('GetProtocol', 'JsonProtocol')
 
 
 class DateIso8601Encoder(json.JSONEncoder):
@@ -23,9 +22,9 @@ create_response = partial(Response, content_type='application/json')
 create_error_response = partial(create_response, status=Response.STATUS_ERROR)
 
 
-class RestProtocol(Protocol):
+class GetProtocol(Protocol):
 
-    name = 'rest'
+    name = 'get'
 
     def get_function(self, request):
         return request.tail
@@ -49,7 +48,7 @@ class RestProtocol(Protocol):
             json.dumps({'error': self.get_error(error)}))
 
 
-class JsonProtocol(RestProtocol):
+class JsonProtocol(GetProtocol):
 
     name = 'json'
 
