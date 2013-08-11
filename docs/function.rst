@@ -54,7 +54,7 @@ forms:
 pyws supports the following types:
 
 .. automodule:: pyws.functions.args.types
-   :members: String,Integer,Float,Date,DateTime,Dict,List
+   :members: String,Integer,Float,Boolean,Date,DateTime,Dict,List
 
 Three helper functions are also at your disposal:
 

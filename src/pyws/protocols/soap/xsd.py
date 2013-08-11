@@ -48,6 +48,12 @@ class String(SimpleType):
     def get_name(self):
         return 'string', 'http://www.w3.org/2001/XMLSchema'
 
+class Boolean(SimpleType):
+
+    _represents = args.Boolean
+
+    def get_name(self):
+        return 'boolean', 'http://www.w3.org/2001/XMLSchema'
 
 class Integer(SimpleType):
 
@@ -136,7 +142,7 @@ class List(ComplexType):
 
 # The order matters: DateTime should be placed before Date.
 # Date is a superclass of DateTime, thus Date will catch all DateTime fields.
-__types__ = (String, Integer, Float, DateTime, Date, Dict, List)
+__types__ = (String, Boolean, Integer, Float, DateTime, Date, Dict, List)
 
 def TypeFactory(type, ns=None, nsmap=None):
     for x in __types__:

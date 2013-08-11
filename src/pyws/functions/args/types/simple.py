@@ -5,7 +5,7 @@ from time import mktime
 
 from pyws.functions.args.types.base import Type
 
-__all__ = ('String', 'Integer', 'Float', 'Date', 'DateTime', )
+__all__ = ('String', 'Boolean', 'Integer', 'Float', 'Date', 'DateTime', )
 
 
 class String(Type):
@@ -26,6 +26,27 @@ class String(Type):
             return unicode(value)
         except UnicodeDecodeError:
             return unicode(value, 'utf-8')
+
+class Boolean(Type):
+    """
+    Represents boolean values, simplified form is ``bool``, default
+    ``none_value`` is ``False``.
+    """
+
+    none_value = False
+
+    _represents = bool
+
+    @classmethod
+    def _validate(cls, value):
+        if value in ("true", "True", "1"):
+            return True
+        else:
+            return False
+
+    @classmethod
+    def serialize(cls, value):
+        return unicode(value).lower()
 
 
 class Integer(Type):

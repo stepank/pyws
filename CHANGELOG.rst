@@ -1,3 +1,10 @@
+Version 1.1.3
+-------------
+
+* Added boolean support, issue #25.
+* Added support for Django up to 1.5, issue #30.
+
+
 Version 1.1.2
 -------------
 

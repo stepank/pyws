@@ -21,8 +21,17 @@ def serve(request, tail, server):
     gets the response and transforms it into a Django response object.
     """
 
-    request = Request(tail,
-        request.raw_post_data if not request.GET else '',
+    if request.GET:
+        body = ''
+    else:
+        try:
+            body = request.body
+        except AttributeError:
+            body = request.raw_post_data
+
+    request = Request(
+        tail,
+        body,
         parse_qs(request.META['QUERY_STRING']),
         parse_qs(request.raw_post_data),
         request.COOKIES,

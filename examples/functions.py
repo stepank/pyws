@@ -12,6 +12,11 @@ from pyws.functions.register import register
 def add_simple(a, b):
     return a + b
 
+# = flip a boolean ============================================================
+
+@register(return_type=bool, args=(bool, ))
+def flip_boolean(b):
+    return b ^ True
 
 # = say hello ================================================================
 
