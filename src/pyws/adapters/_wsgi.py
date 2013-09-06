@@ -29,7 +29,7 @@ def create_application(server, root_url):
 
         content_type = 'text/plain'
         status = '200 OK'
-        if tail.startswith(root):
+        if tail.lstrip('/').startswith(root):
 
             tail = tail[len(root):]
 
