@@ -33,7 +33,7 @@ def serve(request, tail, server):
         tail,
         body,
         parse_qs(request.META['QUERY_STRING']),
-        parse_qs(request.raw_post_data),
+        parse_qs(body),
         request.COOKIES,
     )
 

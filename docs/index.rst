@@ -95,6 +95,12 @@ To install pyws in development mode (read more about `development mode
 Changelog
 =========
 
+Version 1.1.4
+-------------
+
+* Added support for Django up to 1.6, issue #33.
+
+
 Version 1.1.3
 -------------
 
