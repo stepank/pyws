@@ -16,23 +16,24 @@ In pyws this mechanism consists of the following parts:
 
 * A server can create a context from these data.
 
-    To create a context a server calls a function ``CREATE_CONTEXT`` specified
-    in the server settings. This function accepts exactly one argument, namely
-    context data extracted from a request, creates and returns the context. If
-    an exception is raised and a function requires the context, the server will
-    stop processing the request and report an error.
+    To create a context a server calls the function specified in the
+    ``CREATE_CONTEXT`` server setting. This function accepts exactly one
+    argument, namely the context data extracted from the request, creates and
+    returns the context. If an exception is raised and the API function needed
+    to be executed requires a context, the server will stop processing the
+    request and report an error.
 
 * A function can require and use the context.
 
     If the function was returned directly by a protocol it accepts exactly
-    three arguments: a server object, a request object and and a context.
-    Otherwise, it called with the is the function requires a context it is
-    passed as ``context`` keyword argument.
+    three arguments: a server object, a request object and a context.
+    Otherwise, it is called with all the arguments passed in the request and
+    the context passed as the ``context`` keyword argument.
 
 * A server can destroy the context.
 
-    To destroy the context a server calls a function ``DESTROY_CONTEXT``
-    specified in the server settings. This function accepts exactly one
+    To destroy the context a server calls the function specified in the
+    ``DESTROY_CONTEXT`` server setting. This function accepts exactly one
     argument, namely the context, it cleans it, if it is necessary.
 
 
