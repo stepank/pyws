@@ -1,0 +1,234 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Function manager &mdash; pyws 1.1.4 documentation</title>
+    
+    <link rel="stylesheet" href="_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '1.1.4',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="top" title="pyws 1.1.4 documentation" href="index.html" />
+    <link rel="up" title="Complete reference" href="complete_reference.html" />
+    <link rel="next" title="Integration tests &amp; examples" href="integration_tests.html" />
+    <link rel="prev" title="Function" href="function.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="integration_tests.html" title="Integration tests &amp; examples"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="function.html" title="Function"
+             accesskey="P">previous</a> |</li>
+        <li><a href="index.html">pyws 1.1.4 documentation</a> &raquo;</li>
+          <li><a href="complete_reference.html" accesskey="U">Complete reference</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="function-manager">
+<span id="id1"></span><h1>Function manager<a class="headerlink" href="#function-manager" title="Permalink to this headline">¶</a></h1>
+<p>Having a fixed set of functions in an API might be inapplicable in some cases,
+that&#8217;s why there is a concept of function managers in pyws. When a server tries
+to determine a function to call it asks each of its function managers whether
+it has one. Also, for instance, when WSDL description is generated, a server
+needs to know full list of its functions, function managers help
+with this task too.</p>
+<dl class="class">
+<dt id="pyws.functions.managers.FunctionManager">
+<em class="property">class </em><tt class="descclassname">pyws.functions.managers.</tt><tt class="descname">FunctionManager</tt><a class="headerlink" href="#pyws.functions.managers.FunctionManager" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="method">
+<dt id="pyws.functions.managers.FunctionManager.get_all">
+<tt class="descname">get_all</tt><big>(</big><em>context</em><big>)</big><a class="headerlink" href="#pyws.functions.managers.FunctionManager.get_all" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a list of functions accessible in the context. Read more about
+context in chaper <a class="reference internal" href="context.html"><em>Context</em></a> and about functiona in chapter
+<a class="reference internal" href="function.html"><em>Function</em></a>.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyws.functions.managers.FunctionManager.get_one">
+<tt class="descname">get_one</tt><big>(</big><em>context</em>, <em>name</em><big>)</big><a class="headerlink" href="#pyws.functions.managers.FunctionManager.get_one" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a function by its name if it is accessible in the context. If
+it is not accessible or does not exist, raises
+<tt class="docutils literal"><span class="pre">pyws.errors.FunctionNotFound</span></tt>. Read more about context in chaper
+<a class="reference internal" href="context.html"><em>Context</em></a> and about functions in chapter <a class="reference internal" href="function.html"><em>Function</em></a>.</p>
+</dd></dl>
+
+</dd></dl>
+
+<div class="section" id="fixed-function-manager">
+<h2>Fixed function manager<a class="headerlink" href="#fixed-function-manager" title="Permalink to this headline">¶</a></h2>
+<p>pyws has only one predefined function manager, namely a fixed one.</p>
+<dl class="class">
+<dt id="pyws.functions.managers.FixedFunctionManager">
+<em class="property">class </em><tt class="descclassname">pyws.functions.managers.</tt><tt class="descname">FixedFunctionManager</tt><big>(</big><em>*functions</em><big>)</big><a class="headerlink" href="#pyws.functions.managers.FixedFunctionManager" title="Permalink to this definition">¶</a></dt>
+<dd><p>A fixed function manager, it has a fixed set of functions.</p>
+<dl class="method">
+<dt id="pyws.functions.managers.FixedFunctionManager.__init__">
+<tt class="descname">__init__</tt><big>(</big><em>*functions</em><big>)</big><a class="headerlink" href="#pyws.functions.managers.FixedFunctionManager.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p><tt class="docutils literal"><span class="pre">functions</span></tt> is a list of functions to be registered.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyws.functions.managers.FixedFunctionManager.add_function">
+<tt class="descname">add_function</tt><big>(</big><em>function</em><big>)</big><a class="headerlink" href="#pyws.functions.managers.FixedFunctionManager.add_function" title="Permalink to this definition">¶</a></dt>
+<dd><p>Adds the function to the list of registered functions.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyws.functions.managers.FixedFunctionManager.get_all">
+<tt class="descname">get_all</tt><big>(</big><em>context</em><big>)</big><a class="headerlink" href="#pyws.functions.managers.FixedFunctionManager.get_all" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a list of registered functions, the context is ignored.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyws.functions.managers.FixedFunctionManager.get_one">
+<tt class="descname">get_one</tt><big>(</big><em>context</em>, <em>name</em><big>)</big><a class="headerlink" href="#pyws.functions.managers.FixedFunctionManager.get_one" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a function if it is registered, the context is ignored.</p>
+</dd></dl>
+
+</dd></dl>
+
+<p>Each pyws server has a fixed function manager preinstalled, however there is no
+restriction on how many and what function managers a server might have.</p>
+</div>
+<div class="section" id="registering-a-function">
+<span id="registering-function"></span><h2>Registering a function<a class="headerlink" href="#registering-a-function" title="Permalink to this headline">¶</a></h2>
+<p>If you have a <tt class="docutils literal"><span class="pre">pyws.functions.Function</span></tt> object, you can register it to a
+server using its method <tt class="docutils literal"><span class="pre">add_function</span></tt>:</p>
+<dl class="method">
+<dt id="pyws.server.Server.add_function">
+<tt class="descclassname">Server.</tt><tt class="descname">add_function</tt><big>(</big><em>function</em><big>)</big><a class="headerlink" href="#pyws.server.Server.add_function" title="Permalink to this definition">¶</a></dt>
+<dd><p>Registers the function to the server&#8217;s default fixed function manager.</p>
+</dd></dl>
+
+<p>However, if you have an ordinary python function, there is an easier way, just
+use function <tt class="docutils literal"><span class="pre">pyws.functions.register.register</span></tt>:</p>
+<dl class="function">
+<dt id="pyws.functions.register.register">
+<tt class="descclassname">pyws.functions.register.</tt><tt class="descname">register</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#pyws.functions.register.register" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates a registrator that, being called with a function as the only
+argument, wraps a function with <tt class="docutils literal"><span class="pre">pyws.functions.NativeFunctionAdapter</span></tt>
+and registers it to the server. Arguments are exactly the same as for
+<tt class="docutils literal"><span class="pre">pyws.functions.NativeFunctionAdapter</span></tt> except that you can pass
+an additional keyword argument <tt class="docutils literal"><span class="pre">to</span></tt> designating the name of the server
+which the function must be registered to:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pyws.server</span> <span class="kn">import</span> <span class="n">Server</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">server</span> <span class="o">=</span> <span class="n">Server</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pyws.functions.register</span> <span class="kn">import</span> <span class="n">register</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nd">@register</span><span class="p">()</span>
+<span class="gp">... </span><span class="k">def</span> <span class="nf">say_hello</span><span class="p">(</span><span class="n">name</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="k">return</span> <span class="s">&#39;Hello, </span><span class="si">%s</span><span class="s">&#39;</span> <span class="o">%</span> <span class="n">name</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">server</span><span class="o">.</span><span class="n">get_functions</span><span class="p">(</span><span class="n">context</span><span class="o">=</span><span class="bp">None</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">name</span>
+<span class="go">&#39;say_hello&#39;</span>
+</pre></div>
+</div>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">another_server</span> <span class="o">=</span> <span class="n">Server</span><span class="p">(</span><span class="nb">dict</span><span class="p">(</span><span class="n">NAME</span><span class="o">=</span><span class="s">&#39;another_server&#39;</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nd">@register</span><span class="p">(</span><span class="n">to</span><span class="o">=</span><span class="s">&#39;another_server&#39;</span><span class="p">,</span> <span class="n">return_type</span><span class="o">=</span><span class="nb">int</span><span class="p">,</span> <span class="n">args</span><span class="o">=</span><span class="p">(</span><span class="nb">int</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
+<span class="gp">... </span><span class="k">def</span> <span class="nf">gimme_more</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="k">return</span> <span class="n">x</span> <span class="o">*</span> <span class="mi">2</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">another_server</span><span class="o">.</span><span class="n">get_functions</span><span class="p">(</span><span class="n">context</span><span class="o">=</span><span class="bp">None</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">name</span>
+<span class="go">&#39;gimme_more&#39;</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Function manager</a><ul>
+<li><a class="reference internal" href="#fixed-function-manager">Fixed function manager</a></li>
+<li><a class="reference internal" href="#registering-a-function">Registering a function</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="function.html"
+                        title="previous chapter">Function</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="integration_tests.html"
+                        title="next chapter">Integration tests &amp; examples</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="_sources/function_manager.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="integration_tests.html" title="Integration tests &amp; examples"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="function.html" title="Function"
+             >previous</a> |</li>
+        <li><a href="index.html">pyws 1.1.4 documentation</a> &raquo;</li>
+          <li><a href="complete_reference.html" >Complete reference</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2011, stepank.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2b1.
+    </div>
+  </body>
+</html>

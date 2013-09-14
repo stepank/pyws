@@ -1,0 +1,162 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Workflow &mdash; pyws 1.1.4 documentation</title>
+    
+    <link rel="stylesheet" href="_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '1.1.4',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="top" title="pyws 1.1.4 documentation" href="index.html" />
+    <link rel="up" title="Complete reference" href="complete_reference.html" />
+    <link rel="next" title="Adapters" href="adapters.html" />
+    <link rel="prev" title="Complete reference" href="complete_reference.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="adapters.html" title="Adapters"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="complete_reference.html" title="Complete reference"
+             accesskey="P">previous</a> |</li>
+        <li><a href="index.html">pyws 1.1.4 documentation</a> &raquo;</li>
+          <li><a href="complete_reference.html" accesskey="U">Complete reference</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="workflow">
+<h1>Workflow<a class="headerlink" href="#workflow" title="Permalink to this headline">¶</a></h1>
+<p>Actually, pyws is not a server, it&#8217;s a library allowing developers to easily
+integrate SOAP based web services into a web project. The basic workflow looks
+like this:</p>
+<ol class="arabic simple">
+<li>create and configure a pyws server,</li>
+<li>register some functions to it,</li>
+<li>attach the server to your project using an adapter,</li>
+<li>enjoy.</li>
+</ol>
+<p>A more sophisticated scenario, however, might also include:</p>
+<ul class="simple">
+<li>using several protocols as well as creating them,</li>
+<li>dealing with context data, i.e. authentication,</li>
+<li>implementing advanced function access via function managers,</li>
+<li>creating different adapters,</li>
+<li>whatever you want else as long as you can implement it yourself :).</li>
+</ul>
+</div>
+<div class="section" id="how-it-works">
+<h1>How it works<a class="headerlink" href="#how-it-works" title="Permalink to this headline">¶</a></h1>
+<p>The entry point to pyws is an <a class="reference internal" href="adapters.html#adapters"><em>adapter</em></a>. It can be anything you
+want and its role is to tie pyws and your project together. An adapter must
+create and feed a <a class="reference internal" href="request_response.html#request"><em>request</em></a> object to a <a class="reference internal" href="server.html#server"><em>server</em></a>,
+after which the latter performs several actions.</p>
+<p>Firstly, the server defines a <a class="reference internal" href="protocol.html"><em>protocol</em></a>. If there is only one
+protocol registered then the server uses it by default, otherwise the server
+determines a protocol based on the request data.</p>
+<p>Secondly, the server tells the protocol to extract the name of the function to
+be called. Then the server asks the protocol to extract context data from the
+request and creates a <a class="reference internal" href="context.html"><em>context</em></a>.</p>
+<p>Thirdly, the server tries to find a <a class="reference internal" href="function.html#function"><em>function</em></a> by its name,
+querying each of its <a class="reference internal" href="function_manager.html#function-manager"><em>function managers</em></a>. Then the
+server asks the protocol to extract argument values from the request.</p>
+<p>Fourthly, the server calls the function with these argument values, complete
+argument values validation is performed here too.</p>
+<p>Finally, the server creates a <a class="reference internal" href="request_response.html#response"><em>response</em></a> object using the
+protocol and returns it to the adapter. That is it.</p>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Workflow</a></li>
+<li><a class="reference internal" href="#how-it-works">How it works</a></li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="complete_reference.html"
+                        title="previous chapter">Complete reference</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="adapters.html"
+                        title="next chapter">Adapters</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="_sources/working_with_pyws.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="adapters.html" title="Adapters"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="complete_reference.html" title="Complete reference"
+             >previous</a> |</li>
+        <li><a href="index.html">pyws 1.1.4 documentation</a> &raquo;</li>
+          <li><a href="complete_reference.html" >Complete reference</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2011, stepank.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2b1.
+    </div>
+  </body>
+</html>

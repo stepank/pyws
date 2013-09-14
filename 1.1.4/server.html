@@ -1,0 +1,206 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Server &mdash; pyws 1.1.4 documentation</title>
+    
+    <link rel="stylesheet" href="_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '1.1.4',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="top" title="pyws 1.1.4 documentation" href="index.html" />
+    <link rel="up" title="Complete reference" href="complete_reference.html" />
+    <link rel="next" title="Request" href="request_response.html" />
+    <link rel="prev" title="Adapters" href="adapters.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="request_response.html" title="Request"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="adapters.html" title="Adapters"
+             accesskey="P">previous</a> |</li>
+        <li><a href="index.html">pyws 1.1.4 documentation</a> &raquo;</li>
+          <li><a href="complete_reference.html" accesskey="U">Complete reference</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="server">
+<span id="id1"></span><h1>Server<a class="headerlink" href="#server" title="Permalink to this headline">¶</a></h1>
+<p>The central node of pyws infrastructure is a server, it is defined in module
+<tt class="docutils literal"><span class="pre">pyws.server</span></tt>. There are two classes defined: <tt class="docutils literal"><span class="pre">Server</span></tt> (a generic server)
+and <tt class="docutils literal"><span class="pre">SoapServer</span></tt>. There is only one difference between them, namely the
+latter has a SOAP protocol registered beforehand.</p>
+<p>The easiest way to create a generic server is this:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">pyws.server</span> <span class="kn">import</span> <span class="n">Server</span>
+<span class="n">server</span> <span class="o">=</span> <span class="n">Server</span><span class="p">(</span><span class="n">settings</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>To create a SOAP server:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">pyws.server</span> <span class="kn">import</span> <span class="n">SoapServer</span>
+<span class="n">server</span> <span class="o">=</span> <span class="n">SoapServer</span><span class="p">(</span>
+    <span class="n">settings</span><span class="p">,</span>
+    <span class="n">service_name</span><span class="o">=</span><span class="s">&#39;Test&#39;</span><span class="p">,</span>
+    <span class="n">tns</span><span class="o">=</span><span class="s">&#39;http://example.com/&#39;</span><span class="p">,</span>
+    <span class="n">location</span><span class="o">=</span><span class="s">&#39;http://localhost:8000/api/&#39;</span><span class="p">,</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p>In both cases <tt class="docutils literal"><span class="pre">settings</span></tt> may be a dict or an object (a module object as well)
+containing some, well, settings. Other parameters in the case of a SOAP server
+are:</p>
+<ol class="arabic simple">
+<li><tt class="docutils literal"><span class="pre">service_name</span></tt> gives a name to the server, it is used to generate WSDL
+description.</li>
+<li><tt class="docutils literal"><span class="pre">tns</span></tt> is a root namespace, where all the stuff lives. SOAP is based on
+XML, so no wonder we need it.</li>
+<li><tt class="docutils literal"><span class="pre">location</span></tt> tells the server, where it lives. It is only a piece of
+information required by pyws to generate a proper WSDL description, it is
+not a real binding to an URL.</li>
+</ol>
+<div class="section" id="settings">
+<h2>Settings<a class="headerlink" href="#settings" title="Permalink to this headline">¶</a></h2>
+<p>A server has the following settings variables.</p>
+<div class="section" id="name">
+<h3>NAME<a class="headerlink" href="#name" title="Permalink to this headline">¶</a></h3>
+<p><tt class="docutils literal"><span class="pre">NAME</span></tt> is used to identify a pyws server. For example, if you have several
+pyws servers, you have to specify a server name to register a function to it.
+Server name is unique, thus creating two servers with the same name raises an
+exception. Default is <tt class="docutils literal"><span class="pre">None</span></tt>.</p>
+</div>
+<div class="section" id="debug">
+<span id="settings-debug"></span><h3>DEBUG<a class="headerlink" href="#debug" title="Permalink to this headline">¶</a></h3>
+<p>If <tt class="docutils literal"><span class="pre">DEBUG</span></tt> is <tt class="docutils literal"><span class="pre">True</span></tt> a server will not catch exceptions occuring in
+registered functions, but rather it will just pass them further so that you
+could handle them your own way. For example, Django in debug mode will print a
+pretty formatted stack trace. Default is <tt class="docutils literal"><span class="pre">False</span></tt>.</p>
+</div>
+<div class="section" id="protocols">
+<span id="settings-protocols"></span><h3>PROTOCOLS<a class="headerlink" href="#protocols" title="Permalink to this headline">¶</a></h3>
+<p>A tuple of <a class="reference internal" href="protocol.html"><em>protocol</em></a> instances that a server will use to
+process requests. For <tt class="docutils literal"><span class="pre">SoapServer</span></tt> default is a tuple of a single SOAP
+protocol instance. For a generic <tt class="docutils literal"><span class="pre">Server</span></tt> there are no protocol predefined,
+so make sure you&#8217;ve register at least one yourself.</p>
+</div>
+<div class="section" id="function-managers">
+<h3>FUNCTION_MANAGERS<a class="headerlink" href="#function-managers" title="Permalink to this headline">¶</a></h3>
+<p>A tuple of <a class="reference internal" href="function_manager.html#function-manager"><em>function managers</em></a> that provide a server
+with functions. Default is a tuple of a single fixed function manager.</p>
+</div>
+<div class="section" id="create-context">
+<span id="settings-create-context"></span><h3>CREATE_CONTEXT<a class="headerlink" href="#create-context" title="Permalink to this headline">¶</a></h3>
+<p>A function creating a context for request processing. Default is <tt class="docutils literal"><span class="pre">None</span></tt>. More
+about context handling read in chapter <a class="reference internal" href="context.html"><em>Context</em></a>.</p>
+</div>
+<div class="section" id="destroy-context">
+<h3>DESTROY_CONTEXT<a class="headerlink" href="#destroy-context" title="Permalink to this headline">¶</a></h3>
+<p>A function destroying a previously defined context. Default is <tt class="docutils literal"><span class="pre">None</span></tt>. More
+about context handling read in chapter <a class="reference internal" href="context.html"><em>Context</em></a>.</p>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Server</a><ul>
+<li><a class="reference internal" href="#settings">Settings</a><ul>
+<li><a class="reference internal" href="#name">NAME</a></li>
+<li><a class="reference internal" href="#debug">DEBUG</a></li>
+<li><a class="reference internal" href="#protocols">PROTOCOLS</a></li>
+<li><a class="reference internal" href="#function-managers">FUNCTION_MANAGERS</a></li>
+<li><a class="reference internal" href="#create-context">CREATE_CONTEXT</a></li>
+<li><a class="reference internal" href="#destroy-context">DESTROY_CONTEXT</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="adapters.html"
+                        title="previous chapter">Adapters</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="request_response.html"
+                        title="next chapter">Request</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="_sources/server.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="request_response.html" title="Request"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="adapters.html" title="Adapters"
+             >previous</a> |</li>
+        <li><a href="index.html">pyws 1.1.4 documentation</a> &raquo;</li>
+          <li><a href="complete_reference.html" >Complete reference</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2011, stepank.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2b1.
+    </div>
+  </body>
+</html>

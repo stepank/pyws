@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Context &mdash; pyws 1.1.3 documentation</title>
+    <title>Context &mdash; pyws 1.1.5 documentation</title>
     
     <link rel="stylesheet" href="_static/default.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -14,7 +14,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    './',
-        VERSION:     '1.1.3',
+        VERSION:     '1.1.5',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -23,7 +23,7 @@
     <script type="text/javascript" src="_static/jquery.js"></script>
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
-    <link rel="top" title="pyws 1.1.3 documentation" href="index.html" />
+    <link rel="top" title="pyws 1.1.5 documentation" href="index.html" />
     <link rel="up" title="Complete reference" href="complete_reference.html" />
     <link rel="next" title="Function" href="function.html" />
     <link rel="prev" title="Protocol" href="protocol.html" /> 
@@ -44,7 +44,7 @@
         <li class="right" >
           <a href="protocol.html" title="Protocol"
              accesskey="P">previous</a> |</li>
-        <li><a href="index.html">pyws 1.1.3 documentation</a> &raquo;</li>
+        <li><a href="index.html">pyws 1.1.5 documentation</a> &raquo;</li>
           <li><a href="complete_reference.html" accesskey="U">Complete reference</a> &raquo;</li> 
       </ul>
     </div>  
@@ -69,25 +69,26 @@ context data getters which extract context data for different cases.</p>
 </li>
 <li><p class="first">A server can create a context from these data.</p>
 <blockquote>
-<div><p>To create a context a server calls a function <tt class="docutils literal"><span class="pre">CREATE_CONTEXT</span></tt> specified
-in the server settings. This function accepts exactly one argument, namely
-context data extracted from a request, creates and returns the context. If
-an exception is raised and a function requires the context, the server will
-stop processing the request and report an error.</p>
+<div><p>To create a context a server calls the function specified in the
+<tt class="docutils literal"><span class="pre">CREATE_CONTEXT</span></tt> server setting. This function accepts exactly one
+argument, namely the context data extracted from the request, creates and
+returns the context. If an exception is raised and the API function needed
+to be executed requires a context, the server will stop processing the
+request and report an error.</p>
 </div></blockquote>
 </li>
 <li><p class="first">A function can require and use the context.</p>
 <blockquote>
 <div><p>If the function was returned directly by a protocol it accepts exactly
-three arguments: a server object, a request object and and a context.
-Otherwise, it called with the is the function requires a context it is
-passed as <tt class="docutils literal"><span class="pre">context</span></tt> keyword argument.</p>
+three arguments: a server object, a request object and a context.
+Otherwise, it is called with all the arguments passed in the request and
+the context passed as the <tt class="docutils literal"><span class="pre">context</span></tt> keyword argument.</p>
 </div></blockquote>
 </li>
 <li><p class="first">A server can destroy the context.</p>
 <blockquote>
-<div><p>To destroy the context a server calls a function <tt class="docutils literal"><span class="pre">DESTROY_CONTEXT</span></tt>
-specified in the server settings. This function accepts exactly one
+<div><p>To destroy the context a server calls the function specified in the
+<tt class="docutils literal"><span class="pre">DESTROY_CONTEXT</span></tt> server setting. This function accepts exactly one
 argument, namely the context, it cleans it, if it is necessary.</p>
 </div></blockquote>
 </li>
@@ -183,7 +184,7 @@ error.</p>
         <li class="right" >
           <a href="protocol.html" title="Protocol"
              >previous</a> |</li>
-        <li><a href="index.html">pyws 1.1.3 documentation</a> &raquo;</li>
+        <li><a href="index.html">pyws 1.1.5 documentation</a> &raquo;</li>
           <li><a href="complete_reference.html" >Complete reference</a> &raquo;</li> 
       </ul>
     </div>
