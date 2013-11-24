@@ -24,12 +24,13 @@ def create_application(server, root_url):
 
         tail, get = (util.request_uri(environ).split('?') + [''])[:2]
         tail = tail[len(util.application_uri(environ)):]
+        tail = tail.lstrip('/')
 
         result = []
 
         content_type = 'text/plain'
         status = '200 OK'
-        if tail.lstrip('/').startswith(root):
+        if tail.startswith(root):
 
             tail = tail[len(root):]
 
