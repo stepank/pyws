@@ -27,6 +27,7 @@ class String(Type):
         except UnicodeDecodeError:
             return unicode(value, 'utf-8')
 
+
 class Boolean(Type):
     """
     Represents boolean values, simplified form is ``bool``, default
@@ -99,6 +100,7 @@ class Date(Type):
 
 tz_re = re.compile('((\\+|-)(\d\d):?(\d\d))$')
 
+
 class DateTime(Date):
     """
     Represents datetime values, simplified form is ``datetime``, default
@@ -141,12 +143,13 @@ class DateTime(Date):
         try:
             return cls._parse(value).replace(tzinfo=tz)
         except ValueError:
-            mo = re.search('\\.\d+', value)
+            mo = re.search('\\.\d+$', value)
             if not mo:
                 raise
             ms = mo.group(0)
-            value = value.replace(ms, ms.ljust(7, '0'))
-            return cls._parse(value, '%Y-%m-%dT%H:%M:%S.%f').replace(tzinfo=tz)
+            value = value.replace(ms, '')
+            return cls._parse(value, cls.format).\
+                replace(tzinfo=tz, microsecond=int(ms[1:].ljust(6, '0')))
 
     @classmethod
     def serialize(cls, value):
@@ -155,4 +158,7 @@ class DateTime(Date):
         else:
             delta = timedelta(seconds=cls.default_offset())
         value = value.replace(tzinfo=cls.get_tzinfo(0)) - delta
-        return super(DateTime, cls).serialize(value) + 'Z'
+        ms = ''
+        if value.microsecond:
+            ms = '.' + str(value.microsecond).rjust(6, '0')
+        return super(DateTime, cls).serialize(value) + ms + 'Z'

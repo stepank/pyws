@@ -27,8 +27,8 @@ public class NextMonthTestCase extends TestServiceTestCase {
     @Test
     public void test_dt() throws Exception {
         Calendar origin = Calendar.getInstance();
-        origin.setTime(new Date(1313826085000L));
+        origin.setTime(new Date(1313826085123L));
         Assert.assertEquals(
-            new Date(1316504485000L), port.next_month_dt(origin).getTime());
+            new Date(1316504485123L), port.next_month_dt(origin).getTime());
     }
 }

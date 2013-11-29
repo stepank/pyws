@@ -19,7 +19,7 @@ class NextMonthTestCase extends TestServiceTestCase {
 
     public function test_dt() {
         $this->assertEquals(
-            $this->service->next_month_dt('2011-08-20T00:04:59Z'),
-            '2011-09-20T00:04:59Z');
+            $this->service->next_month_dt('2011-08-20T00:04:59.123Z'),
+            '2011-09-20T00:04:59.123000Z');
     }
 }
