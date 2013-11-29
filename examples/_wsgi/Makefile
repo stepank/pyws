@@ -1,18 +1,18 @@
 RUN_CMD=python __init__.py
-PID_FILE=_wsgi.pid
+PID_FILE=/tmp/pyws_server.pid
 
 run:
 	$(RUN_CMD)
 
-$(PID_FILE):
+runbg: stop
 	$(RUN_CMD) > /dev/null 2>&1 & echo $$! > $(PID_FILE)
-
-runbg: $(PID_FILE)
 
 stop:
 	if [ -e $(PID_FILE) ]; then \
-		kill `cat $(PID_FILE)`; \
-		rm $(PID_FILE); \
+	    PID=`cat $(PID_FILE)`; \
+	    kill $$PID; \
+	    wait $$PID; \
+	    rm -f $(PID_FILE); \
 	fi
 
 .PHONY: run runbg stop

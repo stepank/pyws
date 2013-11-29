@@ -13,5 +13,5 @@ from pyws.adapters._wsgi import create_application
 
 from server import server
 
-httpd = make_server('', 8000, create_application(server, 'api/'))
+httpd = make_server('127.0.0.1', 8000, create_application(server, 'api/'))
 httpd.serve_forever()

@@ -1,4 +1,7 @@
-ROOT_DIR=$(shell pwd)
+SHELL = /bin/bash
+ROOT_DIR = $(shell pwd)
+PYTHON ?= $(shell which python)
+ENV ?= env
 
 include $(ROOT_DIR)/Makefile.common
 
@@ -16,4 +19,16 @@ test:
 clean:
 	make -C tests clean
 
-.PHONY: all develop install test clean
+env:
+	virtualenv $(ENV) -p $(PYTHON)
+	source $(ENV)/bin/activate && \
+	    make develop
+
+jenkins: env
+	source $(ENV)/bin/activate && \
+	    make
+
+clean_env:
+	rm -rf $(ENV)
+
+.PHONY: all develop install test clean jenkins clean_env

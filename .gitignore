@@ -9,3 +9,4 @@
 *.idea
 dist
 *.egg-info
+env*/
