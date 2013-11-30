@@ -11,12 +11,8 @@ public class TestServiceTestCase {
     public TestPortType port;
 
     @Before
-    public void setUp() {
+    public void setUp() throws Exception {
         service = new TestServiceLocator();
-        try {
-            port = service.getTestPort();
-        } catch (javax.xml.rpc.ServiceException e) {
-            System.out.println("Exception: " + e.toString());
-        }
+        port = service.getTestPort();
     }
 }

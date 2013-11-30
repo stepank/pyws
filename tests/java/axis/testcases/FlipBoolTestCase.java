@@ -6,12 +6,8 @@ import org.junit.Assert;
 public class FlipBoolTestCase extends TestServiceTestCase {
 
     @Test
-    public void test() {
-        try {
-            Assert.assertTrue(port.flip_boolean(true) == false);
-            Assert.assertTrue(port.flip_boolean(false) == true);
-        } catch (java.rmi.RemoteException e) {
-            System.out.println("Exception: " + e.toString());
-        }
+    public void test() throws Exception {
+        Assert.assertEquals(false, port.flip_boolean(true));
+        Assert.assertEquals(true, port.flip_boolean(false));
     }
 }

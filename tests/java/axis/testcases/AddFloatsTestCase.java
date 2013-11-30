@@ -6,12 +6,8 @@ import org.junit.Assert;
 public class AddFloatsTestCase extends TestServiceTestCase {
 
     @Test
-    public void test() {
-        try {
-            Assert.assertTrue(
-                port.add_floats((float)10.5, (float)5.3) == (float)15.8);
-        } catch (java.rmi.RemoteException e) {
-            System.out.println("Exception: " + e.toString());
-        }
+    public void test() throws Exception {
+        Assert.assertEquals(
+            (float)15.8, port.add_floats((float)10.5, (float)5.3), 0.01);
     }
 }
