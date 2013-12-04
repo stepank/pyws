@@ -1,0 +1,6 @@
+django==1.2 _django
+django==1.3 _django
+django==1.4 _django
+django==1.5 _django
+django==1.6 _django
+wsgiref _wsgi

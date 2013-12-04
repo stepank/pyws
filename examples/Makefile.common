@@ -1,0 +1,17 @@
+PID_FILE = /tmp/pyws_server.pid
+
+run:
+	$(RUN_CMD)
+
+runbg: stop
+	$(RUN_CMD) > /dev/null 2>&1 & echo $$! > $(PID_FILE)
+
+stop:
+	if [ -e $(PID_FILE) ]; then \
+	    PID=`cat $(PID_FILE)`; \
+	    kill $$PID; \
+	    wait $$PID; \
+	    rm -f $(PID_FILE); \
+	fi
+
+.PHONY: run runbg stop

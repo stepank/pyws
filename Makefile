@@ -1,4 +1,3 @@
-SHELL = /bin/bash
 ROOT_DIR = $(shell pwd)
 PYTHON ?= $(shell which python)
 ENV ?= env
@@ -23,6 +22,7 @@ env:
 	virtualenv $(ENV) -p $(PYTHON)
 	source $(ENV)/bin/activate && \
 	    make develop
+	$(ENV)/bin/pip install $(HOST_FRAMEWORK)
 
 jenkins: env
 	source $(ENV)/bin/activate && \
