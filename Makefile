@@ -19,7 +19,7 @@ clean:
 	make -C tests clean
 
 env:
-	virtualenv $(ENV) -p $(PYTHON)
+	virtualenv $(ENV) -p $(PYTHON) --distribute
 	source $(ENV)/bin/activate && \
 	    make develop
 	$(ENV)/bin/pip install $(HOST_FRAMEWORK)
