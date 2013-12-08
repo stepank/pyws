@@ -9,8 +9,8 @@ Environment
 -----------
 
 Ensure that pyws is installed, read more about :ref:`requirements` and
-:ref:`installation`, this tutorial is based on Django adapter, so check up its
-requirements too. Also you will need curl for testing purposes.
+:ref:`installation`. This tutorial is based on Django adapter (Django 1.6 is
+required for this tutorial). You will also need curl for testing purposes.
 
 
 Project
@@ -19,14 +19,14 @@ Project
 Let's create a new Django project::
 
     $ django-admin.py startproject pywstest
-    $ cd !$
+    $ cd pywstest
 
 If you have problems with this refer to
 `Django documentation <https://docs.djangoproject.com/en/1.3/intro/tutorial01/#creating-a-project>`_.
 
-Here we will create a file ``server.py``, which we are going to edit::
+Create file ``server.py``, which we are going to edit::
 
-    $ touch server.py
+    $ touch pywstest/server.py
 
 
 Some code
@@ -66,12 +66,12 @@ it up with a special decorator, so it will look like this::
 And the last step, we need to edit ``urls.py``, the result would be as
 following::
 
-    from django.conf.urls.defaults import *
+    from django.conf.urls import patterns, url
     from pyws.adapters._django import serve
     from pywstest.server import server
 
     urlpatterns = patterns('',
-        url('^api/(.*)', serve, {'server': server})
+        url('^api(.*)', serve, {'server': server})
     )
 
 Here we binded our server to a real URL. Function ``serve`` is an adapter used
@@ -102,7 +102,7 @@ Prepare a request::
 
 Then hit it::
 
-    $ curl --data-binary @request http://localhost:8000/api/
+    $ curl --data-binary @request http://localhost:8000/api
 
 The result would be::
 

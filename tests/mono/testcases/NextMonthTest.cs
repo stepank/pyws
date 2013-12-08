@@ -39,9 +39,9 @@ namespace TestCases {
         [Test()]
         public void test_dt() {
             Assert.AreEqual(
-                new DateTime(2011, 9, 20, 7, 41, 25),
+                new DateTime(2011, 9, 20, 7, 41, 25, 123),
                 service.next_month_dt(
-                    new DateTime(2011, 8, 20, 7, 41, 25)).Value);
+                    new DateTime(2011, 8, 20, 7, 41, 25, 123)).Value);
         }
     }
 }

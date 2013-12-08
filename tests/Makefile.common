@@ -1,7 +1,8 @@
-NEED_WSDL?=1
-WSDL_FILE=test.wsdl
-WSDL_SUFFIX=
-SERVER_DIR=$(ROOT_DIR)/examples/_wsgi
+NEED_WSDL ?= 1
+WSDL_FILE = test.wsdl
+WSDL_SUFFIX =
+EXAMPLES_DIR = $(ROOT_DIR)/examples
+SERVER_DIR = $(EXAMPLES_DIR)/$(shell grep $(HOST_FRAMEWORK) $(EXAMPLES_DIR)/server_dirs | awk '{print $$2}')
 
 all: build test clean
 

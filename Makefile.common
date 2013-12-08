@@ -1,2 +1,3 @@
-SHELL=/bin/bash
-TEST_DIR=$(ROOT_DIR)/tests
+SHELL = /bin/bash
+TEST_DIR = $(ROOT_DIR)/tests
+HOST_FRAMEWORK ?= wsgiref

@@ -9,52 +9,36 @@ import com.example.types.ABStringDict;
 public class GetTreeTestCase extends TestServiceTestCase {
 
     @Test
-    public void test_null_ret() {
-        try {
-            Tree r = port.get_tree(0);
-            Assert.assertTrue(r == null);
-        } catch (java.rmi.RemoteException e) {
-            System.out.println("Exception: " + e.toString());
-        }
+    public void test_null_ret() throws Exception {
+        Tree r = port.get_tree(0);
+        Assert.assertEquals(null, r);
     }
 
     @Test
-    public void test_notset() {
-        try {
-            Tree r = port.get_tree(1);
-            Assert.assertTrue(r.getValue() == 1);
-            Assert.assertTrue(r.getLeft() == null);
-            Assert.assertTrue(r.getRight() == null);
-        } catch (java.rmi.RemoteException e) {
-            System.out.println("Exception: " + e.toString());
-        }
+    public void test_notset() throws Exception {
+        Tree r = port.get_tree(1);
+        Assert.assertEquals((long)1, (long)r.getValue());
+        Assert.assertEquals(null, r.getLeft());
+        Assert.assertEquals(null, r.getRight());
     }
 
     @Test
-    public void test_null() {
-        try {
-            Tree r = port.get_tree(2);
-            Assert.assertTrue(r.getValue() == 2);
-            Assert.assertTrue(r.getLeft() == null);
-            Assert.assertTrue(r.getRight() == null);
-        } catch (java.rmi.RemoteException e) {
-            System.out.println("Exception: " + e.toString());
-        }
+    public void test_null() throws Exception {
+        Tree r = port.get_tree(2);
+        Assert.assertEquals((long)2, (long)r.getValue());
+        Assert.assertEquals(null, r.getLeft());
+        Assert.assertEquals(null, r.getRight());
     }
 
     @Test
-    public void test() {
-        try {
-            Tree r = port.get_tree(3);
-            Assert.assertTrue(r.getValue() == 3);
-            Assert.assertTrue(r.getLeft().getValue() == 4);
-            Assert.assertTrue(r.getLeft().getLeft() == null);
-            Assert.assertTrue(r.getLeft().getRight() == null);
-            Assert.assertTrue(r.getRight().getValue() == 5);
-            Assert.assertTrue(r.getRight().getLeft() == null);
-            Assert.assertTrue(r.getRight().getRight() == null);
-        } catch (java.rmi.RemoteException e) {
-            System.out.println("Exception: " + e.toString());
-        }
+    public void test() throws Exception {
+        Tree r = port.get_tree(3);
+        Assert.assertEquals((long)3, (long)r.getValue());
+        Assert.assertEquals((long)4, (long)r.getLeft().getValue());
+        Assert.assertEquals(null, r.getLeft().getLeft());
+        Assert.assertEquals(null, r.getLeft().getRight());
+        Assert.assertEquals((long)5, (long)r.getRight().getValue());
+        Assert.assertEquals(null, r.getRight().getLeft());
+        Assert.assertEquals(null, r.getRight().getRight());
     }
 }

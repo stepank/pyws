@@ -164,6 +164,8 @@ class SoapProtocol(Protocol):
             __init__(context_data_getter, *args, **kwargs)
 
         self.service_name = service_name
+        if not tns.endswith('/'):
+            tns += '/'
         self.tns = tns
         self.location = location
         self.headers_schema = headers_schema
