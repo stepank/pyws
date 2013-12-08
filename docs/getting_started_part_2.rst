@@ -11,15 +11,15 @@ Introducing WSDL
 ----------------
 
 Ok, if you are intereseted in SOAP you might have already heard about WSDL and
-what it is. If you hadn't then it's the most wonderful thing about SOAP, it is
-a language which may be used to provide a formal specification of a SOAP web
-service. This specification can be used to generate clients which can easily
-interact with a server taking away all the burden of making and sending
-requests from your shoulders.
+what it is. If you hadn't then you should know that WSDL is the most wonderful
+thing about SOAP. WSDL is a language which may be used to provide a formal
+specification of a SOAP web service. This specification can be then used to
+generate clients which can easily interact with this service taking away all
+the burden of making and sending requests from your shoulders.
 
-Having our pyws server running on ``localhost:8000`` and bound to ``/api/`` we
+Having our pyws server running on ``localhost:8000`` and bound to ``/api`` we
 can get it's WSDL description at http://localhost:8000/api/wsdl. You may
-want to cast a glance on it, but it isn't necessary.
+want to cast a glance on it, but it's not necessary.
 
 Now, let's create a client and send a few requests. We will use
 `suds <https://fedorahosted.org/suds/>`_, it is written in Python and is quite

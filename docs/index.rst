@@ -27,8 +27,8 @@ requests on the server and numerous SOAP clients are at your disposal to send
 requests and process responces.
 
 
-What is already implemented
----------------------------
+What is implemented
+-------------------
 
 Common features:
 
@@ -62,7 +62,8 @@ simplejson. For development pyws also requires unittest2 and suds.
 pyws is written the way that it might be integrated with any web server and
 python framework; it is achieved by using different adapters:
 
-* :ref:`django_adapter` depends on Django, I use 1.5;
+* :ref:`django_adapter` depends on Django, versions from 1.2 to 1.6 are
+  supported;
 * :ref:`twisted_web_adapter` depends on Twisted, I use 11.0.0;
 * :ref:`wsgi_adapter` depends on wsgiref, I use 0.1.2.
 
@@ -92,8 +93,25 @@ To install pyws in development mode (read more about `development mode
 (They both actually run `python setup.py ...`.)
 
 
+Topics
+======
+
+.. toctree::
+   :maxdepth: 3
+
+   introduction
+   complete_reference
+   integration_tests
+
+
 Changelog
 =========
+
+Version 1.1.5
+-------------
+
+* Fixed some issues with datetime support, issue #38.
+* Infrustructure to test pyws using Jenkins, issue #39.
 
 Version 1.1.4
 -------------
@@ -171,14 +189,3 @@ SOAP specific features:
   allowed),
 * integration tests: PHP, Java (Axis 1.4), Python (suds), WS-I Basic Profile
   1.2.
-
-
-Topics
-======
-
-.. toctree::
-   :maxdepth: 3
-
-   introduction
-   complete_reference
-   integration_tests

@@ -1,3 +1,10 @@
+Version 1.1.5
+-------------
+
+* Fixed some issues with datetime support, issue #38.
+* Infrustructure to test pyws using Jenkins, issue #39.
+
+
 Version 1.1.4
 -------------
 
