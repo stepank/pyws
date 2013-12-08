@@ -1,0 +1,218 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Protocol &mdash; pyws 1.1.5 documentation</title>
+    
+    <link rel="stylesheet" href="_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '1.1.5',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="top" title="pyws 1.1.5 documentation" href="index.html" />
+    <link rel="up" title="Complete reference" href="complete_reference.html" />
+    <link rel="next" title="Context" href="context.html" />
+    <link rel="prev" title="Request" href="request_response.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="context.html" title="Context"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="request_response.html" title="Request"
+             accesskey="P">previous</a> |</li>
+        <li><a href="index.html">pyws 1.1.5 documentation</a> &raquo;</li>
+          <li><a href="complete_reference.html" accesskey="U">Complete reference</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="protocol">
+<h1>Protocol<a class="headerlink" href="#protocol" title="Permalink to this headline">¶</a></h1>
+<p>Basically, a protocol performs the following tasks:</p>
+<ul class="simple">
+<li>extracts a function name and argument values from a request,</li>
+<li>extracts context data from the request,</li>
+<li>forms a response out of the result returned by the function,</li>
+<li>forms an error response in the case of an exception.</li>
+</ul>
+<p>When a server asks a protocol to extract a function name the protocol may
+return either a function name or a callable object.</p>
+<p>In the former case, the server will request argument values after determining
+the function and its arguments specification.</p>
+<p>In the latter case, the callable object is directly called with three
+arguments: a server object, a request object and and a context. This is used
+for special cases, currently only for WSDL descrption generation.</p>
+<div class="section" id="protocol-implementation">
+<span id="id1"></span><h2>Protocol implementation<a class="headerlink" href="#protocol-implementation" title="Permalink to this headline">¶</a></h2>
+<p>A protocol must be an instance of <tt class="docutils literal"><span class="pre">pyws.protocols.base.Protocol</span></tt> and must
+implement methods <tt class="docutils literal"><span class="pre">get_function</span></tt>, <tt class="docutils literal"><span class="pre">get_arguments</span></tt>, <tt class="docutils literal"><span class="pre">get_response</span></tt>,
+<tt class="docutils literal"><span class="pre">get_error_response</span></tt>.</p>
+<dl class="class">
+<dt id="pyws.protocols.base.Protocol">
+<em class="property">class </em><tt class="descclassname">pyws.protocols.base.</tt><tt class="descname">Protocol</tt><big>(</big><em>context_data_getter=None</em>, <em>common_context_data_getter=None</em><big>)</big><a class="headerlink" href="#pyws.protocols.base.Protocol" title="Permalink to this definition">¶</a></dt>
+<dd><p>Abstract protocol class. Implements basic constructor, context and error
+handling.</p>
+<dl class="method">
+<dt id="pyws.protocols.base.Protocol.__init__">
+<tt class="descname">__init__</tt><big>(</big><em>context_data_getter=None</em>, <em>common_context_data_getter=None</em><big>)</big><a class="headerlink" href="#pyws.protocols.base.Protocol.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Both arguments are callable objects that accept exactly one argument
+(namely a request) and return context data. <tt class="docutils literal"><span class="pre">context_data_getter</span></tt>
+is used to get context data for registered functions.
+<tt class="docutils literal"><span class="pre">common_context_data_getter</span></tt> is used for functions returned directly
+by a protocol. If you need to override this method don&#8217;t forget to call
+it from successors&#8217; constructor.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyws.protocols.base.Protocol.get_arguments">
+<tt class="descname">get_arguments</tt><big>(</big><em>request</em>, <em>arguments</em><big>)</big><a class="headerlink" href="#pyws.protocols.base.Protocol.get_arguments" title="Permalink to this definition">¶</a></dt>
+<dd><p>Extracts argument values from the request according to the arguments
+specification.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyws.protocols.base.Protocol.get_error">
+<tt class="descname">get_error</tt><big>(</big><em>error</em><big>)</big><a class="headerlink" href="#pyws.protocols.base.Protocol.get_error" title="Permalink to this definition">¶</a></dt>
+<dd><p>A helper function, gets standard information from the error.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyws.protocols.base.Protocol.get_error_response">
+<tt class="descname">get_error_response</tt><big>(</big><em>error</em><big>)</big><a class="headerlink" href="#pyws.protocols.base.Protocol.get_error_response" title="Permalink to this definition">¶</a></dt>
+<dd><p>Forms an error response from the error.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyws.protocols.base.Protocol.get_function">
+<tt class="descname">get_function</tt><big>(</big><em>request</em><big>)</big><a class="headerlink" href="#pyws.protocols.base.Protocol.get_function" title="Permalink to this definition">¶</a></dt>
+<dd><p>Extracts a function name or a function from the request.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyws.protocols.base.Protocol.get_response">
+<tt class="descname">get_response</tt><big>(</big><em>result</em>, <em>name</em>, <em>return_type</em><big>)</big><a class="headerlink" href="#pyws.protocols.base.Protocol.get_response" title="Permalink to this definition">¶</a></dt>
+<dd><p>Forms a response from the result returned by a function according to
+the return type specification. <tt class="docutils literal"><span class="pre">name</span></tt> is the of name the function.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="concerning-soap-protocol">
+<span id="soap-protocol"></span><h2>Concerning SOAP protocol<a class="headerlink" href="#concerning-soap-protocol" title="Permalink to this headline">¶</a></h2>
+<p>SOAP can&#8217;t be thought of without WSDL, so to instantiate this protocol we need
+some information. Also for SOAP, the usual practice is to specify a context in
+SOAP envelope headers, so a simple context data getter is implemented for your
+convenience. The only thing you need to do to implement context data extraction
+from a request is to specify headers schema:</p>
+<dl class="method">
+<dt id="pyws.protocols.soap.SoapProtocol.__init__">
+<tt class="descclassname">SoapProtocol.</tt><tt class="descname">__init__</tt><big>(</big><em>service_name</em>, <em>tns</em>, <em>location</em>, <em>headers_schema=None</em>, <em>*args</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#pyws.protocols.soap.SoapProtocol.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p><tt class="docutils literal"><span class="pre">service_name</span></tt> gives a name to the server, it is used to generate
+WSDL file. <tt class="docutils literal"><span class="pre">tns</span></tt> is a root namespace, where all the stuff lives, SOAP
+is based on XML, so no wonder we need it. <tt class="docutils literal"><span class="pre">location</span></tt> tells the
+server, where it lives. It is only a piece of information required by
+pyws to generate a proper WSDL file, it is not a real binding to an
+URL. <tt class="docutils literal"><span class="pre">headers_schema</span></tt> a schema used to retrive context data from
+request headers. Other arguments are passed to parent constructor.</p>
+</dd></dl>
+
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Protocol</a><ul>
+<li><a class="reference internal" href="#protocol-implementation">Protocol implementation</a></li>
+<li><a class="reference internal" href="#concerning-soap-protocol">Concerning SOAP protocol</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="request_response.html"
+                        title="previous chapter">Request</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="context.html"
+                        title="next chapter">Context</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="_sources/protocol.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="context.html" title="Context"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="request_response.html" title="Request"
+             >previous</a> |</li>
+        <li><a href="index.html">pyws 1.1.5 documentation</a> &raquo;</li>
+          <li><a href="complete_reference.html" >Complete reference</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2011, stepank.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2b3.
+    </div>
+  </body>
+</html>

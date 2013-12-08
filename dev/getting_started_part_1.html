@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Getting started, part 1 &mdash; pyws 1.1.5 documentation</title>
+    <title>Getting started, part 1 &mdash; pyws 1.1.6 documentation</title>
     
     <link rel="stylesheet" href="_static/default.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -14,7 +14,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    './',
-        VERSION:     '1.1.5',
+        VERSION:     '1.1.6',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -23,7 +23,7 @@
     <script type="text/javascript" src="_static/jquery.js"></script>
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
-    <link rel="top" title="pyws 1.1.5 documentation" href="index.html" />
+    <link rel="top" title="pyws 1.1.6 documentation" href="index.html" />
     <link rel="up" title="Introduction" href="introduction.html" />
     <link rel="next" title="Getting started, part 2" href="getting_started_part_2.html" />
     <link rel="prev" title="Introduction" href="introduction.html" /> 
@@ -44,7 +44,7 @@
         <li class="right" >
           <a href="introduction.html" title="Introduction"
              accesskey="P">previous</a> |</li>
-        <li><a href="index.html">pyws 1.1.5 documentation</a> &raquo;</li>
+        <li><a href="index.html">pyws 1.1.6 documentation</a> &raquo;</li>
           <li><a href="introduction.html" accesskey="U">Introduction</a> &raquo;</li> 
       </ul>
     </div>  
@@ -61,19 +61,19 @@ add there some functions and test it.</p>
 <div class="section" id="environment">
 <h2>Environment<a class="headerlink" href="#environment" title="Permalink to this headline">¶</a></h2>
 <p>Ensure that pyws is installed, read more about <a class="reference internal" href="index.html#requirements"><em>Requirements</em></a> and
-<a class="reference internal" href="index.html#installation"><em>Installation</em></a>, this tutorial is based on Django adapter, so check up its
-requirements too. Also you will need curl for testing purposes.</p>
+<a class="reference internal" href="index.html#installation"><em>Installation</em></a>. This tutorial is based on Django adapter (Django 1.6 is
+required for this tutorial). You will also need curl for testing purposes.</p>
 </div>
 <div class="section" id="project">
 <h2>Project<a class="headerlink" href="#project" title="Permalink to this headline">¶</a></h2>
 <p>Let&#8217;s create a new Django project:</p>
 <div class="highlight-python"><pre>$ django-admin.py startproject pywstest
-$ cd !$</pre>
+$ cd pywstest</pre>
 </div>
 <p>If you have problems with this refer to
 <a class="reference external" href="https://docs.djangoproject.com/en/1.3/intro/tutorial01/#creating-a-project">Django documentation</a>.</p>
-<p>Here we will create a file <tt class="docutils literal"><span class="pre">server.py</span></tt>, which we are going to edit:</p>
-<div class="highlight-python"><pre>$ touch server.py</pre>
+<p>Create file <tt class="docutils literal"><span class="pre">server.py</span></tt>, which we are going to edit:</p>
+<div class="highlight-python"><pre>$ touch pywstest/server.py</pre>
 </div>
 </div>
 <div class="section" id="some-code">
@@ -111,12 +111,12 @@ it up with a special decorator, so it will look like this:</p>
 </div>
 <p>And the last step, we need to edit <tt class="docutils literal"><span class="pre">urls.py</span></tt>, the result would be as
 following:</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">django.conf.urls.defaults</span> <span class="kn">import</span> <span class="o">*</span>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">django.conf.urls</span> <span class="kn">import</span> <span class="n">patterns</span><span class="p">,</span> <span class="n">url</span>
 <span class="kn">from</span> <span class="nn">pyws.adapters._django</span> <span class="kn">import</span> <span class="n">serve</span>
 <span class="kn">from</span> <span class="nn">pywstest.server</span> <span class="kn">import</span> <span class="n">server</span>
 
 <span class="n">urlpatterns</span> <span class="o">=</span> <span class="n">patterns</span><span class="p">(</span><span class="s">&#39;&#39;</span><span class="p">,</span>
-    <span class="n">url</span><span class="p">(</span><span class="s">&#39;^api/(.*)&#39;</span><span class="p">,</span> <span class="n">serve</span><span class="p">,</span> <span class="p">{</span><span class="s">&#39;server&#39;</span><span class="p">:</span> <span class="n">server</span><span class="p">})</span>
+    <span class="n">url</span><span class="p">(</span><span class="s">&#39;^api(.*)&#39;</span><span class="p">,</span> <span class="n">serve</span><span class="p">,</span> <span class="p">{</span><span class="s">&#39;server&#39;</span><span class="p">:</span> <span class="n">server</span><span class="p">})</span>
 <span class="p">)</span>
 </pre></div>
 </div>
@@ -142,7 +142,7 @@ to convert Django requests/responses to/from pyws requests/responses.</p>
 &lt;/soap:Envelope&gt;</pre>
 </div>
 <p>Then hit it:</p>
-<div class="highlight-python"><pre>$ curl --data-binary @request http://localhost:8000/api/</pre>
+<div class="highlight-python"><pre>$ curl --data-binary @request http://localhost:8000/api</pre>
 </div>
 <p>The result would be:</p>
 <div class="highlight-python"><pre>&lt;?xml version='1.0' encoding='utf-8'?&gt;
@@ -221,13 +221,13 @@ follow <a class="reference internal" href="getting_started_part_2.html"><em>me</
         <li class="right" >
           <a href="introduction.html" title="Introduction"
              >previous</a> |</li>
-        <li><a href="index.html">pyws 1.1.5 documentation</a> &raquo;</li>
+        <li><a href="index.html">pyws 1.1.6 documentation</a> &raquo;</li>
           <li><a href="introduction.html" >Introduction</a> &raquo;</li> 
       </ul>
     </div>
     <div class="footer">
         &copy; Copyright 2011, stepank.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2b1.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2b3.
     </div>
   </body>
 </html>

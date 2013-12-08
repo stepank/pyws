@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Welcome to pyws’s documentation! &mdash; pyws 1.1.5 documentation</title>
+    <title>Welcome to pyws’s documentation! &mdash; pyws 1.1.6 documentation</title>
     
     <link rel="stylesheet" href="_static/default.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -14,7 +14,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    './',
-        VERSION:     '1.1.5',
+        VERSION:     '1.1.6',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -23,7 +23,7 @@
     <script type="text/javascript" src="_static/jquery.js"></script>
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
-    <link rel="top" title="pyws 1.1.5 documentation" href="#" />
+    <link rel="top" title="pyws 1.1.6 documentation" href="#" />
     <link rel="next" title="Introduction" href="introduction.html" /> 
   </head>
   <body>
@@ -39,7 +39,7 @@
         <li class="right" >
           <a href="introduction.html" title="Introduction"
              accesskey="N">next</a> |</li>
-        <li><a href="#">pyws 1.1.5 documentation</a> &raquo;</li> 
+        <li><a href="#">pyws 1.1.6 documentation</a> &raquo;</li> 
       </ul>
     </div>  
 
@@ -70,8 +70,8 @@ won&#8217;t need to bother himself with generating XML, sending requests manuall
 via HTTP, parsing responses and so on. pyws will take care of processing
 requests on the server and numerous SOAP clients are at your disposal to send
 requests and process responces.</p>
-<div class="section" id="what-is-already-implemented">
-<h2>What is already implemented<a class="headerlink" href="#what-is-already-implemented" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="what-is-implemented">
+<h2>What is implemented<a class="headerlink" href="#what-is-implemented" title="Permalink to this headline">¶</a></h2>
 <p>Common features:</p>
 <ul class="simple">
 <li>a web framework agnostic server,</li>
@@ -101,7 +101,8 @@ simplejson. For development pyws also requires unittest2 and suds.</p>
 <p>pyws is written the way that it might be integrated with any web server and
 python framework; it is achieved by using different adapters:</p>
 <ul class="simple">
-<li><a class="reference internal" href="adapters.html#django-adapter"><em>Django adapter</em></a> depends on Django, I use 1.5;</li>
+<li><a class="reference internal" href="adapters.html#django-adapter"><em>Django adapter</em></a> depends on Django, versions from 1.2 to 1.6 are
+supported;</li>
 <li><a class="reference internal" href="adapters.html#twisted-web-adapter"><em>Twisted Web adapter</em></a> depends on Twisted, I use 11.0.0;</li>
 <li><a class="reference internal" href="adapters.html#wsgi-adapter"><em>WSGI adapter</em></a> depends on wsgiref, I use 0.1.2.</li>
 </ul>
@@ -121,86 +122,6 @@ and run:</p>
 <div class="highlight-python"><pre>make develop</pre>
 </div>
 <p>(They both actually run <cite>python setup.py ...</cite>.)</p>
-</div>
-<div class="section" id="changelog">
-<h1>Changelog<a class="headerlink" href="#changelog" title="Permalink to this headline">¶</a></h1>
-<div class="section" id="version-1-1-4">
-<h2>Version 1.1.4<a class="headerlink" href="#version-1-1-4" title="Permalink to this headline">¶</a></h2>
-<ul class="simple">
-<li>Fixed behaviour in case the tail starts with a slash, issue #32.</li>
-<li>Added support for Django up to 1.6, issue #33.</li>
-</ul>
-</div>
-<div class="section" id="version-1-1-3">
-<h2>Version 1.1.3<a class="headerlink" href="#version-1-1-3" title="Permalink to this headline">¶</a></h2>
-<ul class="simple">
-<li>Added boolean support, issue #25.</li>
-<li>Added support for Django up to 1.5, issue #30.</li>
-</ul>
-</div>
-<div class="section" id="version-1-1-2">
-<h2>Version 1.1.2<a class="headerlink" href="#version-1-1-2" title="Permalink to this headline">¶</a></h2>
-<ul class="simple">
-<li>Unicode support, issue #19.</li>
-<li>WSDL generator complains if some functions require context, but SOAP protocol
-does not have SOAP headers schema specified, issue #20.</li>
-<li>REST protocol retrieves arguments from request according to the
-specification, issue #21.</li>
-<li>Django adapter uses parse_qs to parse GET and POST arguments, issue #22.</li>
-<li>SOAP protocol returns dicts with fields ordered according to schema.</li>
-<li>JSON based protocols return date/datetime in ISO 8601 format.</li>
-</ul>
-</div>
-<div class="section" id="version-1-1-1">
-<h2>Version 1.1.1<a class="headerlink" href="#version-1-1-1" title="Permalink to this headline">¶</a></h2>
-<ul class="simple">
-<li>Fixed pyws crashing if SOAP request body does not match the required schema,
-issue #16.</li>
-<li>Function arguments are inferred correctly, if they are not specified, issue
-#17.</li>
-<li>Running doctests returns exit code 1 in the case of failure, issue #18.</li>
-</ul>
-</div>
-<div class="section" id="version-1-1">
-<h2>Version 1.1<a class="headerlink" href="#version-1-1" title="Permalink to this headline">¶</a></h2>
-<ul class="simple">
-<li>Adapters report HTTP 500 response code on error, issue #4.</li>
-<li>Added adapters for Twisted Web and WSGI, issue #7.</li>
-<li>Function docstrings are propagated to WSDL, issue #8.</li>
-<li>Added python 2.5 support, issue #9.</li>
-<li>Lots of automation (mainly for tests) using make files, issue #11.</li>
-<li>Implemented WSDL wrapped document/literal style along with rpc/literal,
-the former is default, issue #12.</li>
-<li>Added C# (Mono) integration tests, issue #13.</li>
-<li>WS-I BP 1.1 WSDL validation is back again (BP 1.2 validation is preserved).</li>
-<li>Added headers validation, issue #15.</li>
-<li>Examples and tests rely on pyws being installed (at least in dev mode).</li>
-<li>Added basic logging config to WSGI adapter example.</li>
-<li>Fixed some python suds tests.</li>
-</ul>
-</div>
-<div class="section" id="version-1-0">
-<h2>Version 1.0<a class="headerlink" href="#version-1-0" title="Permalink to this headline">¶</a></h2>
-<p>Common features:</p>
-<ul class="simple">
-<li>a web framework agnostic server,</li>
-<li>an adapter for Django,</li>
-<li>protocols: SOAP 1.1, REST, JSON,</li>
-<li>context handling &amp; authentication framework,</li>
-<li>a simple types description system.</li>
-</ul>
-<p>SOAP specific features:</p>
-<ul class="simple">
-<li>request, response, exceptions,</li>
-<li>automatic WSDL 1.1 service description generation, including headers and
-exceptions,</li>
-<li>simple types handling: integer, float, string, date, datetime,</li>
-<li>complex types handling: dict, list (nested structures of any depth are
-allowed),</li>
-<li>integration tests: PHP, Java (Axis 1.4), Python (suds), WS-I Basic Profile
-1.2.</li>
-</ul>
-</div>
 </div>
 <div class="section" id="topics">
 <h1>Topics<a class="headerlink" href="#topics" title="Permalink to this headline">¶</a></h1>
@@ -281,6 +202,93 @@ allowed),</li>
 </ul>
 </div>
 </div>
+<div class="section" id="changelog">
+<h1>Changelog<a class="headerlink" href="#changelog" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="version-1-1-5">
+<h2>Version 1.1.5<a class="headerlink" href="#version-1-1-5" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li>Fixed some issues with datetime support, issue #38.</li>
+<li>Infrustructure to test pyws using Jenkins, issue #39.</li>
+</ul>
+</div>
+<div class="section" id="version-1-1-4">
+<h2>Version 1.1.4<a class="headerlink" href="#version-1-1-4" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li>Fixed behaviour in case the tail starts with a slash, issue #32.</li>
+<li>Added support for Django up to 1.6, issue #33.</li>
+</ul>
+</div>
+<div class="section" id="version-1-1-3">
+<h2>Version 1.1.3<a class="headerlink" href="#version-1-1-3" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li>Added boolean support, issue #25.</li>
+<li>Added support for Django up to 1.5, issue #30.</li>
+</ul>
+</div>
+<div class="section" id="version-1-1-2">
+<h2>Version 1.1.2<a class="headerlink" href="#version-1-1-2" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li>Unicode support, issue #19.</li>
+<li>WSDL generator complains if some functions require context, but SOAP protocol
+does not have SOAP headers schema specified, issue #20.</li>
+<li>REST protocol retrieves arguments from request according to the
+specification, issue #21.</li>
+<li>Django adapter uses parse_qs to parse GET and POST arguments, issue #22.</li>
+<li>SOAP protocol returns dicts with fields ordered according to schema.</li>
+<li>JSON based protocols return date/datetime in ISO 8601 format.</li>
+</ul>
+</div>
+<div class="section" id="version-1-1-1">
+<h2>Version 1.1.1<a class="headerlink" href="#version-1-1-1" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li>Fixed pyws crashing if SOAP request body does not match the required schema,
+issue #16.</li>
+<li>Function arguments are inferred correctly, if they are not specified, issue
+#17.</li>
+<li>Running doctests returns exit code 1 in the case of failure, issue #18.</li>
+</ul>
+</div>
+<div class="section" id="version-1-1">
+<h2>Version 1.1<a class="headerlink" href="#version-1-1" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li>Adapters report HTTP 500 response code on error, issue #4.</li>
+<li>Added adapters for Twisted Web and WSGI, issue #7.</li>
+<li>Function docstrings are propagated to WSDL, issue #8.</li>
+<li>Added python 2.5 support, issue #9.</li>
+<li>Lots of automation (mainly for tests) using make files, issue #11.</li>
+<li>Implemented WSDL wrapped document/literal style along with rpc/literal,
+the former is default, issue #12.</li>
+<li>Added C# (Mono) integration tests, issue #13.</li>
+<li>WS-I BP 1.1 WSDL validation is back again (BP 1.2 validation is preserved).</li>
+<li>Added headers validation, issue #15.</li>
+<li>Examples and tests rely on pyws being installed (at least in dev mode).</li>
+<li>Added basic logging config to WSGI adapter example.</li>
+<li>Fixed some python suds tests.</li>
+</ul>
+</div>
+<div class="section" id="version-1-0">
+<h2>Version 1.0<a class="headerlink" href="#version-1-0" title="Permalink to this headline">¶</a></h2>
+<p>Common features:</p>
+<ul class="simple">
+<li>a web framework agnostic server,</li>
+<li>an adapter for Django,</li>
+<li>protocols: SOAP 1.1, REST, JSON,</li>
+<li>context handling &amp; authentication framework,</li>
+<li>a simple types description system.</li>
+</ul>
+<p>SOAP specific features:</p>
+<ul class="simple">
+<li>request, response, exceptions,</li>
+<li>automatic WSDL 1.1 service description generation, including headers and
+exceptions,</li>
+<li>simple types handling: integer, float, string, date, datetime,</li>
+<li>complex types handling: dict, list (nested structures of any depth are
+allowed),</li>
+<li>integration tests: PHP, Java (Axis 1.4), Python (suds), WS-I Basic Profile
+1.2.</li>
+</ul>
+</div>
+</div>
 
 
           </div>
@@ -292,21 +300,22 @@ allowed),</li>
   <ul>
 <li><a class="reference internal" href="#">Welcome to pyws&#8217;s documentation!</a></li>
 <li><a class="reference internal" href="#overview">Overview</a><ul>
-<li><a class="reference internal" href="#what-is-already-implemented">What is already implemented</a></li>
+<li><a class="reference internal" href="#what-is-implemented">What is implemented</a></li>
 </ul>
 </li>
 <li><a class="reference internal" href="#requirements">Requirements</a></li>
 <li><a class="reference internal" href="#installation">Installation</a></li>
+<li><a class="reference internal" href="#topics">Topics</a><ul>
+</ul>
+</li>
 <li><a class="reference internal" href="#changelog">Changelog</a><ul>
+<li><a class="reference internal" href="#version-1-1-5">Version 1.1.5</a></li>
 <li><a class="reference internal" href="#version-1-1-4">Version 1.1.4</a></li>
 <li><a class="reference internal" href="#version-1-1-3">Version 1.1.3</a></li>
 <li><a class="reference internal" href="#version-1-1-2">Version 1.1.2</a></li>
 <li><a class="reference internal" href="#version-1-1-1">Version 1.1.1</a></li>
 <li><a class="reference internal" href="#version-1-1">Version 1.1</a></li>
 <li><a class="reference internal" href="#version-1-0">Version 1.0</a></li>
-</ul>
-</li>
-<li><a class="reference internal" href="#topics">Topics</a><ul>
 </ul>
 </li>
 </ul>
@@ -348,12 +357,12 @@ allowed),</li>
         <li class="right" >
           <a href="introduction.html" title="Introduction"
              >next</a> |</li>
-        <li><a href="#">pyws 1.1.5 documentation</a> &raquo;</li> 
+        <li><a href="#">pyws 1.1.6 documentation</a> &raquo;</li> 
       </ul>
     </div>
     <div class="footer">
         &copy; Copyright 2011, stepank.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2b1.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2b3.
     </div>
   </body>
 </html>
