@@ -3,7 +3,7 @@
 Context
 =======
 
-A result returning by a function can depend not only on the argument values,
+A result returned by a function can depend not only on the argument values,
 but also on the context which the function is running in. So we need a
 mechanism to work with the context.
 

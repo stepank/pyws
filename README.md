@@ -5,7 +5,7 @@ of their systems as public API via SOAP protocol with WSDL description. The
 main idea is to let developers completely forget about SOAP itself and make
 creating of API trasparent and painless.
 
-[![Build Status](https://jenkins.findidioms.com/job/pyws/badge/icon)](https://jenkins.findidioms.com/job/pyws/)
+[![Build Status](https://78.47.163.154/job/pyws/badge/icon)](https://78.47.163.154/job/pyws/)
 
 ## Documentation
 
