@@ -1,3 +1,9 @@
+Version 1.1.6 (under development)
+---------------------------------
+
+* Added Django 1.7 support, issue #41.
+
+
 Version 1.1.5
 -------------
 

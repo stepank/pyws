@@ -62,7 +62,7 @@ simplejson. For development pyws also requires unittest2 and suds.
 pyws is written the way that it might be integrated with any web server and
 python framework; it is achieved by using different adapters:
 
-* :ref:`django_adapter` depends on Django, versions from 1.2 to 1.6 are
+* :ref:`django_adapter` depends on Django, versions from 1.2 to 1.7 are
   supported;
 * :ref:`twisted_web_adapter` depends on Twisted, I use 11.0.0;
 * :ref:`wsgi_adapter` depends on wsgiref, I use 0.1.2.
@@ -106,6 +106,11 @@ Topics
 
 Changelog
 =========
+
+Version 1.1.6 (under development)
+---------------------------------
+
+* Added Django 1.7 support, issue #41.
 
 Version 1.1.5
 -------------
