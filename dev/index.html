@@ -101,7 +101,7 @@ simplejson. For development pyws also requires unittest2 and suds.</p>
 <p>pyws is written the way that it might be integrated with any web server and
 python framework; it is achieved by using different adapters:</p>
 <ul class="simple">
-<li><a class="reference internal" href="adapters.html#django-adapter"><em>Django adapter</em></a> depends on Django, versions from 1.2 to 1.6 are
+<li><a class="reference internal" href="adapters.html#django-adapter"><em>Django adapter</em></a> depends on Django, versions from 1.2 to 1.7 are
 supported;</li>
 <li><a class="reference internal" href="adapters.html#twisted-web-adapter"><em>Twisted Web adapter</em></a> depends on Twisted, I use 11.0.0;</li>
 <li><a class="reference internal" href="adapters.html#wsgi-adapter"><em>WSGI adapter</em></a> depends on wsgiref, I use 0.1.2.</li>
@@ -110,16 +110,19 @@ supported;</li>
 <div class="section" id="installation">
 <span id="id2"></span><h1>Installation<a class="headerlink" href="#installation" title="Permalink to this headline">¶</a></h1>
 <p>The easiest way to install pyws is to run:</p>
-<div class="highlight-python"><pre>easy_install pyws</pre>
+<div class="highlight-python"><div class="highlight"><pre>easy_install pyws
+</pre></div>
 </div>
 <p>Or you might download a source distribution archive from PyPI (available at
 <a class="reference external" href="http://pypi.python.org/pypi/pyws">http://pypi.python.org/pypi/pyws</a>) or clone the GIT repo. In these cases you
 ought to change current directory to the root of pyws&#8217;s distribution package
 and run:</p>
-<div class="highlight-python"><pre>make install</pre>
+<div class="highlight-python"><div class="highlight"><pre>make install
+</pre></div>
 </div>
 <p>To install pyws in development mode (read more about <a class="reference external" href="http://packages.python.org/distribute/setuptools.html#development-mode">development mode</a>):</p>
-<div class="highlight-python"><pre>make develop</pre>
+<div class="highlight-python"><div class="highlight"><pre>make develop
+</pre></div>
 </div>
 <p>(They both actually run <cite>python setup.py ...</cite>.)</p>
 </div>
@@ -204,6 +207,12 @@ and run:</p>
 </div>
 <div class="section" id="changelog">
 <h1>Changelog<a class="headerlink" href="#changelog" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="version-1-1-6-under-development">
+<h2>Version 1.1.6 (under development)<a class="headerlink" href="#version-1-1-6-under-development" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li>Added Django 1.7 support, issue #41.</li>
+</ul>
+</div>
 <div class="section" id="version-1-1-5">
 <h2>Version 1.1.5<a class="headerlink" href="#version-1-1-5" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
@@ -305,10 +314,9 @@ allowed),</li>
 </li>
 <li><a class="reference internal" href="#requirements">Requirements</a></li>
 <li><a class="reference internal" href="#installation">Installation</a></li>
-<li><a class="reference internal" href="#topics">Topics</a><ul>
-</ul>
-</li>
+<li><a class="reference internal" href="#topics">Topics</a></li>
 <li><a class="reference internal" href="#changelog">Changelog</a><ul>
+<li><a class="reference internal" href="#version-1-1-6-under-development">Version 1.1.6 (under development)</a></li>
 <li><a class="reference internal" href="#version-1-1-5">Version 1.1.5</a></li>
 <li><a class="reference internal" href="#version-1-1-4">Version 1.1.4</a></li>
 <li><a class="reference internal" href="#version-1-1-3">Version 1.1.3</a></li>
@@ -362,7 +370,7 @@ allowed),</li>
     </div>
     <div class="footer">
         &copy; Copyright 2011, stepank.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2b3.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.3.
     </div>
   </body>
 </html>

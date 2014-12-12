@@ -67,13 +67,15 @@ required for this tutorial). You will also need curl for testing purposes.</p>
 <div class="section" id="project">
 <h2>Project<a class="headerlink" href="#project" title="Permalink to this headline">¶</a></h2>
 <p>Let&#8217;s create a new Django project:</p>
-<div class="highlight-python"><pre>$ django-admin.py startproject pywstest
-$ cd pywstest</pre>
+<div class="highlight-python"><div class="highlight"><pre>$ django-admin.py startproject pywstest
+$ cd pywstest
+</pre></div>
 </div>
 <p>If you have problems with this refer to
 <a class="reference external" href="https://docs.djangoproject.com/en/1.3/intro/tutorial01/#creating-a-project">Django documentation</a>.</p>
 <p>Create file <tt class="docutils literal"><span class="pre">server.py</span></tt>, which we are going to edit:</p>
-<div class="highlight-python"><pre>$ touch pywstest/server.py</pre>
+<div class="highlight-python"><div class="highlight"><pre>$ touch pywstest/server.py
+</pre></div>
 </div>
 </div>
 <div class="section" id="some-code">
@@ -127,32 +129,36 @@ to convert Django requests/responses to/from pyws requests/responses.</p>
 <div class="section" id="results">
 <h2>Results<a class="headerlink" href="#results" title="Permalink to this headline">¶</a></h2>
 <p>First, start a server:</p>
-<div class="highlight-python"><pre>$ python manage.py runserver</pre>
+<div class="highlight-python"><div class="highlight"><pre>$ python manage.py runserver
+</pre></div>
 </div>
 <p>Prepare a request:</p>
-<div class="highlight-python"><pre>$ cat &gt; request
-&lt;?xml version="1.0"?&gt;
-&lt;soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/"&gt;
+<div class="highlight-python"><div class="highlight"><pre>$ cat &gt; request
+&lt;?xml version=&quot;1.0&quot;?&gt;
+&lt;soap:Envelope xmlns:soap=&quot;http://schemas.xmlsoap.org/soap/envelope/&quot;&gt;
   &lt;soap:Body&gt;
-    &lt;add_simple xmlns="http://www.example.org/"&gt;
+    &lt;add_simple xmlns=&quot;http://www.example.org/&quot;&gt;
       &lt;a&gt;hello &lt;/a&gt;
       &lt;b&gt;world&lt;/b&gt;
     &lt;/add_simple&gt;
   &lt;/soap:Body&gt;
-&lt;/soap:Envelope&gt;</pre>
+&lt;/soap:Envelope&gt;
+</pre></div>
 </div>
 <p>Then hit it:</p>
-<div class="highlight-python"><pre>$ curl --data-binary @request http://localhost:8000/api</pre>
+<div class="highlight-python"><div class="highlight"><pre>$ curl --data-binary @request http://localhost:8000/api
+</pre></div>
 </div>
 <p>The result would be:</p>
-<div class="highlight-python"><pre>&lt;?xml version='1.0' encoding='utf-8'?&gt;
-&lt;se:Envelope xmlns:se="http://schemas.xmlsoap.org/soap/envelope/"&gt;
+<div class="highlight-python"><div class="highlight"><pre>&lt;?xml version=&#39;1.0&#39; encoding=&#39;utf-8&#39;?&gt;
+&lt;se:Envelope xmlns:se=&quot;http://schemas.xmlsoap.org/soap/envelope/&quot;&gt;
   &lt;se:Body&gt;
-    &lt;add_simple_result namespace="http://example.com/types/"&gt;
+    &lt;add_simple_result namespace=&quot;http://example.com/types/&quot;&gt;
       &lt;result&gt;hello world&lt;/result&gt;
     &lt;/add_simple_result&gt;
   &lt;/se:Body&gt;
-&lt;/se:Envelope&gt;</pre>
+&lt;/se:Envelope&gt;
+</pre></div>
 </div>
 <p>Hey, it looks like we&#8217;ve just concatenated two strings via SOAP.
 Congratulations!</p>
@@ -227,7 +233,7 @@ follow <a class="reference internal" href="getting_started_part_2.html"><em>me</
     </div>
     <div class="footer">
         &copy; Copyright 2011, stepank.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2b3.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.3.
     </div>
   </body>
 </html>

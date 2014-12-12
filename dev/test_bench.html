@@ -71,7 +71,7 @@ clone of the GIT repo.</p>
 <h2>Directory structure<a class="headerlink" href="#directory-structure" title="Permalink to this headline">¶</a></h2>
 <p>In pyws distribution, there is a directory called <tt class="docutils literal"><span class="pre">examples</span></tt>, let&#8217;s have a
 look at its contents:</p>
-<div class="highlight-python"><pre>examples/
+<div class="highlight-python"><div class="highlight"><pre>examples/
     _django/                # not for now ...
     _twisted/               # not for now either ...
     _wsgi/
@@ -82,7 +82,8 @@ look at its contents:</p>
     api_settings.py         # common pyws server settings
     authenticate.py         # authentication related stuff
     functions.py            # example functions
-    server.py               # server definition</pre>
+    server.py               # server definition
+</pre></div>
 </div>
 </div>
 <div class="section" id="server-settings">
@@ -176,18 +177,18 @@ by a server is passed to the function as keyword argument <tt class="docutils li
 </div>
 <div class="section" id="date-and-datetime-example">
 <h3>Date and datetime example<a class="headerlink" href="#date-and-datetime-example" title="Permalink to this headline">¶</a></h3>
-<div class="highlight-python"><pre>    return 'hello ' + context
+<div class="highlight-python"><div class="highlight"><pre>    return &#39;hello &#39; + context
 
 
 # = next month ================================================================
 
 @register(return_type=date, args=(date, ))
-@register('next_month_dt', return_type=datetime, args=(datetime, ))
+@register(&#39;next_month_dt&#39;, return_type=datetime, args=(datetime, ))
 def next_month(d):
     if not d:
         return None
     month = d.month + 1
-</pre>
+</pre></div>
 </div>
 <p>Well, it looks pretty straight forward.</p>
 <p>Read more in chapters <a class="reference internal" href="function.html#arguments-specification"><em>Arguments &amp; fields specification</em></a>,
@@ -204,25 +205,25 @@ represent field names and their types.</p>
 </pre></div>
 </div>
 <p>Callables can be used as none values.</p>
-<div class="highlight-python"><pre>    args=(
+<div class="highlight-python"><div class="highlight"><pre>    args=(
         (ABStringDict, ab_string_dict_none),
         (ABStringDict, ab_string_dict_none),
     ),
 )
 @register(
-    'add_integer_dicts',
+    &#39;add_integer_dicts&#39;,
     return_type=ABIntegerDict,
     args=(
         (ABIntegerDict, ab_integer_dict_none),
         (ABIntegerDict, ab_integer_dict_none),
     ),
 )
-</pre>
+</pre></div>
 </div>
 </div>
 <div class="section" id="list-examples">
 <h3>List examples<a class="headerlink" href="#list-examples" title="Permalink to this headline">¶</a></h3>
-<div class="highlight-python"><pre>    }
+<div class="highlight-python"><div class="highlight"><pre>    }
 
 
 # = add lists =================================================================
@@ -230,63 +231,62 @@ represent field names and their types.</p>
 StringList = [str]
 
 @register(
-    'add_string_lists',
+    &#39;add_string_lists&#39;,
     return_type=StringList,
     args=(StringList, StringList),
 )
 def add_string_lists(p, q):
-</pre>
+</pre></div>
 </div>
 <p>List type definition is pretty simple, isn&#8217;t it?</p>
-<div class="highlight-python"><pre>        p.extend([''] * (len(q) - len(p)))
+<div class="highlight-python"><div class="highlight"><pre>        p.extend([&#39;&#39;] * (len(q) - len(p)))
     if len(q) &lt; len(p):
-        q.extend([''] * (len(p) - len(q)))
+        q.extend([&#39;&#39;] * (len(p) - len(q)))
     return list(p[i] + q[i] for i in xrange(len(p)))
 
 IntegerList = [int, 0]
 
 @register(
-    'add_integer_lists',
+    &#39;add_integer_lists&#39;,
     return_type=IntegerList,
     args=(IntegerList, IntegerList),
 )
 def add_integer_lists(p, q):
-</pre>
+</pre></div>
 </div>
 <p><tt class="docutils literal"><span class="pre">IntegerList</span></tt>&#8216;s second element is an element none value.</p>
 </div>
 <div class="section" id="recursive-type-example">
 <h3>Recursive type example<a class="headerlink" href="#recursive-type-example" title="Permalink to this headline">¶</a></h3>
-<div class="highlight-python"><pre>    return list(p[i] + q[i] for i in xrange(len(p)))
+<div class="highlight-python"><div class="highlight"><pre>    return list(p[i] + q[i] for i in xrange(len(p)))
 
 
 # = trees =====================================================================
 
-Tree = DictOf('Tree',
-    ('value', int, 0),
+Tree = DictOf(&#39;Tree&#39;,
+    (&#39;value&#39;, int, 0),
 )
 Tree.add_fields(
-    ('left', Tree),
-    ('right', Tree),
+    (&#39;left&#39;, Tree),
+    (&#39;right&#39;, Tree),
 )
-
-</pre>
+</pre></div>
 </div>
 <p>So far, the only way to create a recursive type is monkey pathcing.</p>
 </div>
 <div class="section" id="exception-raising-example">
 <h3>Exception raising example<a class="headerlink" href="#exception-raising-example" title="Permalink to this headline">¶</a></h3>
-<div class="highlight-python"><pre>    }
+<div class="highlight-python"><div class="highlight"><pre>    }
 
 
 # = raises exception ==========================================================
 
 class HelloError(Exception):
     def __init__(self, name):
-        super(HelloError, self).__init__(u'%s error' % name)
+        super(HelloError, self).__init__(u&#39;%s error&#39; % name)
 
 @register()
-</pre>
+</pre></div>
 </div>
 <p>It&#8217;s easy, just raise any exception you want.</p>
 </div>
@@ -368,7 +368,7 @@ class HelloError(Exception):
     </div>
     <div class="footer">
         &copy; Copyright 2011, stepank.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2b3.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.3.
     </div>
   </body>
 </html>
